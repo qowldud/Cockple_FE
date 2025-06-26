@@ -1,0 +1,189 @@
+@import url("https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_suit@1.0/SUIT-Variable.woff2");
+@import "tailwindcss";
+
+@theme {
+  --color-gr-500: #1abb65;
+  --color-gr-600: #0b9a4e;
+  --color-gr-700: #0a7456;
+
+  --color-ye-300: #ffe081;
+  --color-ye-400: #fcd55c;
+
+  --color-bl-400: #398df4;
+
+  --color-pk-400: #ff64aa;
+
+  --color-gy-100: #f4f5f6;
+  --color-gy-200: #e4e7ea;
+  --color-gy-300: #d6dae0;
+  --color-gy-400: #c0c4cd;
+  --color-gy-500: #a8aebd;
+  --color-gy-600: #9195a1;
+  --color-gy-700: #767b89;
+  --color-gy-800: #4f5462;
+  --color-gy-900: #34363a;
+
+  --color-white: #fcfcff;
+  --color-black: #121212;
+
+  /* 그라디언트 */
+  --color-gradient-ye-gr: linear-gradient(90deg, #fcd55c 0%, #1abb65 100%);
+  --color-gradient-gy: linear-gradient(83deg, #d6dae0 9.02%, #a8aebd 90.81%);
+
+  /* 폰트 패밀리 */
+  --font-family-suit:
+    "SUIT", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+/* 커스텀 타이포그래피 클래스 */
+@layer utilities {
+  .header-h1 {
+    font-family: var(--font-family-suit);
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 166%;
+    letter-spacing: -0.03rem;
+  }
+
+  .header-h2 {
+    font-family: var(--font-family-suit);
+    font-size: 1.375rem;
+    font-weight: 700;
+    line-height: 162%;
+    letter-spacing: -0.03rem;
+  }
+
+  .header-h3 {
+    font-family: var(--font-family-suit);
+    font-size: 1.25rem;
+    font-weight: 600;
+    line-height: 162%;
+    letter-spacing: -0.03rem;
+  }
+
+  .header-h4 {
+    font-family: var(--font-family-suit);
+    font-size: 1.125rem;
+    font-weight: 600;
+    line-height: 156%;
+    letter-spacing: -0.03rem;
+  }
+
+  .header-h5 {
+    font-family: var(--font-family-suit);
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 150%;
+    letter-spacing: -0.03rem;
+  }
+
+  .body-xl-500 {
+    font-family: var(--font-family-suit);
+    font-size: 1.25rem;
+    font-weight: 500;
+    line-height: 162%;
+    letter-spacing: -0.025rem;
+  }
+
+  .body-xl-400 {
+    font-family: var(--font-family-suit);
+    font-size: 1.25rem;
+    font-weight: 400;
+    line-height: 162%;
+    letter-spacing: -0.025rem;
+  }
+
+  .body-lg-500 {
+    font-family: var(--font-family-suit);
+    font-size: 1.125rem;
+    font-weight: 500;
+    line-height: 156%;
+    letter-spacing: -0.0225rem;
+  }
+
+  .body-lg-400 {
+    font-family: var(--font-family-suit);
+    font-size: 1.125rem;
+    font-weight: 400;
+    line-height: 156%;
+    letter-spacing: -0.0225rem;
+  }
+
+  .body-md-500 {
+    font-family: var(--font-family-suit);
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 150%;
+    letter-spacing: -0.02rem;
+  }
+
+  .body-md-400 {
+    font-family: var(--font-family-suit);
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 150%;
+    letter-spacing: -0.02rem;
+  }
+
+  .body-rg-500 {
+    font-family: var(--font-family-suit);
+    font-size: 0.875rem;
+    font-weight: 500;
+    line-height: 144%;
+    letter-spacing: -0.0175rem;
+  }
+
+  .body-rg-400 {
+    font-family: var(--font-family-suit);
+    font-size: 0.875rem;
+    font-weight: 400;
+    line-height: 144%;
+    letter-spacing: -0.0175rem;
+  }
+
+  .body-rg-300 {
+    font-family: var(--font-family-suit);
+    font-size: 0.875rem;
+    font-weight: 300;
+    line-height: 144%;
+    letter-spacing: -0.0175rem;
+  }
+
+  .body-sm-500 {
+    font-family: var(--font-family-suit);
+    font-size: 0.75rem;
+    font-weight: 500;
+    line-height: 132%;
+    letter-spacing: -0.015rem;
+  }
+
+  .body-sm-400 {
+    font-family: var(--font-family-suit);
+    font-size: 0.75rem;
+    font-weight: 400;
+    line-height: 132%;
+    letter-spacing: -0.015rem;
+  }
+
+  .body-sm-300 {
+    font-family: var(--font-family-suit);
+    font-size: 0.75rem;
+    font-weight: 300;
+    line-height: 132%;
+    letter-spacing: -0.015rem;
+  }
+}
+
+html {
+  font-size: clamp(16px, 4vw, 18px);
+  background-color: lightgray;
+}
+/* 전체 앱에 기본 폰트 적용 (선택사항) */
+body {
+  font-family:
+    "SUIT Variable",
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+}
