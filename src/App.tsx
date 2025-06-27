@@ -1,11 +1,17 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./App.css";
 import { HomePage } from "./pages/HomePage";
-
+import { ContentCardL } from "./components/ContentCardL";
 const router = createBrowserRouter([
   {
     path: "/",
     element: <HomePage />,
+    
+  },
+  //ContentCardL #2 연두
+  {
+    path: "/ContentCardL",
+    element: <ContentCardL />,
   },
 ]);
 
