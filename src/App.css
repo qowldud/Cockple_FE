@@ -8,9 +8,19 @@
   font-weight: 500;
   line-height: 144%;
 }
+.s300{
+  font-size: 12px;
+  font-weight: 300;
+  line-height: 132%;
+}
 .s400{
   font-size: 12px;
   font-weight: 400; 
+  line-height: 1.32; 
+}
+.s500{
+  font-size: 12px;
+  font-weight: 500; 
   line-height: 1.32; 
 }
 .m500{
