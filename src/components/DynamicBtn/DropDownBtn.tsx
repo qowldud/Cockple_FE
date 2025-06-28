@@ -1,45 +1,64 @@
-interface RegionSelectProps {
-  value: string;
-  options: string[];
-  onChange: (value: string) => void;
+import { useState } from "react";
+import type { TextIconStatus } from "../../types/DynamicBtn";
+
+interface CheckBoxBtnProps {
+  children: string;
   disabled?: boolean;
+  onClick?: () => void;
 }
 
-export default function RegionSelect({
-  value,
-  options,
-  onChange,
+export default function DropDownBtn({
+  children,
   disabled = false,
-}: RegionSelectProps) {
-  const icon = disabled
-    ? "/src/assets/icons/arrowDownG.svg"
-    : "/src/assets/icons/arrowDown.svg";
+  onClick,
+}: CheckBoxBtnProps) {
+  //상태 관리
+  const [clicked, setClicked] = useState(false);
+  const [isPressing, setIsPressing] = useState(false);
 
-  //기본 style제거 후 pressing=> hover로 변경
+  const getStatus = (): TextIconStatus => {
+    if (disabled) return "disabled";
+    if (isPressing) return "pressing";
+    if (clicked) return "clicked";
+    return "default";
+  };
+
+  const status: TextIconStatus = getStatus();
+
+  const statusMap: Record<TextIconStatus, { bg?: string; icon: string }> = {
+    clicked: {
+      icon: "/src/assets/icons/arrow_down.svg",
+    },
+    pressing: {
+      bg: "bg-gy-100",
+      icon: "/src/assets/icons/arrow_down.svg",
+    },
+    default: {
+      icon: "/src/assets/icons/arrow_down.svg",
+    },
+    disabled: {
+      icon: "/src/assets/icons/arrow_down.svg",
+    },
+  };
+
+  const { bg, icon } = statusMap[status];
 
   return (
-    <div className="relative inline-block">
-      <select
-        value={value}
-        onChange={e => onChange(e.target.value)}
-        disabled={disabled}
-        className={`appearance-none border-none bg-transparent p-0 m-0 focus:outline-none 
-          pl-3 py-1 pr-8 rounded-lg header-h4 
-            ${disabled ? "text-gy-400 cursor-not-allowed" : "cursor-pointer hover:bg-gy-100"}
-        `}
+    <div className="">
+      <div
+        className={`flex pr-[0.625rem] py-1 pl-4 gap-1 rounded-lg items-center header-h4  ${bg} ${disabled ? "cursor-not-allowed" : "cursor-pointer"}`}
+        onMouseDown={() => !disabled && setIsPressing(true)}
+        onMouseUp={() => {
+          if (disabled) return;
+          setIsPressing(false);
+          setClicked(prev => !prev); // 토글
+        }}
+        onMouseLeave={() => !disabled && setIsPressing(false)}
+        onClick={onClick}
       >
-        {options.map(opt => (
-          <option key={opt} value={opt}>
-            {opt}
-          </option>
-        ))}
-      </select>
-
-      <img
-        src={icon}
-        alt="dropdown"
-        className="pointer-events-none w-4 h-4 absolute right-2 top-1/2 -translate-y-1/2"
-      />
+        {children}
+        <img src={icon} alt="" className="pt-[0.125rem] size-4" />
+      </div>
     </div>
   );
 }
