@@ -1,5 +1,5 @@
 import { useState } from "react";
-import type { TextIconStatus } from "../../types/DynamicBtn";
+import type { IconTextStatus } from "../../types/DynamicBtn";
 
 interface CheckBoxBtnProps {
   children: string;
@@ -7,7 +7,7 @@ interface CheckBoxBtnProps {
   onClick?: () => void;
 }
 
-export default function TextIconBtn({
+export default function KeyWordBtn({
   children,
   disabled = false,
   onClick,
@@ -16,29 +16,36 @@ export default function TextIconBtn({
   const [clicked, setClicked] = useState(false);
   const [isPressing, setIsPressing] = useState(false);
 
-  const getStatus = (): TextIconStatus => {
+  const getStatus = (): IconTextStatus => {
     if (disabled) return "disabled";
+    if (clicked && isPressing) return "CLpressing";
     if (isPressing) return "pressing";
     if (clicked) return "clicked";
     return "default";
   };
 
-  const status: TextIconStatus = getStatus();
+  const status: IconTextStatus = getStatus();
 
-  const statusMap: Record<TextIconStatus, { bg?: string; icon: string }> = {
+  const statusMap: Record<IconTextStatus, { bg: string; icon: string }> = {
     clicked: {
-      icon: "/src/assets/icons/arrow_right_fill.svg",
+      bg: "bg-white border-gr-500",
+      icon: "/src/assets/icons/dismiss.svg",
+    },
+    CLpressing: {
+      bg: "bg-gy-100 border-gr-500",
+      icon: "/src/assets/icons/dismiss.svg",
     },
     pressing: {
-      bg: "bg-gr-200 ",
-      icon: "/src/assets/icons/arrow_right_fill.svg",
+      bg: "bg-gy-100 border-gr-500",
+      icon: "/src/assets/icons/hash.svg",
     },
     default: {
-      icon: "/src/assets/icons/arrow_right_fill.svg",
+      bg: "bg-white border-gy-200",
+      icon: "/src/assets/icons/hash.svg",
     },
     disabled: {
-      bg: "border-gy-200",
-      icon: "/src/assets/icons/arrow_right.svg",
+      bg: "bg-white border-gy-200",
+      icon: "/src/assets/icons/hash.svg",
     },
   };
 
@@ -47,7 +54,7 @@ export default function TextIconBtn({
   return (
     <div className="">
       <div
-        className={`flex pr-[0.625rem]  py-2 pl-4 gap-1 rounded-2xl items-center body-sm-500 border-1 border-gr-500 shadow-[0px_0px_12px_0px_rgba(18,18,18,0.04)] text-gr-700 ${bg} ${disabled ? "cursor-not-allowed" : "cursor-pointer"}`}
+        className={`flex pr-[0.625rem] py-2 pl-3 gap-1 rounded-2xl items-center body-rg-500 shadow-[0px_0px_12px_0px_rgba(18,18,18,0.04)] ${bg} ${disabled ? "cursor-not-allowed" : "cursor-pointer"}`}
         onMouseDown={() => !disabled && setIsPressing(true)}
         onMouseUp={() => {
           if (disabled) return;
@@ -57,8 +64,8 @@ export default function TextIconBtn({
         onMouseLeave={() => !disabled && setIsPressing(false)}
         onClick={onClick}
       >
-        {children}
         <img src={icon} alt="" className="size-4" />
+        {children}
       </div>
     </div>
   );
