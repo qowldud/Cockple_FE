@@ -1,12 +1,13 @@
 import { useState } from "react";
-import Heart from "../assets/icons/Heart.svg?react";
-import Calendar from "../assets/icons/calendar.svg?react";
-import Clock from "../assets/icons/clock.svg?react";
-import Female from "../assets/icons/female.svg?react";
-import Male from "../assets/icons/male.svg?react";
-import People from "../assets/icons/people.svg?react";
-import Vector from "../assets/icons/Vector.svg?react";
-import RightAngle from "../assets/icons/RightAngle.svg?react";
+
+import Heart from "../../assets/icons/Heart.svg?react";
+import Calendar from "../../assets/icons/calendar.svg?react";
+import Clock from "../../assets/icons/clock.svg?react";
+import Female from "../../assets/icons/female.svg?react";
+import Male from "../../assets/icons/male.svg?react";
+import People from "../../assets/icons/people.svg?react";
+import Vector from "../../assets/icons/Vector.svg?react";
+import RightAngle from "../../assets/icons/RightAngle.svg?react";
 
 export const ContentCardL = () => {
   //운동 시작하기 -> 운동 취소하기 -> 나중에 서버 연동
@@ -20,38 +21,38 @@ export const ContentCardL = () => {
         {/* 상단 */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <p className="text-black text-base">하이콕콕</p>
+          <p className="m500">하이콕콕</p>
           <Heart className="w-[26px] h-[26px]" />
         </div>
         <RightAngle className="w-4 h-4" />
       </div>
 
         {/* 안에 정보 날짜, 위치, 시간, 성별, 인원수 */}
-      <div className="h-[16px]space-y-1 text-sm text-black">
-        <div className="flex items-center gap-2">
+      <div className="flex flex-col gap-[6px] text-black s400">
+        <div className="flex items-center gap-1">
           <Calendar className="w-[14px] h-[14px]" />
           <span>2000.05.01 (월)</span>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1">
           <Vector className="w-[14px] h-[14px]" />
           <span>산성 실내 배드민턴장</span>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1">
           <Clock className="w-[14px] h-[14px]" />
           <span>08:00 am ~ 10:00 am</span>
         </div>
-        <div className="w-[319px] flex gap-[28px]">
-            <div className="flex items-center gap-2">
+        <div className="w-[319px] flex gap-[13px]">
+            <div className="flex items-center gap-1">
             <Female className="w-[14px] h-[14px]" />
             <span>전국 초심 ~ 준자강</span>
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1">
             <Male className="w-[14px] h-[14px]" />
             <span>전국 준자강 이상</span>
             </div>
         </div>
        
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1">
           <People className="w-[14px] h-[14px]" />
           <span>0 / 0</span>
         </div>
@@ -61,7 +62,7 @@ export const ContentCardL = () => {
       <div className="w-[319px] flex gap-[13px]">
         <button
           onClick={toggleStart}
-          className={`w-[153px] h-[36px] rounded text-sm ${
+          className={`w-[153px] h-[36px] rounded r500 ${
             isStarted
               ? "bg-[#F4F5F6] text-red-500"
               : "bg-[#F4F5F6] text-[#0B9A4E]"

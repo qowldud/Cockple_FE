@@ -3,6 +3,21 @@
   padding: 0;
   text-align: center;
 }
+.r500 {
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 144%;
+}
+.s400{
+  font-size: 12px;
+  font-weight: 400; 
+  line-height: 1.32; 
+}
+.m500{
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 150%;
+}
 
 /* .logo {
   height: 6em;

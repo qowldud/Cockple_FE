@@ -1,7 +1,10 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./App.css";
 import { HomePage } from "./pages/HomePage";
-import { ContentCardL } from "./components/ContentCardL";
+import { ContentCardL } from "./components/contentcard/ContentCardL";
+import { Exercise_M } from "./components/contentcard/Exercise_M";
+import { Group_M } from "./components/contentcard/Group_M";
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -12,6 +15,14 @@ const router = createBrowserRouter([
   {
     path: "/ContentCardL",
     element: <ContentCardL />,
+  },
+  {
+    path: "/Exercise_M",
+    element: <Exercise_M />,
+  },
+  {
+    path: "/Group_M",
+    element: <Group_M />,
   },
 ]);
 
