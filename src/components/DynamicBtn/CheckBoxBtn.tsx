@@ -1,5 +1,5 @@
 import { useState } from "react";
-import type { CheckBoxStatus } from "../../types/DynamicBtn";
+import type { IconTextStatus } from "../../types/DynamicBtn";
 
 interface CheckBoxBtnProps {
   children: string;
@@ -16,7 +16,7 @@ export default function CheckBoxBtn({
   const [clicked, setClicked] = useState(false);
   const [isPressing, setIsPressing] = useState(false);
 
-  const getStatus = (): CheckBoxStatus => {
+  const getStatus = (): IconTextStatus => {
     if (disabled) return "disabled";
     if (clicked && isPressing) return "CLpressing";
     if (isPressing) return "pressing";
@@ -24,28 +24,28 @@ export default function CheckBoxBtn({
     return "default";
   };
 
-  const status: CheckBoxStatus = getStatus();
+  const status: IconTextStatus = getStatus();
 
-  const statusMap: Record<CheckBoxStatus, { bg: string; icon: string }> = {
+  const statusMap: Record<IconTextStatus, { bg: string; icon: string }> = {
     clicked: {
       bg: "bg-white",
-      icon: "/src/assets/icons/checkCircledFill.svg",
+      icon: "/src/assets/icons/check_circled_filled.svg",
     },
     CLpressing: {
       bg: "bg-gy-100",
-      icon: "/src/assets/icons/checkCircledFill.svg",
+      icon: "/src/assets/icons/check_circled_filled.svg",
     },
     pressing: {
       bg: "bg-gy-100",
-      icon: "/src/assets/icons/checkCircled.svg",
+      icon: "/src/assets/icons/check_circled.svg",
     },
     default: {
       bg: "bg-white",
-      icon: "/src/assets/icons/checkCircled.svg",
+      icon: "/src/assets/icons/check_circled.svg",
     },
     disabled: {
       bg: "bg-white text-gy-400",
-      icon: "/src/assets/icons/checkCircled2.svg",
+      icon: "/src/assets/icons/check_circled.svg",
     },
   };
 
