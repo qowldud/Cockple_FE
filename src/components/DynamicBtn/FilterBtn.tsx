@@ -7,7 +7,7 @@ interface CheckBoxBtnProps {
   onClick?: () => void;
 }
 
-export default function CheckBoxBtn({
+export default function FilterBtn({
   children,
   disabled = false,
   onClick,
@@ -28,24 +28,24 @@ export default function CheckBoxBtn({
 
   const statusMap: Record<IconTextStatus, { bg: string; icon: string }> = {
     clicked: {
-      bg: "bg-white",
-      icon: "/src/assets/icons/check_circled_filled.svg",
+      bg: "bg-white text-gr-600",
+      icon: "/src/assets/icons/filter_fill.svg",
     },
     CLpressing: {
-      bg: "bg-gy-100",
-      icon: "/src/assets/icons/check_circled_filled.svg",
+      bg: "bg-gy-100 text-gr-600",
+      icon: "/src/assets/icons/filter_fill.svg",
     },
     pressing: {
       bg: "bg-gy-100",
-      icon: "/src/assets/icons/check_circled.svg",
+      icon: "/src/assets/icons/filter.svg",
     },
     default: {
       bg: "bg-white",
-      icon: "/src/assets/icons/check_circled.svg",
+      icon: "/src/assets/icons/filter.svg",
     },
     disabled: {
       bg: "bg-white text-gy-400",
-      icon: "/src/assets/icons/check_circled.svg",
+      icon: "/src/assets/icons/filterG.svg",
     },
   };
 
@@ -64,7 +64,7 @@ export default function CheckBoxBtn({
         onMouseLeave={() => !disabled && setIsPressing(false)}
         onClick={onClick}
       >
-        <img src={icon} alt="" className="pt-[0.125rem] size-4" />
+        <img src={icon} alt="" className="size-4" />
         {children}
       </div>
     </div>
