@@ -5,7 +5,7 @@ interface DynamicBtnProps {
   children: string;
   disabled?: boolean;
   onClick?: () => void;
-  size: "sm" | "md";
+  size: "sm" | "md" | "default";
 }
 
 export default function DynamicBtn({
@@ -27,9 +27,18 @@ export default function DynamicBtn({
   const status = getStatus();
 
   const sizeMap = {
+    default: {
+      base: "body-rg-500 py-[0.375rem] px-4 justify-center gap2",
+      state: {
+        default: "bg-gy-100",
+        clicked: "bg-white",
+        pressing: "bg-gy-200",
+        disabled: "bg-white text-gy-400",
+      },
+    },
     sm: {
-      base: "body-sm-400 py-1 px-2",
-      textColor: {
+      base: "body-sm-400 py-1 px-2 gap-1  underline decoration-solid decoration-auto underline-offset-auto ",
+      state: {
         default: "text-gy-500",
         clicked: "text-gy-500 ",
         pressing: "text-gy-700 bg-gy-100",
@@ -37,8 +46,8 @@ export default function DynamicBtn({
       },
     },
     md: {
-      base: "body-rg-400 py-1 px-3",
-      textColor: {
+      base: "body-rg-400 py-1 px-3 gap-1  underline decoration-solid decoration-auto underline-offset-auto ",
+      state: {
         default: "text-gy-700",
         clicked: "text-gy-700 ",
         pressing: "text-gy-700 bg-gy-100",
@@ -47,14 +56,14 @@ export default function DynamicBtn({
     },
   };
 
-  const currentSize = sizeMap[size];
-  const textColor = currentSize.textColor[status];
+  const { base, state } = sizeMap[size];
+  const stateClass = state[status];
 
   return (
     <div>
       <div
-        className={`rounded-lg flex items-center gap-1 underline decoration-solid decoration-auto underline-offset-auto 
-          ${currentSize.base} ${textColor} ${disabled ? "cursor-not-allowed" : "cursor-pointer"}`}
+        className={`rounded-lg inline-flex items-center 
+          ${stateClass} ${base} ${disabled ? "cursor-not-allowed" : "cursor-pointer"}`}
         onMouseDown={() => !disabled && setIsPressing(true)}
         onMouseUp={() => {
           if (disabled) return;
