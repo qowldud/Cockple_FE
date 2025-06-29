@@ -1,17 +1,12 @@
 import { useState } from "react";
-import type { IconTextStatus } from "../../types/DynamicBtn";
-
-interface CheckBoxBtnProps {
-  children: string;
-  disabled?: boolean;
-  onClick?: () => void;
-}
+import type { BaseBtnProps, IconTextStatus } from "../../types/DynamicBtn";
 
 export default function KeyWordBtn({
   children,
   disabled = false,
   onClick,
-}: CheckBoxBtnProps) {
+  type,
+}: BaseBtnProps) {
   //상태 관리
   const [clicked, setClicked] = useState(false);
   const [isPressing, setIsPressing] = useState(false);
@@ -52,21 +47,20 @@ export default function KeyWordBtn({
   const { bg, icon } = statusMap[status];
 
   return (
-    <div className="">
-      <div
-        className={`flex pr-[0.625rem] py-2 pl-3 gap-1 rounded-2xl items-center body-rg-500 shadow-[0px_0px_12px_0px_rgba(18,18,18,0.04)] ${bg} ${disabled ? "cursor-not-allowed" : "cursor-pointer"}`}
-        onMouseDown={() => !disabled && setIsPressing(true)}
-        onMouseUp={() => {
-          if (disabled) return;
-          setIsPressing(false);
-          setClicked(prev => !prev); // 토글
-        }}
-        onMouseLeave={() => !disabled && setIsPressing(false)}
-        onClick={onClick}
-      >
-        <img src={icon} alt="" className="size-4" />
-        {children}
-      </div>
-    </div>
+    <button
+      className={`flex pr-[0.625rem] py-2 pl-3 gap-1 rounded-2xl items-center body-rg-500 shadow-[0px_0px_12px_0px_rgba(18,18,18,0.04)] ${bg} ${disabled ? "cursor-not-allowed" : "cursor-pointer"}`}
+      onMouseDown={() => !disabled && setIsPressing(true)}
+      onMouseUp={() => {
+        if (disabled) return;
+        setIsPressing(false);
+        setClicked(prev => !prev); // 토글
+      }}
+      onMouseLeave={() => !disabled && setIsPressing(false)}
+      onClick={onClick}
+      type={type ? type : "button"}
+    >
+      <img src={icon} alt="" className="size-4" />
+      {children}
+    </button>
   );
 }

@@ -1,17 +1,12 @@
 import { useState } from "react";
-import type { IconTextStatus } from "../../types/DynamicBtn";
-
-interface CheckBoxBtnProps {
-  children: string;
-  disabled?: boolean;
-  onClick?: () => void;
-}
+import type { BaseBtnProps, IconTextStatus } from "../../types/DynamicBtn";
 
 export default function CheckBoxBtn({
   children,
   disabled = false,
   onClick,
-}: CheckBoxBtnProps) {
+  type,
+}: BaseBtnProps) {
   //상태 관리
   const [clicked, setClicked] = useState(false);
   const [isPressing, setIsPressing] = useState(false);
@@ -52,21 +47,20 @@ export default function CheckBoxBtn({
   const { bg, icon } = statusMap[status];
 
   return (
-    <div className="">
-      <div
-        className={`flex pr-2 py-1 pl-[0.375rem] gap-2 rounded-lg items-center body-rg-500  ${bg} ${disabled ? "cursor-not-allowed" : "cursor-pointer"}`}
-        onMouseDown={() => !disabled && setIsPressing(true)}
-        onMouseUp={() => {
-          if (disabled) return;
-          setIsPressing(false);
-          setClicked(prev => !prev); // 토글
-        }}
-        onMouseLeave={() => !disabled && setIsPressing(false)}
-        onClick={onClick}
-      >
-        <img src={icon} alt="" className="pt-[0.125rem] size-4" />
-        {children}
-      </div>
-    </div>
+    <button
+      className={`inline-flex pr-2 py-1 pl-[0.375rem] gap-2 rounded-lg items-center body-rg-500  ${bg} ${disabled ? "cursor-not-allowed" : "cursor-pointer"}`}
+      onMouseDown={() => !disabled && setIsPressing(true)}
+      onMouseUp={() => {
+        if (disabled) return;
+        setIsPressing(false);
+        setClicked(prev => !prev); // 토글
+      }}
+      onMouseLeave={() => !disabled && setIsPressing(false)}
+      onClick={onClick}
+      type={type ? type : "button"}
+    >
+      <img src={icon} alt="" className="pt-[0.125rem] size-4" />
+      {children}
+    </button>
   );
 }

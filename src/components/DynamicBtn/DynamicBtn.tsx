@@ -6,6 +6,7 @@ interface DynamicBtnProps {
   disabled?: boolean;
   onClick?: () => void;
   size: "sm" | "md" | "default";
+  type?: "button" | "reset" | "submit";
 }
 
 export default function DynamicBtn({
@@ -13,6 +14,7 @@ export default function DynamicBtn({
   disabled = false,
   onClick,
   size,
+  type,
 }: DynamicBtnProps) {
   const [clicked, setClicked] = useState(false);
   const [isPressing, setIsPressing] = useState(false);
@@ -60,21 +62,20 @@ export default function DynamicBtn({
   const stateClass = state[status];
 
   return (
-    <div>
-      <div
-        className={`rounded-lg inline-flex items-center 
+    <button
+      className={`rounded-lg inline-flex items-center 
           ${stateClass} ${base} ${disabled ? "cursor-not-allowed" : "cursor-pointer"}`}
-        onMouseDown={() => !disabled && setIsPressing(true)}
-        onMouseUp={() => {
-          if (disabled) return;
-          setIsPressing(false);
-          setClicked(prev => !prev);
-        }}
-        onMouseLeave={() => !disabled && setIsPressing(false)}
-        onClick={onClick}
-      >
-        {children}
-      </div>
-    </div>
+      onMouseDown={() => !disabled && setIsPressing(true)}
+      onMouseUp={() => {
+        if (disabled) return;
+        setIsPressing(false);
+        setClicked(prev => !prev);
+      }}
+      onMouseLeave={() => !disabled && setIsPressing(false)}
+      onClick={onClick}
+      type={type ? type : "button"}
+    >
+      {children}
+    </button>
   );
 }

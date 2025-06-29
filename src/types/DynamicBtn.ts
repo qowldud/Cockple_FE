@@ -7,4 +7,9 @@ export type IconTextStatus =
 
 export type TextIconStatus = "clicked" | "pressing" | "default" | "disabled";
 
-// export deafult
+export type BaseBtnProps = {
+  children: React.ReactNode;
+  disabled?: boolean;
+  onClick?: () => void;
+  type?: "button" | "reset" | "submit";
+};
