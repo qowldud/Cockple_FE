@@ -40,7 +40,7 @@ export default function DropDownBtn({
 
   return (
     <button
-      className={`flex pr-[0.625rem] py-1 pl-4 gap-1 rounded-lg items-center header-h4  ${bg} ${disabled ? "cursor-not-allowed" : "cursor-pointer"}`}
+      className={`inline-flex pr-[0.625rem] py-1 pl-4 gap-1 rounded-lg items-center header-h4  ${bg} ${disabled ? "cursor-not-allowed" : "cursor-pointer"}`}
       onMouseDown={() => !disabled && setIsPressing(true)}
       onMouseUp={() => {
         if (disabled) return;

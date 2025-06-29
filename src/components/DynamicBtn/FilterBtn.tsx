@@ -48,7 +48,7 @@ export default function FilterBtn({
 
   return (
     <button
-      className={`flex pr-2 py-1 pl-[0.375rem] gap-2 rounded-lg items-center body-rg-500  ${bg} ${disabled ? "cursor-not-allowed" : "cursor-pointer"}`}
+      className={`inline-flex pr-2 py-1 pl-[0.375rem] gap-2 rounded-lg items-center body-rg-500  ${bg} ${disabled ? "cursor-not-allowed" : "cursor-pointer"}`}
       onMouseDown={() => !disabled && setIsPressing(true)}
       onMouseUp={() => {
         if (disabled) return;
