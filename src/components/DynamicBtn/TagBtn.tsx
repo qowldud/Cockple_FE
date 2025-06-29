@@ -1,7 +1,7 @@
 import { useState } from "react";
 import type { BaseBtnProps, IconTextStatus } from "../../types/DynamicBtn";
 
-export default function KeyWordBtn({
+export default function TagBtn({
   children,
   disabled = false,
   onClick,
@@ -48,7 +48,7 @@ export default function KeyWordBtn({
 
   return (
     <button
-      className={`flex pr-[0.625rem] py-2 pl-3 gap-1 rounded-2xl items-center body-rg-500 shadow-[0px_0px_12px_0px_rgba(18,18,18,0.04)] ${bg} ${disabled ? "cursor-not-allowed" : "cursor-pointer"}`}
+      className={`inline-flex pr-[0.625rem] py-2 pl-3 gap-1 rounded-2xl items-center body-rg-500 shadow-[0px_0px_12px_0px_rgba(18,18,18,0.04)] ${bg} ${disabled ? "cursor-not-allowed" : "cursor-pointer"}`}
       onMouseDown={() => !disabled && setIsPressing(true)}
       onMouseUp={() => {
         if (disabled) return;

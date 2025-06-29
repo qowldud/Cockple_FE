@@ -40,7 +40,7 @@ export default function TextIconBtnS({
 
   return (
     <button
-      className={`flex pl-2 py-1 pr-1 gap-1 rounded-lg items-center  body-rg-400 ${bg} ${disabled ? "cursor-not-allowed" : "cursor-pointer"}`}
+      className={`inline-flex pl-2 py-1 pr-1 gap-1 rounded-lg items-center  body-rg-400 ${bg} ${disabled ? "cursor-not-allowed" : "cursor-pointer"}`}
       onMouseDown={() => !disabled && setIsPressing(true)}
       onMouseUp={() => {
         if (disabled) return;
