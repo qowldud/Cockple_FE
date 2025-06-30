@@ -99,7 +99,7 @@ export const Member = () => {
       </div>
 
       {/* 하단 버튼 영역 */}
-      <div className="flex items-center  gap-2">
+      <div className="flex items-center gap-2  body-sm-500">
         <button className="w-[151.5px] h-[32px] px-3 py-1 rounded-lg border border-[#F62D2D] text-[#F62D2D] ">
           거절
         </button>
@@ -135,12 +135,12 @@ export const Member = () => {
       </div>
 
       {/* 하단 버튼 영역 */}
-      <div className="flex items-center  gap-2">
+      <div className="flex items-center gap-2 body-sm-500">
         <button className="w-[151.5px] h-[32px] px-3 py-1 rounded-lg border border-[#C0C4CD] text-[#C0C4CD] ">
           거절
         </button>
         <button className="w-[151.5px] h-[32px] px-3 py-1 rounded-lg bg-[#C0C4CD] text-white ">
-          수락
+          2000.05.06 승인 완료
         </button>
       </div>
     </div>
