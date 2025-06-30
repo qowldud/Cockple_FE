@@ -1,5 +1,5 @@
-import { useState } from "react";
 import type { BaseBtnProps, TextIconStatus } from "../../types/DynamicBtn";
+import useDynamicStatus from "../../hooks/useDynamicStatus";
 
 export default function TextIconBtnM({
   children,
@@ -8,17 +8,10 @@ export default function TextIconBtnM({
   type,
 }: BaseBtnProps) {
   //상태 관리
-  const [clicked, setClicked] = useState(false);
-  const [isPressing, setIsPressing] = useState(false);
-
-  const getStatus = (): TextIconStatus => {
-    if (disabled) return "disabled";
-    if (isPressing) return "pressing";
-    if (clicked) return "clicked";
-    return "default";
-  };
-
-  const status: TextIconStatus = getStatus();
+  const { status, onMouseDown, onMouseLeave, onMouseUp } = useDynamicStatus(
+    disabled,
+    false,
+  );
 
   const statusMap: Record<TextIconStatus, { bg?: string; icon: string }> = {
     clicked: {
@@ -37,18 +30,14 @@ export default function TextIconBtnM({
     },
   };
 
-  const { bg, icon } = statusMap[status];
+  const { bg, icon } = statusMap[status as TextIconStatus];
 
   return (
     <button
       className={`inline-flex pr-[0.625rem]  py-2 pl-4 gap-1 rounded-2xl items-center body-sm-500 border-1 border-gr-500 shadow-[0px_0px_12px_0px_rgba(18,18,18,0.04)] text-gr-700 ${bg} ${disabled ? "cursor-not-allowed" : "cursor-pointer"}`}
-      onMouseDown={() => !disabled && setIsPressing(true)}
-      onMouseUp={() => {
-        if (disabled) return;
-        setIsPressing(false);
-        setClicked(prev => !prev); // 토글
-      }}
-      onMouseLeave={() => !disabled && setIsPressing(false)}
+      onMouseDown={onMouseDown}
+      onMouseUp={onMouseUp}
+      onMouseLeave={onMouseLeave}
       onClick={onClick}
       type={type ? type : "button"}
     >

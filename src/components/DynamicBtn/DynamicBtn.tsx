@@ -1,5 +1,5 @@
-import { useState } from "react";
 import type { TextIconStatus } from "../../types/DynamicBtn";
+import useDynamicStatus from "../../hooks/useDynamicStatus";
 
 interface DynamicBtnProps {
   children: string;
@@ -16,17 +16,10 @@ export default function DynamicBtn({
   size,
   type,
 }: DynamicBtnProps) {
-  const [clicked, setClicked] = useState(false);
-  const [isPressing, setIsPressing] = useState(false);
-
-  const getStatus = (): TextIconStatus => {
-    if (disabled) return "disabled";
-    if (isPressing) return "pressing";
-    if (clicked) return "clicked";
-    return "default";
-  };
-
-  const status = getStatus();
+  const { status, onMouseDown, onMouseLeave, onMouseUp } = useDynamicStatus(
+    disabled,
+    true,
+  );
 
   const sizeMap = {
     default: {
@@ -59,19 +52,15 @@ export default function DynamicBtn({
   };
 
   const { base, state } = sizeMap[size];
-  const stateClass = state[status];
+  const stateClass = state[status as TextIconStatus];
 
   return (
     <button
       className={`rounded-lg inline-flex items-center 
           ${stateClass} ${base} ${disabled ? "cursor-not-allowed" : "cursor-pointer"}`}
-      onMouseDown={() => !disabled && setIsPressing(true)}
-      onMouseUp={() => {
-        if (disabled) return;
-        setIsPressing(false);
-        setClicked(prev => !prev);
-      }}
-      onMouseLeave={() => !disabled && setIsPressing(false)}
+      onMouseDown={onMouseDown}
+      onMouseUp={onMouseUp}
+      onMouseLeave={onMouseLeave}
       onClick={onClick}
       type={type ? type : "button"}
     >
