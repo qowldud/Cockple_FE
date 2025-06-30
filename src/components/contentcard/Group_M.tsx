@@ -1,3 +1,4 @@
+import { useState } from "react";
 import Heart from "../../assets/icons/Heart.svg?react";
 import Female from "../../assets/icons/female.svg?react";
 import Male from "../../assets/icons/male.svg?react";
@@ -5,9 +6,21 @@ import Vector from "../../assets/icons/Vector.svg?react";
 import Kitty from "../../assets/images/kitty.png";
 
 export const Group_M = () => {
+  //pressing
+  const [isPressing, setIsPressing] = useState(false);
   return (
-    <div className="p-[8px] w-[343px] h-[104px] rounded-[16px] bg-white shadow flex items-center gap-3">
-      {/* 몸짱키티 */}
+    
+    <div
+      onMouseDown={() => setIsPressing(true)}
+      onMouseUp={() => setIsPressing(false)}
+      onMouseLeave={() => setIsPressing(false)}
+      onTouchStart={() => setIsPressing(true)}
+      onTouchEnd={() => setIsPressing(false)}
+      className={`p-[8px] w-[343px] h-[104px] rounded-[12px] 
+        ${isPressing ? "bg-[#F4F5F6]" : "bg-white"} 
+        shadow flex items-center gap-3 transition-colors duration-150`}
+    >      
+    {/* 몸짱키티 */}
       <div className="relative">
         <img
           src={Kitty}
@@ -18,10 +31,10 @@ export const Group_M = () => {
       </div>
 
       {/* 글/정보 영역 */}
-      <div className="w-[227px] h-[88px] flex flex-col gap-[8px] items-start text-sm text-black">
-        <p className="r500">민턴클로버</p>
+      <div className="w-[227px] h-[88px] flex flex-col gap-[8px] items-start text-black">
+        <p className="body-rg-500">민턴클로버</p>
 
-        <div className="s400 flex flex-col gap-[6px]">
+        <div className="body-sm-400 flex flex-col gap-[6px] body-sm-400 ">
           <div className="flex items-center gap-1">
             <Vector className="w-[14px] h-[14px]" />
             <span>경기도/성남시</span>

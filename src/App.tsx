@@ -8,6 +8,9 @@ import { Group_S } from "./components/contentcard/Group_S";
 import { Exercise_M } from "./components/contentcard/Exercise_M";
 import { Exercise_S } from "./components/contentcard/Exercise_S";
 import { DailyExercise_S } from "./components/contentcard/DailyExercise_S";
+import { MyMedal } from "./components/contentcard/MyMedal"
+import { Member } from "./components/contentcard/Member"
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -39,10 +42,16 @@ const router = createBrowserRouter([
     path: "/Group_S",
     element: <Group_S />,
   },
-
+  {
+    path: "/MyMedal",
+    element: <MyMedal />,
+  },
+  {
+    path: "/Member",
+    element: <Member />,
+  },
   
 ]);
-DailyExercise_S
 function App() {
   return (
     <div className="min-h-screen w-full  flex justify-center items-center">

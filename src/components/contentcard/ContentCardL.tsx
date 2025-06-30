@@ -12,23 +12,29 @@ import RightAngle from "../../assets/icons/RightAngle.svg?react";
 export const ContentCardL = () => {
   //운동 시작하기 -> 운동 취소하기 -> 나중에 서버 연동
   const [isStarted, setIsStarted] = useState(false); 
+  //pressing
+  const [isPressing, setIsPressing] = useState(false); 
+  
   const toggleStart = () => {
     setIsStarted(prev => !prev);
   };
 
   return (
-    <div className="w-[343px] h-[214px] rounded-[16px] bg-white shadow p-3 space-y-3">
+      <div
+      className={`w-[343px] h-[214px] rounded-[16px] p-3 space-y-3 transition-colors duration-150
+        ${isPressing ? "bg-[#F4F5F6]" : "bg-white"} shadow`}
+      >
         {/* 상단 */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <p className="m500">하이콕콕</p>
+          <p className="body-md-500">하이콕콕</p>
           <Heart className="w-[26px] h-[26px]" />
         </div>
         <RightAngle className="w-4 h-4" />
       </div>
 
         {/* 안에 정보 날짜, 위치, 시간, 성별, 인원수 */}
-      <div className="flex flex-col gap-[6px] text-black s400">
+      <div className="flex flex-col gap-[6px] text-black body-sm-400">
         <div className="flex items-center gap-1">
           <Calendar className="w-[14px] h-[14px]" />
           <span>2000.05.01 (월)</span>
@@ -59,22 +65,27 @@ export const ContentCardL = () => {
       </div>
 
       {/* 버튼 */}
-      <div className="w-[319px] flex gap-[13px]">
+     <div className="w-[319px] flex gap-[13px]">
+  
         <button
-          onClick={toggleStart}
-          className={`w-[153px] h-[36px] rounded r500 ${
-            isStarted
-              ? "bg-[#F4F5F6] text-red-500"
-              : "bg-[#F4F5F6] text-[#0B9A4E]"
-          }`}
+          onMouseDown={() => setIsPressing(true)}
+          onMouseUp={() => setIsPressing(false)}
+          onMouseLeave={() => setIsPressing(false)}
+          onTouchStart={() => setIsPressing(true)}
+          onTouchEnd={() => setIsPressing(false)}
+          className={`w-[153px] h-[36px] rounded body-rg-500 
+            bg-[#F4F5F6] transition-colors duration-150
+            ${isStarted ? "text-red-500" : "text-[#0B9A4E]"}`}
         >
           {isStarted ? "운동 취소하기" : "운동 시작하기"}
         </button>
 
-        <button className="w-[153px] h-[36px] rounded bg-[#F4F5F6] text-sm  text-black">
-            게스트 초대하기
+        <button
+          className="w-[153px] h-[36px] rounded bg-[#F4F5F6] body-rg-500 text-black"
+        >
+          게스트 초대하기
         </button>
-        </div>
+      </div>
 
     </div>
   );
