@@ -26,7 +26,7 @@ export default function DropDownBtn({
       icon: "/src/assets/icons/arrow_down.svg",
     },
     disabled: {
-      icon: "/src/assets/icons/arrow_down.svg",
+      icon: "/src/assets/icons/arrow_downG.svg",
     },
   };
   const { bg, icon } = statusMap[status as TextIconStatus];
@@ -41,7 +41,7 @@ export default function DropDownBtn({
       type={type ? type : "button"}
     >
       {children}
-      <img src={icon} alt="" className="pt-[0.125rem] size-4" />
+      <img src={icon} alt="지역 선택 메뉴열기" className=" size-4" />
     </button>
   );
 }

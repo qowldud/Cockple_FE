@@ -46,7 +46,7 @@ export default function TagBtn({
       onClick={onClick}
       type={type ? type : "button"}
     >
-      <img src={icon} alt="" className="size-4" />
+      <img src={icon} alt="태그 설정" className="size-4" />
       {children}
     </button>
   );

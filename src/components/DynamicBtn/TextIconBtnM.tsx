@@ -42,7 +42,7 @@ export default function TextIconBtnM({
       type={type ? type : "button"}
     >
       {children}
-      <img src={icon} alt="" className="size-4" />
+      <img src={icon} alt="버튼" className="size-4" />
     </button>
   );
 }

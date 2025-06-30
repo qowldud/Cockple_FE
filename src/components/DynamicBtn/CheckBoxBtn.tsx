@@ -48,7 +48,7 @@ export default function CheckBoxBtn({
       onClick={onClick}
       type={type ? type : "button"}
     >
-      <img src={icon} alt="" className=" size-4" />
+      <img src={icon} alt="체크박스 선택" className=" size-4" />
       {children}
     </button>
   );

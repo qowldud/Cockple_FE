@@ -48,7 +48,7 @@ export default function FilterBtn({
       onClick={onClick}
       type={type ? type : "button"}
     >
-      <img src={icon} alt="" className="size-4" />
+      <img src={icon} alt="필터 설정" className="size-4" />
       {children}
     </button>
   );

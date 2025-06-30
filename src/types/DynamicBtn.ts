@@ -7,4 +7,5 @@ export type BaseBtnProps = {
   disabled?: boolean;
   onClick?: () => void;
   type?: "button" | "reset" | "submit";
+  imgSrc?: string;
 };
