@@ -1,11 +1,13 @@
-import { MainAppBar } from "../components/common/appbar/MainAppbar";
+import { MainHeader } from "../components/common/header/MainHeader";
+import { PageHeader } from "../components/common/header/PageHeader";
 import { Navbar } from "../components/common/navbar/Navbar";
 
 export const HomePage = () => {
   return (
     <div className="header-h4">
       Home Page 입니다.
-      <MainAppBar hasNotification={true} />
+      <MainHeader hasNotification={true} />
+      <PageHeader title="Pages" />
       <Navbar />
     </div>
   );
