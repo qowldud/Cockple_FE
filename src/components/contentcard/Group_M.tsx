@@ -18,7 +18,7 @@ export const Group_M = () => {
       onTouchEnd={() => setIsPressing(false)}
       className={`p-[8px] w-[343px] h-[104px] rounded-[12px] 
         ${isPressing ? "bg-[#F4F5F6]" : "bg-white"} 
-        shadow flex items-center gap-3 transition-colors duration-150`}
+         flex items-center gap-3 transition-colors duration-150`}
     >      
     {/* 몸짱키티 */}
       <div className="relative">

@@ -8,8 +8,10 @@ import { Group_S } from "./components/contentcard/Group_S";
 import { Exercise_M } from "./components/contentcard/Exercise_M";
 import { Exercise_S } from "./components/contentcard/Exercise_S";
 import { DailyExercise_S } from "./components/contentcard/DailyExercise_S";
-import { MyMedal } from "./components/contentcard/MyMedal"
-import { Member } from "./components/contentcard/Member"
+import { MyMedal } from "./components/contentcard/MyMedal";
+import { MemberExamples } from "./components/contentcard/Member";
+import { Location } from "./components/contentcard/Location";
+import { LocationList } from "./components/contentcard/LocationList";
 
 const router = createBrowserRouter([
   {
@@ -47,10 +49,18 @@ const router = createBrowserRouter([
     element: <MyMedal />,
   },
   {
-    path: "/Member",
-    element: <Member />,
+    path: "/MemberExamples",
+    element: <MemberExamples />,
   },
-  
+  // Location을 2개로 나누었습니다. 
+  {
+    path: "/Location",
+    element: <Location />,
+  },
+  {
+    path: "/LocationList",
+    element: <LocationList />,
+  },
 ]);
 function App() {
   return (
