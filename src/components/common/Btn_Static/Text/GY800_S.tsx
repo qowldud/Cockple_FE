@@ -25,9 +25,6 @@ const GY800_S = ({ initialStatus = "default", label = "Btn" }: GY800MProps) => {
     }
   };
 
-  const baseStyle =
-    "flex justify-center items-center w-[10.3125rem] px-4 py-2 border-hard gap-2";
-
   const statusStyle = {
     disabled: "bg-white border border-gy-400 text-gy-400 cursor-not-allowed",
     default: "bg-white border border-gy-800 text-black",
@@ -38,7 +35,7 @@ const GY800_S = ({ initialStatus = "default", label = "Btn" }: GY800MProps) => {
   return (
     <button
       className={`
-        ${baseStyle}
+        flex justify-center items-center w-[10.3125rem] px-4 py-2 border-hard gap-2
         ${statusStyle[status]}
         ${isDisabled ? "cursor-not-allowed" : "cursor-pointer"}
       `}

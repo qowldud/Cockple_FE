@@ -25,9 +25,6 @@ const GR400_L = ({ initialStatus = "default", label = "Btn" }: GR400LProps) => {
     }
   };
 
-  const baseStyle =
-    "flex justify-center items-center w-[21.4375rem] px-4 py-3 border-round shadow-ds100";
-
   const statusStyle = () => {
     switch (status) {
       case "disabled":
@@ -44,7 +41,7 @@ const GR400_L = ({ initialStatus = "default", label = "Btn" }: GR400LProps) => {
   return (
     <button
       className={`
-        ${baseStyle}
+        flex justify-center items-center w-[21.4375rem] px-4 py-3 border-round shadow-ds100
         ${statusStyle()}
         ${isDisabled ? "cursor-not-allowed" : "cursor-pointer"}
       `}

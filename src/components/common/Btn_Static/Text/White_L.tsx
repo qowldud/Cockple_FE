@@ -25,9 +25,6 @@ const White_L = ({
     }
   };
 
-  const baseStyle =
-    "flex items-center w-[21.4375rem] px-4 py-3 border-round transition duration-100";
-
   // 상태별 클래스 정의
   let statusStyle = "";
   if (status === "default") {
@@ -51,7 +48,8 @@ const White_L = ({
       `}
     >
       <button
-        className={`${baseStyle}
+        className={`
+        flex items-center w-[21.4375rem] px-4 py-3 border-round transition duration-100
         ${statusStyle}
         ${isDisabled ? "cursor-not-allowed" : "cursor-pointer"}`}
         onMouseDown={handleMouseDown}

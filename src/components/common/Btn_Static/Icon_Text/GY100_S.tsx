@@ -28,9 +28,6 @@ const GY100_S = ({ initialStatus = "default", label = "Btn" }: GY100SProps) => {
     }
   };
 
-  const baseStyle =
-    "flex w-[10.3125rem] px-4 py-2 justify-center items-center gap-2 border-hard";
-
   const statusStyle = {
     disabled: "bg-gy-100 text-gy-400 cursor-not-allowed",
     default: "bg-gy-100",
@@ -49,7 +46,10 @@ const GY100_S = ({ initialStatus = "default", label = "Btn" }: GY100SProps) => {
 
   return (
     <button
-      className={`${baseStyle} ${statusStyle[status]} ${isDisabled ? "cursor-not-allowed" : "cursor-pointer"}`}
+      className={`
+        flex w-[10.3125rem] px-4 py-2 justify-center items-center gap-2 border-hard 
+        ${statusStyle[status]} 
+        ${isDisabled ? "cursor-not-allowed" : "cursor-pointer"}`}
       disabled={status === "disabled"}
       onMouseDown={handleMouseDown}
       onMouseUp={handleMouseUp}

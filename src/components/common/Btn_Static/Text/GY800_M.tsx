@@ -29,9 +29,6 @@ const GY800_M = ({ initialStatus = "default", label = "Btn" }: GY800MProps) => {
     }
   };
 
-  const baseStyle =
-    "flex w-[15.875rem] h-[3.25rem] px-4 py-3 justify-center items-center gap-2 flex-shrink-0 border-round shadow-ds100 body-md-500";
-
   const statusStyle = {
     disabled: "bg-white border border-gy-400 text-gy-400 cursor-not-allowed",
     default: "bg-white border border-gy-800 text-black",
@@ -52,7 +49,9 @@ const GY800_M = ({ initialStatus = "default", label = "Btn" }: GY800MProps) => {
 
   return (
     <button
-      className={`${baseStyle} ${statusStyle[status]} ${isDisabled ? "cursor-not-allowed" : "cursor-pointer"}`}
+      className={`
+        flex w-[15.875rem] h-[3.25rem] px-4 py-3 justify-center items-center gap-2 flex-shrink-0 border-round shadow-ds100 body-md-500
+         ${statusStyle[status]} ${isDisabled ? "cursor-not-allowed" : "cursor-pointer"}`}
       disabled={status === "disabled"}
       onMouseDown={handleMouseDown}
       onMouseUp={handleMouseUp}
