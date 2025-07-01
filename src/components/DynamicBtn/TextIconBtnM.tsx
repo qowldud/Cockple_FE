@@ -34,7 +34,7 @@ export default function TextIconBtnM({
 
   return (
     <button
-      className={`inline-flex pr-[0.625rem]  py-2 pl-4 gap-1 rounded-2xl items-center body-sm-500 border-1 border-gr-500 shadow-[0px_0px_12px_0px_rgba(18,18,18,0.04)] text-gr-700 ${bg} ${disabled ? "cursor-not-allowed" : "cursor-pointer"}`}
+      className={`inline-flex pr-[0.625rem]  py-2 pl-4 gap-1 rounded-2xl items-center body-sm-500 border-1 border-gr-500 shadow-ds100 text-gr-700 ${bg} ${disabled ? "cursor-not-allowed" : "cursor-pointer"}`}
       onMouseDown={onMouseDown}
       onMouseUp={onMouseUp}
       onMouseLeave={onMouseLeave}
