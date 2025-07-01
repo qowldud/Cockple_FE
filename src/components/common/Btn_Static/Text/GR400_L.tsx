@@ -4,9 +4,10 @@ type BtnStatus = "default" | "pressing" | "clicked" | "disabled";
 
 interface GR400LProps {
   initialStatus?: BtnStatus;
+  label?: string;
 }
 
-const GR400_L = ({ initialStatus = "default" }: GR400LProps) => {
+const GR400_L = ({ initialStatus = "default", label = "Btn" }: GR400LProps) => {
   const [status, setStatus] = useState<BtnStatus>(initialStatus);
 
   const isDisabled = status === "disabled";
@@ -24,7 +25,10 @@ const GR400_L = ({ initialStatus = "default" }: GR400LProps) => {
     }
   };
 
-  const getBgColorClass = () => {
+  const baseStyle =
+    "flex justify-center items-center w-[21.4375rem] px-4 py-3 border-round shadow-ds100";
+
+  const statusStyle = () => {
     switch (status) {
       case "disabled":
         return "bg-gy-400";
@@ -40,16 +44,14 @@ const GR400_L = ({ initialStatus = "default" }: GR400LProps) => {
   return (
     <button
       className={`
-        flex justify-center items-center
-        w-[21.4375rem] px-[1rem] py-[0.75rem]
-        border-round shadow-ds100
-        ${getBgColorClass()}
+        ${baseStyle}
+        ${statusStyle()}
         ${isDisabled ? "cursor-not-allowed" : "cursor-pointer"}
       `}
       onMouseDown={handleMouseDown}
       onMouseUp={handleMouseUp}
     >
-      <span className="header-h4 text-white">Btn</span>
+      <span className="header-h4 text-white">{label}</span>
     </button>
   );
 };
