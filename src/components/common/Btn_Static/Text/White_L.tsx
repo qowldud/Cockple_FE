@@ -24,32 +24,41 @@ const White_L = ({ initialStatus = "default" }: White_L_Props) => {
   // 상태별 클래스 정의
   let bgClass = "";
   if (status === "default") {
-    bgClass = "bg-white cursor-pointer";
-  } else if (status === "pressing") {
     bgClass = "bg-white";
-  } else if (status === "clicked") {
+  } else if (status === "pressing") {
     bgClass = "bg-gy-100";
+  } else if (status === "clicked") {
+    bgClass = "bg-white";
   } else if (status === "disabled") {
-    bgClass = "bg-white text-gy-400 cursor-not-allowed";
+    bgClass = "bg-white text-gy-400";
   }
 
   return (
-    <button
-      className={`flex
+    <div
+      className={`
+        w-[23.4375rem] h-[6rem]
+        pt-2 pr-4 pb-9 pl-4
+        gap-[0.625rem]
+        bg-gradient-to-b
+        from-[rgba(252,252,255,0)] via-[rgba(252,252,255,0.8)] to-[#FCFCFF]
+      `}
+    >
+      <button
+        className={`flex
         items-center
         w-[21.4375rem]
         px-4 py-3
-        rounded-[1rem]
-        header-h4
-        shadow-[0px_0px_4px_rgba(18,18,18,0.12)]
+        border-round
         transition duration-100
-        ${bgClass}`}
-      onMouseDown={handleMouseDown}
-      onMouseUp={handleMouseUp}
-      disabled={isDisabled}
-    >
-      Btn
-    </button>
+        ${bgClass}
+        ${isDisabled ? "cursor-not-allowed" : "cursor-pointer"}`}
+        onMouseDown={handleMouseDown}
+        onMouseUp={handleMouseUp}
+        disabled={isDisabled}
+      >
+        <span className="header-h4">Btn</span>
+      </button>
+    </div>
   );
 };
 
