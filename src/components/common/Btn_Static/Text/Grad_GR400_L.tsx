@@ -4,9 +4,13 @@ type BtnStatus = "default" | "pressing" | "clicked" | "disabled";
 
 interface GradGR400LProps {
   initialStatus?: BtnStatus;
+  label?: string;
 }
 
-const Grad_GR400_L = ({ initialStatus = "default" }: GradGR400LProps) => {
+const Grad_GR400_L = ({
+  initialStatus = "default",
+  label = "Btn",
+}: GradGR400LProps) => {
   const [status, setStatus] = useState<BtnStatus>(initialStatus);
   const isDisabled = status === "disabled";
 
@@ -21,17 +25,22 @@ const Grad_GR400_L = ({ initialStatus = "default" }: GradGR400LProps) => {
     }
   };
 
+  const baseStyle =
+    "flex justify-center items-center w-[21.4375rem] px-4 py-3 border-round shadow-ds100 transition duration-100";
+
   // 상태별 클래스 정의
-  let bgClass = "";
-  if (status === "default") {
-    bgClass = "bg-gr-600";
-  } else if (status === "pressing") {
-    bgClass = "bg-gr-700";
-  } else if (status === "clicked") {
-    bgClass = "bg-gr-600";
-  } else if (status === "disabled") {
-    bgClass = "bg-gy-400";
-  }
+  const statusStyle = () => {
+    switch (status) {
+      case "disabled":
+        return "bg-gy-400";
+      case "pressing":
+        return "bg-gr-700";
+      case "clicked":
+      case "default":
+      default:
+        return "bg-gr-600";
+    }
+  };
 
   return (
     <div
@@ -44,21 +53,14 @@ const Grad_GR400_L = ({ initialStatus = "default" }: GradGR400LProps) => {
       `}
     >
       <button
-        className={`flex
-        justify-center
-        items-center
-        w-[21.4375rem]
-        px-[1rem] py-[0.75rem]
-        border-round
-        shadow-ds100
-        transition duration-100
-        ${bgClass}
+        className={`${baseStyle}
+        ${statusStyle()}
         ${isDisabled ? "cursor-not-allowed" : "cursor-pointer"}`}
         onMouseDown={handleMouseDown}
         onMouseUp={handleMouseUp}
         disabled={isDisabled}
       >
-        <span className="header-h4 text-white">Btn</span>
+        <span className="header-h4 text-white">{label}</span>
       </button>
     </div>
   );

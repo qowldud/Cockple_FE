@@ -7,9 +7,10 @@ type GradMixType = "delete" | "refresh" | "chat_question";
 
 interface GradMixLProps {
   type: GradMixType;
+  label?: string;
 }
 
-const Grad_Mix_L = ({ type }: GradMixLProps) => {
+const Grad_Mix_L = ({ type, label = "Btn" }: GradMixLProps) => {
   const getLeftButtonStyle = () => {
     switch (type) {
       case "delete":
@@ -54,7 +55,7 @@ const Grad_Mix_L = ({ type }: GradMixLProps) => {
           boxShadow: "0 0 0.25rem 0 rgba(18, 18, 18, 0.12)",
         }}
       >
-        Btn
+        {label}
       </button>
     </div>
   );

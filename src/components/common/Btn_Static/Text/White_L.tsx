@@ -4,9 +4,13 @@ type BtnStatus = "default" | "pressing" | "clicked" | "disabled";
 
 interface White_L_Props {
   initialStatus?: BtnStatus;
+  label?: string;
 }
 
-const White_L = ({ initialStatus = "default" }: White_L_Props) => {
+const White_L = ({
+  initialStatus = "default",
+  label = "Btn",
+}: White_L_Props) => {
   const [status, setStatus] = useState<BtnStatus>(initialStatus);
   const isDisabled = status === "disabled";
 
@@ -21,16 +25,19 @@ const White_L = ({ initialStatus = "default" }: White_L_Props) => {
     }
   };
 
+  const baseStyle =
+    "flex items-center w-[21.4375rem] px-4 py-3 border-round transition duration-100";
+
   // 상태별 클래스 정의
-  let bgClass = "";
+  let statusStyle = "";
   if (status === "default") {
-    bgClass = "bg-white";
+    statusStyle = "bg-white";
   } else if (status === "pressing") {
-    bgClass = "bg-gy-100";
+    statusStyle = "bg-gy-100";
   } else if (status === "clicked") {
-    bgClass = "bg-white";
+    statusStyle = "bg-white";
   } else if (status === "disabled") {
-    bgClass = "bg-white text-gy-400";
+    statusStyle = "bg-white text-gy-400";
   }
 
   return (
@@ -44,19 +51,14 @@ const White_L = ({ initialStatus = "default" }: White_L_Props) => {
       `}
     >
       <button
-        className={`flex
-        items-center
-        w-[21.4375rem]
-        px-4 py-3
-        border-round
-        transition duration-100
-        ${bgClass}
+        className={`${baseStyle}
+        ${statusStyle}
         ${isDisabled ? "cursor-not-allowed" : "cursor-pointer"}`}
         onMouseDown={handleMouseDown}
         onMouseUp={handleMouseUp}
         disabled={isDisabled}
       >
-        <span className="header-h4">Btn</span>
+        <span className="header-h4">{label}</span>
       </button>
     </div>
   );
