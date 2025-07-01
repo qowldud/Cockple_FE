@@ -12,6 +12,10 @@ import { MyMedal } from "./components/contentcard/MyMedal";
 import { MemberExamples } from "./components/contentcard/Member";
 import { Location } from "./components/contentcard/Location";
 import { LocationList } from "./components/contentcard/LocationList";
+import { GroupChat } from "./components/contentcard/GroupChat";
+import { PersonalChat } from "./components/contentcard/PersonalChat";
+import { MyPage } from "./components/contentcard/MyPage";
+
 
 const router = createBrowserRouter([
   {
@@ -60,6 +64,19 @@ const router = createBrowserRouter([
   {
     path: "/LocationList",
     element: <LocationList />,
+  },
+  //chat 2가지 버전 나누었습니다.
+  {
+    path: "/GroupChat",
+    element: <GroupChat />,
+  },
+  {
+    path: "/PersonalChat",
+    element: <PersonalChat />,
+  },
+  {
+    path: "/MyPage",
+    element: <MyPage />,
   },
 ]);
 function App() {
