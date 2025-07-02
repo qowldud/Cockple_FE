@@ -2,6 +2,7 @@ import { FloatingButton } from "../components/common/FloatingButton";
 import { Footer } from "../components/common/Footer";
 import { MainHeader } from "../components/common/header/MainHeader";
 import { PageHeader } from "../components/common/header/PageHeader";
+import { ModalBar } from "../components/common/ModalBar";
 import { Navbar } from "../components/common/navbar/Navbar";
 import { ProgressBar } from "../components/common/ProgressBar";
 import { SocialLoginBtn } from "../components/common/SocialLoginBtn";
@@ -16,12 +17,8 @@ export const HomePage = () => {
       <Footer />
       <SocialLoginBtn />
       <ProgressBar progress={50} />
-      <FloatingButton
-        size="L"
-        color="white"
-        icon={MyLocationIcon}
-        notificationCount={10}
-      />
+      <FloatingButton size="L" color="white" icon={MyLocationIcon} />
+      <ModalBar variant={"variant2"} />
       <Navbar />
     </div>
   );
