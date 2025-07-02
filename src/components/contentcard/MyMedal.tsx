@@ -22,17 +22,18 @@ export const MyMedal = () => {
 
       {/* 글/정보 영역 */}
       <div className="w-[223px] h-[52px] flex flex-col items-start">
-        <div className="w-[223px] h-[52px] flex flex-col gap-[4px]">
-          <div className="flex items-center gap-1 header-h4 w-full">
-            <span className="truncate overflow-hidden whitespace-nowrap">
-              라이더 찐 배린이대회 / 여복 D조
-            </span>
-          </div>
-          <div className="flex items-center gap-1 body-rg-500">
-            <span>2000. 01. 01</span>
-          </div>
+      <div className="w-[223px] h-[52px] flex flex-col gap-[4px]">
+        <div className="flex items-center gap-1 header-h4">
+          <span className="truncate overflow-hidden whitespace-nowrap">
+            라이더 찐 배린이대회 / 여복 D조 ... 이거 확인
+          </span>
+        </div>
+        <div className="flex items-center gap-1 body-rg-500">
+          <span>2000. 01. 01</span>
         </div>
       </div>
+    </div>
+
 
       <RightAngle className="w-[20px] h-[20px]" />
     </div>

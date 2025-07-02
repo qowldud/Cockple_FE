@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Profile_Image from "../../assets/images/Profile_Image.png";
-import Num_Noti from "../../assets/icons/Num_Noti.svg?react";
+import Num_Noti_99 from "../../assets/icons/Num_Noti_99.svg?react";
 
 export const PersonalChat = () => {
   const [pressing, setPressing] = useState(false);
@@ -32,7 +32,7 @@ export const PersonalChat = () => {
       <div className="flex flex-col justify-between w-[48px] h-[64px] items-center">
         <p className="body-sm-400 text-[#9195A1]">10:00 am</p>
         <div className="flex items-center justify-center w-full">
-          <Num_Noti className="w-[20px] h-[20px]" />
+          <Num_Noti_99 className="w-[31px] h-[20px]" />
         </div>
       </div>
     </div>

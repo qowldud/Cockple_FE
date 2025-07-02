@@ -15,6 +15,7 @@ import { LocationList } from "./components/contentcard/LocationList";
 import { GroupChat } from "./components/contentcard/GroupChat";
 import { PersonalChat } from "./components/contentcard/PersonalChat";
 import { MyPage } from "./components/contentcard/MyPage";
+import { PreviewAllCards } from "./components/contentcard/PreviewAllCards";
 
 
 const router = createBrowserRouter([
@@ -27,6 +28,10 @@ const router = createBrowserRouter([
   {
     path: "/ContentCardL",
     element: <ContentCardL />,
+  },
+  {
+    path: "/PreviewAllCards",
+    element: <PreviewAllCards />,
   },
   {
     path: "/Exercise_M",
