@@ -1,0 +1,53 @@
+import React, { useState } from "react";
+
+type BtnStatus = "default" | "pressing" | "clicked" | "disabled";
+
+interface RD500XSProps {
+  initialStatus?: BtnStatus;
+  label?: string;
+}
+
+const RD500_XS = ({
+  initialStatus = "default",
+  label = "Btn",
+}: RD500XSProps) => {
+  const [status, setStatus] = useState<BtnStatus>(initialStatus);
+
+  const isDisabled = status === "disabled";
+
+  const handleMouseDown = () => {
+    if (!isDisabled) setStatus("pressing");
+  };
+
+  const handleMouseUp = () => {
+    if (!isDisabled && status === "pressing") {
+      setStatus("clicked");
+      setTimeout(() => {
+        setStatus("default");
+      }, 200);
+    }
+  };
+
+  const statusStyle = {
+    disabled: "bg-white border border-gy-400 text-gy-400 cursor-not-allowed",
+    default: "bg-white border border-rd-500 text-rd-500",
+    pressing: "bg-rd-500 text-white",
+    clicked: "bg-white border border-rd-500 text-rd-500",
+  };
+
+  return (
+    <button
+      className={`
+        flex justify-center items-center w-[10.3125rem] px-4 py-2 border-hard gap-2
+        ${statusStyle[status]}
+        ${isDisabled ? "cursor-not-allowed" : "cursor-pointer"}
+      `}
+      onMouseDown={handleMouseDown}
+      onMouseUp={handleMouseUp}
+    >
+      <span className="body-sm-500">{label}</span>
+    </button>
+  );
+};
+
+export default RD500_XS;
