@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Heart from "../../assets/icons/Heart.svg?react";
+import Heart_GY from "../../assets/icons/heart_GY.svg?react";
 import Calendar from "../../assets/icons/calendar.svg?react";
 import Clock from "../../assets/icons/clock.svg?react";
 import Vector from "../../assets/icons/Vector.svg?react";
@@ -27,7 +27,7 @@ export const Exercise_M = () => {
           alt="고양이"
           className="w-[88px] h-[88px] rounded-[8px] object-cover"
         />
-        <Heart className="w-[26px] h-[26px] absolute bottom-1 right-1" />
+        <Heart_GY className="w-[26px] h-[26px] absolute bottom-1 right-1" />
       </div>
 
       {/* 글/정보 영역 */}
