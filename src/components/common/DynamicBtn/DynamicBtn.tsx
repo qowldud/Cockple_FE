@@ -1,5 +1,5 @@
-import type { TextIconStatus } from "../../types/DynamicBtn";
-import useDynamicStatus from "../../hooks/useDynamicStatus";
+import type { TextIconStatus } from "../../../types/DynamicBtn";
+import useDynamicStatus from "../../../hooks/useDynamicStatus";
 
 interface DynamicBtnProps {
   children: string;

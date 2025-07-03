@@ -1,5 +1,5 @@
-import useDynamicStatus from "../../hooks/useDynamicStatus";
-import type { BaseBtnProps, TextIconStatus } from "../../types/DynamicBtn";
+import useDynamicStatus from "../../../hooks/useDynamicStatus";
+import type { BaseBtnProps, TextIconStatus } from "../../../types/DynamicBtn";
 
 export default function ChatBtn({
   children,

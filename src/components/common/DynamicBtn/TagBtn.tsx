@@ -1,5 +1,5 @@
-import useDynamicStatus from "../../hooks/useDynamicStatus";
-import type { BaseBtnProps, IconTextStatus } from "../../types/DynamicBtn";
+import useDynamicStatus from "../../../hooks/useDynamicStatus";
+import type { BaseBtnProps, IconTextStatus } from "../../../types/DynamicBtn";
 
 export default function TagBtn({
   children,

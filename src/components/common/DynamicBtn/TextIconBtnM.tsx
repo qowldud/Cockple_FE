@@ -1,5 +1,5 @@
-import type { BaseBtnProps, TextIconStatus } from "../../types/DynamicBtn";
-import useDynamicStatus from "../../hooks/useDynamicStatus";
+import type { BaseBtnProps, TextIconStatus } from "../../../types/DynamicBtn";
+import useDynamicStatus from "../../../hooks/useDynamicStatus";
 
 export default function TextIconBtnM({
   children,
