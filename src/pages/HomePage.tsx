@@ -12,14 +12,14 @@ export const HomePage = () => {
   return (
     <div className="flex flex-col justify-center items-center  header-h4">
       Home Page 입니다.
-      <MainHeader hasNotification={true} />
-      <PageHeader title="Pages" />
-      <Footer />
+      {/* <MainHeader hasNotification={true} /> */}
+      <PageHeader title="Pages" onMoreClick={() => console.log("클릭")} />
+      {/* <Footer />
       <SocialLoginBtn />
       <ProgressBar progress={50} />
       <FloatingButton size="L" color="white" icon={MyLocationIcon} />
       <ModalBar variant={"variant2"} />
-      <Navbar />
+      <Navbar /> */}
     </div>
   );
 };

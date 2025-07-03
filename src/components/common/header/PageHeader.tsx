@@ -22,9 +22,11 @@ export const PageHeader = ({ title, onMoreClick }: PageHeaderProps) => {
 
       <div className="flex justify-start flex-1 header-h4">{title}</div>
 
-      <button type="button" className="p-1" onClick={onMoreClick}>
-        <img src={MeetBall} className="w-6" alt="meetball icon" />
-      </button>
+      {onMoreClick && (
+        <button type="button" className="p-1" onClick={onMoreClick}>
+          <img src={MeetBall} className="w-6" alt="meetball icon" />
+        </button>
+      )}
     </div>
   );
 };
