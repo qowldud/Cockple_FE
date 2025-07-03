@@ -33,7 +33,7 @@ export default function CheckBoxBtn({
     },
     disabled: {
       bg: "bg-white text-gy-400",
-      icon: "/src/assets/icons/check_circled.svg",
+      icon: "/src/assets/icons/check_circledG.svg",
     },
   };
 

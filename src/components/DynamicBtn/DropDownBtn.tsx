@@ -26,6 +26,7 @@ export default function DropDownBtn({
       icon: "/src/assets/icons/arrow_down.svg",
     },
     disabled: {
+      bg: "text-gy-400",
       icon: "/src/assets/icons/arrow_downG.svg",
     },
   };

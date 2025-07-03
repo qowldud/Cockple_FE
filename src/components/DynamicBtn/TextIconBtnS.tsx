@@ -23,7 +23,8 @@ export default function TextIconBtnS({
       icon: "/src/assets/icons/arrow_right.svg",
     },
     disabled: {
-      icon: "/src/assets/icons/arrow_right.svg",
+      bg: "text-gy-400",
+      icon: "/src/assets/icons/arrow_rightG.svg",
     },
   };
 

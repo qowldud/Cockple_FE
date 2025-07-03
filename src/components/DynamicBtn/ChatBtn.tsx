@@ -27,8 +27,8 @@ export default function ChatBtn({
       icon: "/src/assets/icons/arrow_right.svg",
     },
     disabled: {
-      bg: "bg-white",
-      icon: "/src/assets/icons/arrow_right.svg",
+      bg: "bg-white text-gy-400",
+      icon: "/src/assets/icons/arrow_rightG.svg",
     },
   };
 

@@ -15,11 +15,11 @@ export default function TagBtn({
   const statusMap: Record<IconTextStatus, { bg: string; icon: string }> = {
     clicked: {
       bg: "bg-white border-gr-500",
-      icon: "/src/assets/icons/dismiss.svg",
+      icon: "/src/assets/icons/dismiss_fill.svg",
     },
     CLpressing: {
       bg: "bg-gy-100 border-gr-500",
-      icon: "/src/assets/icons/dismiss.svg",
+      icon: "/src/assets/icons/dismiss_fill.svg",
     },
     pressing: {
       bg: "bg-gy-100 border-gr-500",
@@ -35,19 +35,22 @@ export default function TagBtn({
     },
   };
 
+  const isRightIcon = status === "clicked" || status === "CLpressing";
+
   const { bg, icon } = statusMap[status];
 
   return (
     <button
-      className={`inline-flex pr-[0.625rem] py-2 pl-3 gap-1 rounded-2xl items-center body-rg-500 shadow-ds100 ${bg} ${disabled ? "cursor-not-allowed" : "cursor-pointer"}`}
+      className={`inline-flex pr-[0.625rem] py-2 pl-3 gap-1 rounded-2xl items-center body-rg-500 shadow-ds100 border ${bg} ${disabled ? "cursor-not-allowed" : "cursor-pointer"}`}
       onMouseDown={onMouseDown}
       onMouseUp={onMouseUp}
       onMouseLeave={onMouseLeave}
       onClick={onClick}
       type={type ? type : "button"}
     >
-      <img src={icon} alt="태그 설정" className="size-4" />
+      {!isRightIcon && <img src={icon} alt="태그 설정" className="size-4" />}
       {children}
+      {isRightIcon && <img src={icon} alt="태그 설정" className="size-4" />}
     </button>
   );
 }
