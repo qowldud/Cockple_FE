@@ -1,44 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
+import Btn_Static from "../Btn_Static";
 
-type BtnStatus = "default" | "pressing" | "clicked" | "disabled";
-
-interface GradGR400LProps {
-  initialStatus?: BtnStatus;
-  label?: string;
-}
-
-const Grad_GR400_L = ({
-  initialStatus = "default",
-  label = "Btn",
-}: GradGR400LProps) => {
-  const [status, setStatus] = useState<BtnStatus>(initialStatus);
-  const isDisabled = status === "disabled";
-
-  const handleMouseDown = () => {
-    if (!isDisabled) setStatus("pressing");
-  };
-
-  const handleMouseUp = () => {
-    if (!isDisabled && status === "pressing") {
-      setStatus("clicked");
-      console.log("clicked");
-    }
-  };
-
-  // 상태별 클래스 정의
-  const statusStyle = () => {
-    switch (status) {
-      case "disabled":
-        return "bg-gy-400";
-      case "pressing":
-        return "bg-gr-700";
-      case "clicked":
-      case "default":
-      default:
-        return "bg-gr-600";
-    }
-  };
-
+const Grad_GR400_L = () => {
   return (
     <div
       className={`
@@ -49,17 +12,7 @@ const Grad_GR400_L = ({
         from-[rgba(252,252,255,0)] via-[rgba(252,252,255,0.8)] to-[#FCFCFF]
       `}
     >
-      <button
-        className={`
-        flex justify-center items-center w-[21.4375rem] px-4 py-3 border-round shadow-ds100 transition duration-100
-        ${statusStyle()}
-        ${isDisabled ? "cursor-not-allowed" : "cursor-pointer"}`}
-        onMouseDown={handleMouseDown}
-        onMouseUp={handleMouseUp}
-        disabled={isDisabled}
-      >
-        <span className="header-h4 text-white">{label}</span>
-      </button>
+      <Btn_Static kind="GR400" size="L" label="Btn" shadow="shadow-ds100" />
     </div>
   );
 };

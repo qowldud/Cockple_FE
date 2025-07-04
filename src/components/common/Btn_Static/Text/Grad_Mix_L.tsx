@@ -2,15 +2,15 @@ import React from "react";
 import DeleteIcon from "../../../../assets/icons/delete.svg";
 import RefreshIcon from "../../../../assets/icons/refresh.svg";
 import ChatQuestionIcon from "../../../../assets/icons/chat_question.svg";
+import Btn_Static from "../Btn_Static";
 
 type GradMixType = "delete" | "refresh" | "chat_question";
 
 interface GradMixLProps {
   type: GradMixType;
-  label?: string;
 }
 
-const Grad_Mix_L = ({ type, label = "Btn" }: GradMixLProps) => {
+const Grad_Mix_L = ({ type }: GradMixLProps) => {
   const getLeftButtonStyle = () => {
     switch (type) {
       case "delete":
@@ -48,15 +48,7 @@ const Grad_Mix_L = ({ type, label = "Btn" }: GradMixLProps) => {
       </button>
 
       {/* 오른쪽 버튼 */}
-      <button
-        className="w-[15.875rem] h-[3.25rem] px-[1rem] py-[0.75rem] rounded-[1rem] flex justify-center items-center text-white body-md-500 cursor-pointer"
-        style={{
-          background: "var(--color-gr-600)",
-          boxShadow: "0 0 0.25rem 0 rgba(18, 18, 18, 0.12)",
-        }}
-      >
-        {label}
-      </button>
+      <Btn_Static kind="GR400" size="M" label="Btn" />
     </div>
   );
 };

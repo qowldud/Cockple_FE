@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import Camera from "../../../assets/icons/camera.svg";
-import CameraGY400 from "../../../assets/icons/camera_gy_400.svg";
+import Camera from "../../../../assets/icons/camera.svg";
+import CameraGY400 from "../../../../assets/icons/camera_gy_400.svg";
 
 type BtnStatus = "disabled" | "default" | "pressing" | "clicked";
 

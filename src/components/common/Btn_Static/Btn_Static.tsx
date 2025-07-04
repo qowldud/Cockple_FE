@@ -24,6 +24,7 @@ interface Btn_StaticProps {
   padding?: string;
   gap?: string;
   shadow?: string;
+  justify?: string;
 }
 
 const Btn_Static = ({
@@ -45,6 +46,7 @@ const Btn_Static = ({
   padding,
   gap,
   shadow,
+  justify = "justify-center",
 }: Btn_StaticProps) => {
   const [status, setStatus] = useState<BtnStatus>(initialStatus);
   const isDisabled = status === "disabled";
@@ -67,7 +69,8 @@ const Btn_Static = ({
   };
 
   const classes = [
-    "flex justify-center items-center",
+    "flex items-center",
+    justify,
     width ?? sizePreset.width,
     height ?? sizePreset.height,
     bgColor ?? preset.bgColor[status],
