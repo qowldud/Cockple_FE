@@ -1,8 +1,8 @@
-import ProfileImage from "../../assets/icons/ProfileImage.svg?react";
-import Prohibition from "../../assets/icons/prohibition.svg?react";
-import StarIcon  from "../../assets/icons/star_filled_GR.svg?react";
-import Female from "../../assets/icons/female.svg?react";
-import Message from "../../assets/icons/message.svg?react";
+import ProfileImage from "../../../assets/icons/ProfileImage.svg?react";
+import Prohibition from "../../../assets/icons/prohibition.svg?react";
+import StarIcon  from "../../../assets/icons/star_filled_GR.svg?react";
+import Female from "../../../assets/icons/female.svg?react";
+import Message from "../../../assets/icons/message.svg?react";
 
 // 전체적인 UI 코드입니다. 만일 아래 실행중인 코드에 이상이 있다면 주석된 코드로 대체합니다.
 // export const Member = () => {
