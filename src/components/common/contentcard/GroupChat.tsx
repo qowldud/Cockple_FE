@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Peopel from "../../../assets/icons/people.svg?react";
-import Num_Noti from "../../../assets/icons/Num_Noti.svg?react";
+import Num_Noti_99 from "../../../assets/icons/Num_Noti_99.svg?react";
 
 interface GroupChatProps {
   imageSrc: string;
@@ -8,7 +8,7 @@ interface GroupChatProps {
   memberCount: number;
   lastMessage: string;
   lastMessageTime: string;
-  unreadCount: number; // 읽지 않은 메시지 수
+  unreadCount: number;
 }
 
 export const GroupChat = ({
@@ -34,27 +34,39 @@ export const GroupChat = ({
     >
       <img
         src={imageSrc}
-        alt={chatName} 
-        className="w-[4rem] h-[4rem] rounded-[0.5rem]"
+        alt={chatName}
+        className="w-[4rem] h-[4rem] rounded-[0.5rem] flex-shrink-0" 
       />
 
-      <div className="flex flex-col justify-between w-[11.9375rem] h-[4rem]">
-        <div className="flex items-center gap-[0.25rem]">
-          <p className="body-md-500">{chatName}</p> 
-          <Peopel className="w-[1rem] h-[1rem]" />
-          <p className="body-sm-400">{memberCount}</p>
+
+      <div className="flex flex-col justify-between flex-grow h-[4rem] overflow-hidden"> 
+        {/* 채팅방 이름 및 인원 */}
+        <div className="flex items-center gap-[0.25rem] min-w-0"> 
+          <p className="body-md-500 truncate max-w-[calc(100%-2.5rem)]">{chatName}</p>
+          <Peopel className="w-[1rem] h-[1rem] flex-shrink-0" /> 
+          <p className="body-sm-400 flex-shrink-0">{memberCount}</p> 
         </div>
         
-       <span className="body-rg-400 line-clamp-2 block text-left leading-tight">
-        {lastMessage} 
-      </span>
-
+        <span
+          className="body-rg-400 block text-left"
+          style={{
+            display: '-webkit-box',
+            WebkitLineClamp: '2',
+            WebkitBoxOrient: 'vertical',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            lineHeight: '144%',
+          }}
+        >
+          {lastMessage}
+        </span>
       </div>
 
-      <div className="flex flex-col justify-between w-[3rem] h-[4rem] items-center">
+      {/* 시간 및 알림 */}
+      <div className="flex flex-col justify-between w-[3rem] h-[4rem] items-center flex-shrink-0"> {/* flex-shrink-0으로 축소 방지 */}
         <p className="body-sm-400 text-[#9195A1]">{lastMessageTime}</p>
         <div className="flex items-center justify-center w-full">
-          {unreadCount > 0 && <Num_Noti className="w-[1.25rem] h-[1.25rem]" />}
+          {unreadCount > 0 && <Num_Noti_99 className="w-[1.9375rem] h-[1.25rem]" />}
         </div>
       </div>
     </div>

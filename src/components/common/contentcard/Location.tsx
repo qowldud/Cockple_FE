@@ -77,11 +77,15 @@ export const Location = ({
       onTouchEnd={handlePressEnd}
       onClick={handleClick}
     >
-      <div className={`w-[16.9375rem] h-[3rem] flex flex-col justify-center items-start ${textColor}`}>
-        <p className="body-md-500">{mainAddress}</p>
-        <p className="body-rg-500">{subAddress}</p> 
-      </div>
-      {icon}
+    <div className={`w-[16.9375rem] h-[3rem] flex flex-col justify-center items-start overflow-hidden ${textColor}`}>
+      <p className="body-md-500 truncate w-full" title={mainAddress}>
+        {mainAddress}
+      </p>
+      <p className="body-rg-500 truncate w-full" title={subAddress}>
+        {subAddress}
+      </p>
+    </div>
+    {icon}
     </div>
   );
 };

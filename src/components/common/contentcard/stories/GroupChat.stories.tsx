@@ -42,7 +42,7 @@ export const UnreadMessages: Story = {
   },
 };
 
-// 마지막 메시지가 긴 상태의 GroupChat 스토리 (line-clamp-2 확인!!!)
+// 마지막 메시지가 긴 상태의 GroupChat 스토리 (line-clamp-2 확인!!!) 
 export const LongMessage: Story = {
   args: {
     ...Default.args,

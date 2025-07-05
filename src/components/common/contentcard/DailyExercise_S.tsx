@@ -2,7 +2,6 @@ import { useState } from "react";
 import Clock from "../../../assets/icons/clock.svg?react";
 import Vector from "../../../assets/icons/Vector.svg?react";
 import RightAngle from "../../../assets/icons/RightAngle.svg?react";
-import Kitty from "../../../assets/images/kitty.png"; 
 
 // props 타입 정의(임시)
 interface DailyExerciseSProps {
@@ -40,20 +39,22 @@ export const DailyExercise_S = ({
         />
       </div>
 
-      {/* 텍스트 영역 */}
-      <div className="w-[14.1875rem] h-[4rem] flex flex-col gap-[0.5rem] items-start body-sm-400 text-black">
-        <p className="body-rg-500">{title}</p>
-        <div className="w-full flex flex-col gap-[0.25rem]">
-          <div className="flex items-center gap-1">
-            <Vector className="w-[0.875rem] h-[0.875rem]" />
-            <span>{location}</span>
-          </div>
-          <div className="flex items-center gap-1">
-            <Clock className="w-[0.875rem] h-[0.875rem]" />
-            <span>{time}</span>
-          </div>
+    {/* 텍스트 영역 */}
+    <div className="w-[14.1875rem] h-[4rem] flex flex-col gap-[0.5rem] items-start body-sm-400 text-black">
+      <p className="body-rg-500 truncate max-w-full">{title}</p>
+
+      <div className="w-full flex flex-col gap-[0.25rem]">
+        <div className="flex items-center gap-1 max-w-full overflow-hidden">
+          <Vector className="w-[0.875rem] h-[0.875rem] shrink-0" />
+          <span className="truncate">{location}</span>
+        </div>
+        <div className="flex items-center gap-1 max-w-full overflow-hidden">
+          <Clock className="w-[0.875rem] h-[0.875rem] shrink-0" />
+          <span className="truncate">{time}</span>
         </div>
       </div>
+    </div>
+
 
       {/* 화살표 */}
       <RightAngle className="w-[1rem] h-[1rem]" />

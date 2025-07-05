@@ -50,23 +50,24 @@ export const Exercise_M = ({
 
       {/* 글/정보 영역 */}
       <div className="w-[14.1875rem] h-[5.5rem] flex flex-col gap-[0.5rem] items-start body-sm-400 text-black">
-        <p className="body-rg-500">{title}</p> 
+        <p className="body-rg-500 truncate max-w-full">{title}</p>
 
         <div className="w-[14.1875rem] h-[3.75rem] flex flex-col gap-[0.375rem]">
-          <div className="flex items-center gap-[0.25rem]">
-            <Calendar className="w-[0.875rem] h-[0.875rem]" />
-            <span>{date}</span> 
+          <div className="flex items-center gap-[0.25rem] max-w-full overflow-hidden">
+            <Calendar className="w-[0.875rem] h-[0.875rem] shrink-0" />
+            <span className="truncate">{date}</span>
           </div>
-          <div className="flex items-center gap-[0.25rem]">
-            <Clock className="w-[0.875rem] h-[0.875rem]" />
-            <span>{time}</span> 
+          <div className="flex items-center gap-[0.25rem] max-w-full overflow-hidden">
+            <Clock className="w-[0.875rem] h-[0.875rem] shrink-0" />
+            <span className="truncate">{time}</span>
           </div>
-          <div className="flex items-center gap-[0.25rem]">
-            <Vector className="w-[0.875rem] h-[0.875rem]" />
-            <span>{location}</span> 
+          <div className="flex items-center gap-[0.25rem] max-w-full overflow-hidden">
+            <Vector className="w-[0.875rem] h-[0.875rem] shrink-0" />
+            <span className="truncate">{location}</span>
           </div>
         </div>
       </div>
+
     </div>
   );
 };

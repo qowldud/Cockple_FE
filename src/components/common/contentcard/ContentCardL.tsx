@@ -51,9 +51,9 @@ export const ContentCardL = ({
     >
       {/* 상단 */}
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <p className="body-md-500">{title}</p>
-          <Heart_GY className="w-[1.625rem] h-[1.625rem]" />
+       <div className="flex items-center gap-2 max-w-[16rem]">
+          <p className="body-md-500 truncate">{title}</p>
+          <Heart_GY className="w-[1.625rem] h-[1.625rem] shrink-0" />
         </div>
         <RightAngle className="w-4 h-4" />
       </div>
@@ -72,16 +72,18 @@ export const ContentCardL = ({
           <Clock className="w-[0.875rem] h-[0.875rem]" />
           <span>{time}</span>
         </div>
-        <div className="w-[19.9375rem] flex gap-[0.8125rem]">
-          <div className="flex items-center gap-1">
-            <Female className="w-[0.875rem] h-[0.875rem]" />
-            <span>{femaleLevel}</span>
+        
+       <div className="w-[19.9375rem] flex gap-[0.8125rem]">
+          <div className="flex items-center gap-1 max-w-[9rem] truncate">
+            <Female className="w-[0.875rem] h-[0.875rem] shrink-0" />
+            <span className="truncate">{femaleLevel}</span>
           </div>
-          <div className="flex items-center gap-1">
-            <Male className="w-[0.875rem] h-[0.875rem]" />
-            <span>{maleLevel}</span>
+          <div className="flex items-center gap-1 max-w-[9rem] truncate">
+            <Male className="w-[0.875rem] h-[0.875rem] shrink-0" />
+            <span className="truncate">{maleLevel}</span>
           </div>
         </div>
+
         <div className="flex items-center gap-1">
           <People className="w-[0.875rem] h-[0.875rem]" />
           <span>{`${currentPeople} / ${maxPeople}`}</span>

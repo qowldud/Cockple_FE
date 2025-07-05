@@ -49,29 +49,43 @@ export const Group_M = ({
       </div>
 
       {/* 글/정보 영역 */}
-      <div className="w-[14.1875rem] h-[5.5rem] flex flex-col gap-[0.5rem] items-start text-black">
-        <p className="body-rg-500">{title}</p> 
+     <div className="w-[14.1875rem] h-[5.5rem] flex flex-col gap-[0.5rem] items-start text-black overflow-hidden">
+        <p className="body-rg-500 truncate w-full" title={title}>
+          {title}
+        </p>
 
-        <div className="body-sm-400 flex flex-col gap-[0.375rem]">
-          <div className="flex items-center gap-[0.25rem]">
-            <Vector className="w-[0.875rem] h-[0.875rem]" />
-            <span>{location}</span> 
+        <div className="body-sm-400 flex flex-col gap-[0.375rem] w-full">
+          {/* 위치 */}
+          <div className="flex items-center gap-[0.25rem] w-full overflow-hidden">
+            <Vector className="w-[0.875rem] h-[0.875rem] shrink-0" />
+            <span className="truncate w-full" title={location}>
+              {location}
+            </span>
           </div>
 
-          <div className="flex gap-[0.625rem]">
-            <div className="flex items-center gap-[0.25rem] whitespace-nowrap">
-              <Female className="w-[0.875rem] h-[0.875rem]" />
-              <span>{femaleLevel}</span> 
+          {/* 성별 레벨 */}
+          <div className="flex gap-[0.625rem] w-full">
+            <div className="flex items-center gap-[0.25rem] max-w-[6rem] overflow-hidden">
+              <Female className="w-[0.875rem] h-[0.875rem] shrink-0" />
+              <span className="truncate" title={femaleLevel}>
+                {femaleLevel}
+              </span>
             </div>
-            <div className="flex items-center gap-[0.25rem] whitespace-nowrap">
-              <Male className="w-[0.875rem] h-[0.875rem]" />
-              <span>{maleLevel}</span> 
+            <div className="flex items-center gap-[0.25rem] max-w-[6rem] overflow-hidden">
+              <Male className="w-[0.875rem] h-[0.875rem] shrink-0" />
+              <span className="truncate" title={maleLevel}>
+                {maleLevel}
+              </span>
             </div>
           </div>
 
-          <p className="flex">{summary}</p>
-        </div>        
+          {/* 요약 */}
+          <p className="truncate w-full" title={summary}>
+            {summary}
+          </p>
+        </div>
       </div>
+
     </div>
   );
 };

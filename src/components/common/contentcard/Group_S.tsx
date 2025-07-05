@@ -50,10 +50,15 @@ export const Group_S = ({
       </div>
 
       {/* 글/정보 영역 */}
-      <div className="flex flex-col gap-[0.25rem] items-start">
-        <p className={`body-rg-500 ${textColorClass}`}>{title}</p> 
-        <p className={`body-sm-300 ${textColorClass}`}>{location}</p> 
+      <div className="flex flex-col gap-[0.25rem] items-start max-w-full overflow-hidden">
+        <p className={`body-rg-500 truncate w-full ${textColorClass}`} title={title}>
+          {title}
+        </p> 
+        <p className={`body-sm-300 truncate w-full ${textColorClass}`} title={location}>
+          {location}
+        </p> 
       </div>
+
     </div>
   );
 };

@@ -40,16 +40,16 @@ export const Exercise_S = ({
       </div>
 
       {/* 글/정보 영역 */}
-      <div className="flex flex-col gap-[0.25rem] items-start body-sm-400 text-black">
-        <p className="body-sm-500">{title}</p> 
-        <p className="body-sm-500">{`${date} ${time}`}</p>
-        <div className="flex items-center gap-[0.25rem] w-full">
-          <Vector className="w-[0.875rem] h-[0.875rem]" />
-          <p className="text-ellipsis overflow-hidden whitespace-nowrap body-sm-400 w-[6rem]">
-            {location} 
-          </p>
+      <div className="flex flex-col gap-[0.25rem] items-start body-sm-400 text-black w-full">
+        <p className="body-sm-500 truncate w-full">{title}</p>
+        <p className="body-sm-500 truncate w-full">{`${date} ${time}`}</p>
+
+        <div className="flex items-center gap-[0.25rem] w-full overflow-hidden">
+          <Vector className="w-[0.875rem] h-[0.875rem] shrink-0" />
+          <p className="truncate body-sm-400 w-full">{location}</p>
         </div>
       </div>
+
     </div>
   );
 };

@@ -35,12 +35,24 @@ export const PersonalChat = ({
       />
 
       <div className="flex flex-col justify-between w-[11.9375rem] h-[4rem]">
-        <div className="flex items-center gap-[0.25rem]">
-          <p className="body-md-500">{userName}</p> 
+        <div className="flex items-center gap-[0.25rem] max-w-full overflow-hidden">
+          <p className="body-md-500 truncate max-w-[12rem]" title={userName}>
+            {userName}
+          </p>
         </div>
         
-        <span className="body-rg-400 line-clamp-2 block text-left leading-tight">
-          {lastMessage} 
+        <span
+          className="body-rg-400 block text-left"
+          style={{
+            display: '-webkit-box',
+            WebkitLineClamp: '2',
+            WebkitBoxOrient: 'vertical',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            lineHeight: '144%',
+          }}
+        >
+          {lastMessage}
         </span>
       </div>
 
