@@ -8,9 +8,10 @@ type GradMixType = "delete" | "refresh" | "chat_question";
 
 interface GradMixLProps {
   type: GradMixType;
+  label?: string;
 }
 
-const Grad_Mix_L = ({ type }: GradMixLProps) => {
+const Grad_Mix_L = ({ type, label = "Btn" }: GradMixLProps) => {
   const getLeftButtonStyle = () => {
     switch (type) {
       case "delete":
@@ -48,7 +49,7 @@ const Grad_Mix_L = ({ type }: GradMixLProps) => {
       </button>
 
       {/* 오른쪽 버튼 */}
-      <Btn_Static kind="GR400" size="M" label="Btn" />
+      <Btn_Static kind="GR400" size="M" label={label} />
     </div>
   );
 };
