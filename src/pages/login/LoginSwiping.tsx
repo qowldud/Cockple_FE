@@ -24,7 +24,7 @@ export default function LoginSwiping({
           className="size-50  aspect-square"
         />
       </div>
-      <div className="header-h5 mb-12 max-w-60">
+      <div className="header-h5 mb-12 max-w-60 pb-10">
         <p>{text1}</p>
         <p>{text2}</p>
       </div>

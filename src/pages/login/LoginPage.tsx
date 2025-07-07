@@ -32,7 +32,7 @@ export const LoginPage = () => {
           speed={500}
           slidesPerView={1}
           pagination={{ clickable: true }}
-          className="w-full h-full"
+          className="flex-1"
         >
           {TextMap.map((item, index) => (
             <SwiperSlide key={index}>
@@ -48,7 +48,7 @@ export const LoginPage = () => {
       </div>
 
       {/* 👇 하단: 고정 버튼 */}
-      <div className="py-4">
+      <div className="py-4 mb-6">
         <button className="bg-[#FEE500] w-full rounded-lg py-3 px-4 relative">
           카카오 로그인
           <img

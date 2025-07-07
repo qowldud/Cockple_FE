@@ -1,6 +1,7 @@
 @import url("https://cdn.jsdelivr.net/gh/sun-typeface/SUIT@2/fonts/variable/woff2/SUIT-Variable.css");
 @import "tailwindcss";
-
+@import "swiper/css";
+@import "swiper/css/pagination";
 @theme {
   --color-gr-100: #eaf5ed;
   --color-gr-200: #d8edde;
@@ -316,4 +317,11 @@ body {
     BlinkMacSystemFont,
     "Segoe UI",
     sans-serif;
+}
+.swiper-pagination-bullet {
+  @apply bg-gy-500 size-2 rounded-full;
+  margin: 0 8px !important;
+}
+.swiper-pagination-bullet-active {
+  @apply bg-gr-500 mx-2;
 }
