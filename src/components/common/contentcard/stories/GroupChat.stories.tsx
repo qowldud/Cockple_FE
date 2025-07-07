@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { GroupChat } from '../GroupChat';
-import Kitty from "../../../../assets/images/kitty.png"; 
+import Kitty from "../../../../assets/images/Profile_Image.png"; 
 
 const meta = {
   title: 'Components/GroupChat', 

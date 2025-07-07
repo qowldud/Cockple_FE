@@ -21,7 +21,7 @@ export const PersonalChat = ({
   return (
     <div
       className={`w-[21.4375rem] h-[5rem] p-[0.5rem] gap-[0.75rem] rounded-[0.75rem] flex items-center transition-colors 
-        ${pressing ? "bg-[#F4F5F6]" : "bg-[#FAFAFA]"}`}
+        ${pressing ? "bg-[#F4F5F6]" : "bg-white"}`}
       onMouseDown={() => setPressing(true)}
       onMouseUp={() => setPressing(false)}
       onMouseLeave={() => setPressing(false)}
