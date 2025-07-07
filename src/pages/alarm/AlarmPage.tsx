@@ -1,3 +1,7 @@
 export const AlarmPage = () => {
-  return <div>AlarmPage</div>;
+  return (
+    <>
+      <div>AlarmPage</div>
+    </>
+  );
 };
