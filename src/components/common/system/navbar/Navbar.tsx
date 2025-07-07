@@ -42,7 +42,7 @@ const NAV_ITEMS = [
       filled: HeartIconFilled,
       outline: HeartIcon,
     },
-    path: "/like",
+    path: "/liked",
   },
   {
     label: "마이페이지",
