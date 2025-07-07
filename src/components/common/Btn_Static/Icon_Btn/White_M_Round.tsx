@@ -7,12 +7,19 @@ type BtnStatus = "disabled" | "default" | "pressing" | "clicked";
 
 interface WhiteMRoundProps {
   initialStatus?: BtnStatus;
+  iconMap?: Partial<Record<BtnStatus, string>>; // 상태별 아이콘
+  onClick?: () => void;
 }
 
-const White_M_Round = ({ initialStatus = "default" }: WhiteMRoundProps) => {
+const White_M_Round = ({
+  initialStatus = "default",
+  iconMap,
+  onClick,
+}: WhiteMRoundProps) => {
   const [status, setStatus] = useState<BtnStatus>(initialStatus);
 
   const isDisabled = status === "disabled";
+  const currentIcon = iconMap?.[status];
 
   const handleMouseDown = () => {
     if (!isDisabled) setStatus("pressing");
@@ -21,6 +28,7 @@ const White_M_Round = ({ initialStatus = "default" }: WhiteMRoundProps) => {
   const handleMouseUp = () => {
     if (!isDisabled && status === "pressing") {
       setStatus("clicked");
+      onClick?.();
     }
   };
 
@@ -55,11 +63,13 @@ const White_M_Round = ({ initialStatus = "default" }: WhiteMRoundProps) => {
       onMouseDown={handleMouseDown}
       onMouseUp={handleMouseUp}
     >
-      <img
-        src={getIcon()}
-        alt="삭제"
-        className="w-[1.25rem] h-[1.25rem] shrink-0 aspect-1/1"
-      />
+      {currentIcon && (
+        <img
+          src={currentIcon}
+          alt="삭제"
+          className="w-[1.25rem] h-[1.25rem] shrink-0 aspect-1/1"
+        />
+      )}
     </button>
   );
 };
