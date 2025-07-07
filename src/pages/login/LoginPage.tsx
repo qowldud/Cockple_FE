@@ -23,7 +23,7 @@ export const LoginPage = () => {
   ];
 
   return (
-    <div className="flex flex-col justify-between h-screen w-full px-4">
+    <div className="flex flex-col justify-between h-screen w-full ">
       {/* 스와이퍼 */}
       <div className="flex-1">
         <Swiper
@@ -47,7 +47,6 @@ export const LoginPage = () => {
         </Swiper>
       </div>
 
-      {/* 👇 하단: 고정 버튼 */}
       <div className="py-4 mb-6">
         <button className="bg-[#FEE500] w-full rounded-lg py-3 px-4 relative">
           카카오 로그인
