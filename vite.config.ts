@@ -18,7 +18,7 @@ export default defineConfig({
   plugins: [react(), svgr(), tailwindcss()],
   resolve: {
     alias: {
-      "@": path.resolve(dirname, "src"), // ✅ 경로 alias 등록
+      "@": path.resolve(dirname, "src"),
     },
   },
   test: {

@@ -16,7 +16,7 @@ export const NavItem = ({ label, icon, active, onClick }: NavItemProps) => {
       <img
         src={icon}
         alt={`icon-${label}`}
-        className={clsx("w-6", active ? "-gr-700" : "")}
+        className={clsx("w-6 h-6", active ? "-gr-700" : "")}
       />
       <span className={clsx("body-sm-500", active ? "text-gr-700" : "")}>
         {label}
