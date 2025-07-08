@@ -1,12 +1,12 @@
 import { MainHeader } from "../../components/common/system/header/MainHeader";
 import { MyPage_Text } from "../../components/common/contentcard/MyPage_Text";
 import { Profile } from "../../components/MyPage/Profile";
+import { MyPage as MyPageContentcard } from "../../components/common/contentcard/MyPage";
 
 import Btn_Static from "../../components/common/Btn_Static/Btn_Static";
 import PenIcon from "../../assets/icons/pen.svg";
 import PenDisabledIcon from "../../assets/icons/pen-gy-400.svg";
 
-import { MyPage as MyPageContentcard } from "../../components/common/contentcard/MyPage";
 
 interface MyPageProps {
   name: string;
