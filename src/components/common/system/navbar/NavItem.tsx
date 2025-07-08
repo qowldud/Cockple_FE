@@ -10,7 +10,7 @@ export interface NavItemProps {
 export const NavItem = ({ label, icon, active, onClick }: NavItemProps) => {
   return (
     <button
-      className="flex flex-col items-center gap-2 w-16 h-16 py-2 border-hard active:bg-gray-100"
+      className="flex flex-col items-center gap-2 py-2 w-16 border-hard active:bg-gray-100"
       onClick={onClick}
     >
       <img
