@@ -4,7 +4,7 @@ import GroupIcon from "@/assets/icons/collections.svg";
 import GroupIconFilled from "@/assets/icons/collections_filled.svg";
 import ChatIcon from "@/assets/icons/chat.svg";
 import ChatIconFilled from "@/assets/icons/chat_filled.svg";
-import HeartIcon from "@/assets/icons/heart.svg";
+import HeartBlackIcon from "@/assets/icons/heart_black.svg";
 import HeartIconFilled from "@/assets/icons/heart_filled.svg";
 import MypageIcon from "@/assets/icons/mypage.svg";
 import MypageIconFilled from "@/assets/icons/mypage_filled.svg";
@@ -40,7 +40,7 @@ const NAV_ITEMS = [
     label: "찜",
     icon: {
       filled: HeartIconFilled,
-      outline: HeartIcon,
+      outline: HeartBlackIcon,
     },
     path: "/liked",
   },
