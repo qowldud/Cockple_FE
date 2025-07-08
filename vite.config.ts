@@ -16,6 +16,12 @@ const dirname =
 // More info at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon
 export default defineConfig({
   plugins: [react(), svgr(), tailwindcss()],
+  resolve: {
+    alias: {
+      "@": "/src",
+    },
+    extensions: [".js", ".ts", ".jsx", ".tsx"],
+  },
   test: {
     projects: [
       {
@@ -27,6 +33,7 @@ export default defineConfig({
             configDir: path.join(dirname, ".storybook"),
           }),
         ],
+
         test: {
           name: "storybook",
           browser: {
