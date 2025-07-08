@@ -22,7 +22,7 @@ export const PageHeader = ({
     }
   };
   return (
-    <div className="flex items-center justify-between gap-3 w-full px-4">
+    <div className="flex items-center justify-between gap-3 w-full">
       <button type="button" className="p-1">
         <img
           src={ArrowLeft}

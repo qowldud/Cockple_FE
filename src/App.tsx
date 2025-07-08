@@ -8,7 +8,6 @@ import { ChatDetailPage } from "./pages/chat/ChatDetailPage";
 import { PrivateRoute } from "./layout/PrivateRoute";
 import { NavbarLayout } from "./layout/NavbarLayout";
 import { GroupPage } from "./pages/group";
-import { RecommendPage } from "./pages/home/RecommendPage";
 import { ExerciseMapPage } from "./pages/home/ExerciseMapPage";
 import { AlarmPage } from "./pages/alarm/AlarmPage";
 import { HomePage } from "./pages/home/HomePage";
@@ -31,6 +30,7 @@ import {
   MyPageMyGroupPage,
   MyPageMyMedalPage,
 } from "./pages/mypage";
+import { RecommendPage } from "./pages/home/RecommendPage";
 
 const router = createBrowserRouter([
   {
@@ -95,9 +95,12 @@ const router = createBrowserRouter([
 function App() {
   return (
     <div className="h-full w-full flex justify-center items-center">
-      <div className="w-full h-full max-w-[444px] bg-white">
+      <main
+        className="w-full h-full max-w-[444px] px-4 bg-white"
+        style={{ maxWidth: "444px" }}
+      >
         <RouterProvider router={router} />
-      </div>
+      </main>
     </div>
   );
 }
