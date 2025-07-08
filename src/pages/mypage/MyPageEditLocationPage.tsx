@@ -39,9 +39,22 @@ export const MyPageEditLocationPage = () => {
           }}
           iconSize="w-[1.125rem] h-[1.125rem] "
         />
+
+        {/* LocationList */}
+        <div className="mt-6">
+          <LocationList/> 
+          <div className="border border-[#E4E7EA] m-1" />
+        </div>
+        
+        <Btn_Static
+          kind="GR600" 
+          size="L"
+          label="이 위치로 위치 등록"
+          bgColor="bg-[#0B9A4E]"
+          textColor="text-white"
+          justify="justify-center"
+        /> 
       </div>
-      {/* LocationList */}
-      <LocationList/>
-    </>
+      </>
   );
 };
