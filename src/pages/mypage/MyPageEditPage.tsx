@@ -14,6 +14,7 @@ import { Select } from "../../components/MyPage/Select";
 import  { Location } from "../../components/common/contentcard/Location";
 
 import Profile from "../../assets/images/Profile_Image.png";
+
 interface MyPageEditProps {
   profileUrl?: string;
   name?: string;
@@ -175,7 +176,7 @@ export const MyPageEditPage = ({
             type="text"
             value={location}
             placeholder="건물명, 도로명으로 검색"
-            className="w-full border rounded-xl	p-2 pr-14 body-md-500 border-[#E4E7EA] focus:outline-none"
+            className="w-full border rounded-xl	p-2 pr-14 body-md-500  text-[#C0C4CD] border-[#E4E7EA] focus:outline-none"
           />
           <span className="absolute right-3 top-1/2 -translate-y-1/2">
             <Search className="w-6 h-6" />
