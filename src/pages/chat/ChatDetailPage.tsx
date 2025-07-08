@@ -1,26 +1,149 @@
-import { useParams, useNavigate } from "react-router-dom";
-import ArrowLeft from "../../assets/icons/arrow_left.svg";
+import React, { useState, useRef, useEffect } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import ChattingComponent from "./ChattingComponent";
+import Search from "../../assets/icons/search.svg";
+import ProfileImg from "../../assets/images/Profile_Image.png";
 import Clear_M from "../../components/common/Btn_Static/Icon_Btn/Clear_M";
-import ArrowLeftGY400 from "../../assets/icons/arrow_left-gy-400.svg";
+import ArrowLeft from "../../assets/icons/arrow_left.svg";
+import Camera from "../../assets/icons/camera.svg";
+import Imogi from "../../assets/icons/emoji_smile.svg";
+import Chat from "../../assets/icons/chat.svg";
+
+//Chatting 인터페이스 정의
+interface Chatting {
+  id: number;
+  nickname: string;
+  profile: string;
+  chatting: string;
+  time: string;
+  isMe: boolean;
+}
 
 export const ChatDetailPage = () => {
   const { chatId } = useParams(); // 채팅방 ID
+  const [input, setInput] = useState("");
+  const [isComposing, setIsComposing] = useState<boolean>(false);
   const navigate = useNavigate();
 
-  // 더미 메시지 (나중에 API로 대체 가능)
-  const dummyMessages = [
-    { id: 1, sender: "김세익스피어", content: "안녕하세요!", time: "07:31" },
+  //chattings 상태 변수와 setChattings 함수 정의
+  const [chattings, setChattings] = useState<Chatting[]>([
+    {
+      id: 1,
+      nickname: "양준석(팀장)",
+      profile: ProfileImg,
+      chatting: `안녕하세요 프론트엔드 팀원 여러분,
+                  다음 주 수요일에 예정된 정기 회의 관련 공지드립니다.
+
+                  이번 회의에서는 각 부서별로 발표가 있을 예정입니다. 주요
+                  내용은 아래와 같습니다:
+
+                  1. 운영팀: 최근 배달 효율성 개선 프로젝트 진행 상황 보고
+                  2. 마케팅팀: 신규 프로모션 캠페인 계획 및 기대 효과 발표
+                  3. 기술팀: 앱 업데이트 및 새로운 기능 소개
+                  4. 고객지원팀: 고객 만족도 조사 결과 및 개선 방안 발표
+
+                  우리 프론트엔드 팀에서는 새로운 사용자 인터페이스 개선 사항과
+                  현재 진행 중인 프로젝트의 진척도를 공유할 예정입니다. 각
+                  팀원은 본인의 작업 부분에 대해 간단한 업데이트를 준비해
+                  주세요.`,
+      time: "17:06",
+      isMe: false,
+    },
     {
       id: 2,
-      sender: "김세익스피어",
-      content: "오늘 운동 오실래요?",
-      time: "07:32",
+      nickname: "아무개",
+      profile: ProfileImg,
+      chatting: `신규 개발 중인 개인정보 수정 탭의 사이드 탭의 UI 개발 을 맡고
+                  있는 해당 팀원 분들은 저에게 진척 사항 공유 부탁드립니다~ 발표
+                  자료에 포함시킬 예정입니다.`,
+      time: "17:07",
+      isMe: true,
     },
-    { id: 3, sender: "나", content: "좋아요!", time: "07:33" },
-  ];
+    {
+      id: 3,
+      nickname: "김민수",
+      profile: ProfileImg,
+      chatting: `저랑 이지현 팀원이 개발 중에 있습니다! 진척 상황 노션에
+                  정리하여 곧 공유드리겠습니다!`,
+      time: "17:08",
+      isMe: false,
+    },
+    {
+      id: 4,
+      nickname: "아무게",
+      profile: ProfileImg,
+      chatting: `신규 개발 중인 개인정보 수정 탭의 사이드 탭의 UI 개발 을 맡고
+                  있는 해당 팀원 분들은 저에게 진척 사항 공유 부탁드립니다~ 발표
+                  자료에 포함시킬 예정입니다.`,
+      time: "17:09",
+      isMe: true,
+    },
+  ]);
+
+  //chatEndRef ref 변수 정의
+  const chatEndRef = useRef<HTMLDivElement>(null);
+
+  //chattings 상태가 변경될 때마다 chatEndRef를 이용해 스크롤을 끝으로 이동
+  useEffect(() => {
+    //chatEndRef.current 는 useRef 훅을 통해 참조된 현재 <div> 요소를 가리킴.
+    //scrollIntoView 메서드는 해당 요소를 스크롤하여 사용자 뷰포트 내에 도이도록 한다.
+    //{ behavior: "smooth" } 옵션을 사용하여 스크롤이 부드럽게 진행되도록 설정한다.
+    chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [chattings]);
+
+  //메세지 전송 핸들러
+  const handleSendMessage = () => {
+    if (input.trim()) {
+      setChattings(prevChattings => {
+        //이전 채팅 배열이 비어있는지 확인하고, 비어 있지 않으면 마지막 채팅의 id를 가져옴
+        const newId =
+          prevChattings.length > 0
+            ? prevChattings[prevChattings.length - 1].id + 1
+            : 1;
+        return [
+          ...prevChattings,
+          {
+            id: newId,
+            nickname: "아무개",
+            profile: ProfileImg,
+            chatting: input,
+            time: new Date().toLocaleDateString(),
+            isMe: true,
+          },
+        ];
+      });
+      setInput("");
+    }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLAreaElement>) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      handleSendMessage();
+    }
+  };
+  const handleKeyUp = (e: React.KeyboardEvent<HTMLTemplateElement>) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      handleSendMessage();
+    }
+  };
+
+  //입력 구성 시작 핸들러
+  const handleCompositionStart = () => {
+    setIsComposing(true);
+  };
+
+  //입력 구성 끝 핸들러
+  const handleCompositionEnd = (
+    e: React.CompositionEvent<HTMLTextAreaElement>,
+  ) => {
+    setIsComposing(false);
+    setInput(e.currentTarget.value);
+  };
 
   return (
-    <div className="flex flex-col h-screen bg-[#E2F3E9]">
+    <div className="flex flex-col h-screen">
       {/* 상단 헤더 */}
       <div className="h-[3.5rem] flex items-center px-4 gap-3 shrink-0 bg-white">
         <Clear_M
@@ -36,41 +159,77 @@ export const ChatDetailPage = () => {
       </div>
 
       {/* 메시지 영역 */}
-      <section className="flex-1 justify-end items-center gap-5 shrink-0 overflow-y-auto p-4 space-y-3">
-        {dummyMessages.map(msg => (
-          <div key={msg.id}>
-            {msg.sender !== "나" && (
-              <p className="text-xs text-gray-500 mb-1">{msg.sender}</p>
-            )}
-            <div
-              className={`inline-block px-3 py-2 rounded-xl text-sm ${
-                msg.sender === "나"
-                  ? "bg-white self-end ml-auto"
-                  : "bg-white text-left"
-              }`}
-            >
-              {msg.content}
-            </div>
-            <p
-              className={`text-[0.625rem] mt-1 text-gray-400 ${
-                msg.sender === "나" ? "text-right" : "text-left"
-              }`}
-            >
-              {msg.time}
-            </p>
-          </div>
-        ))}
-      </section>
+      <div className="flex-1 overflow-y-auto [&::-webkit-scrollbar]:hidden bg-gr-200">
+        <div className="flex flex-col gap-5 shrink-0 p-4">
+          {chattings.map(({ id, nickname, chatting, time, isMe }) => (
+            <ChattingComponent
+              key={id}
+              nickname={nickname}
+              chatting={chatting}
+              time={time}
+              isMe={isMe}
+            />
+          ))}
+          <div className="h-5" ref={chatEndRef}></div>
+        </div>
+      </div>
 
       {/* 입력창 */}
-      <div className="h-[3.5rem] bg-white flex items-center px-4 gap-2 border-t">
-        <button>📷</button>
-        <input
-          className="flex-1 border rounded-[0.75rem] px-3 py-1"
-          placeholder="메시지를 입력하세요"
+      <div className="flex px-4 pt-2 pb-8 items-center justify-center gap-2 bg-white shadow-ds50">
+        <Clear_M
+          iconMap={{
+            disabled: Camera,
+            default: Camera,
+            pressing: Camera,
+            clicked: Camera,
+          }}
+          onClick={() => console.log("clicked")}
         />
-        <button>😊</button>
-        <button>📩</button>
+        <div className="flex h-14 py-[0.625rem] px-3 flex-end items-center gap-2">
+          {/* <input
+            className="outline-0"
+            onKeyDown={handleKeyDown}
+            // onKeyDown={e => {
+            //   if (e.key === "Enter" && !e.shiftKey) {
+            //     e.preventDefault();
+            //     handleSendMessage();
+            //   }
+            // }}
+            onKeyUp={handleKeyUp}
+            onCompositionStart={handleCompositionStart}
+            onCompositionEnd={handleCompositionEnd}
+            onClick={handleSendMessage}
+          /> */}
+          <input
+            type="text"
+            value={input}
+            onChange={e => setInput(e.target.value)}
+            onKeyDown={handleKeyDown}
+            onCompositionStart={handleCompositionStart}
+            onCompositionEnd={handleCompositionEnd}
+            className="outline-0"
+          />
+
+          <Clear_M
+            iconMap={{
+              disabled: Imogi,
+              default: Imogi,
+              pressing: Imogi,
+              clicked: Imogi,
+            }}
+            onClick={() => console.log("clicked")}
+          />
+        </div>
+        {/* <button onClick={handleSendMessage}>입력</button> */}
+        <Clear_M
+          iconMap={{
+            disabled: Chat,
+            default: Chat,
+            pressing: Chat,
+            clicked: Chat,
+          }}
+          onClick={() => console.log("clicked")}
+        />
       </div>
     </div>
   );
