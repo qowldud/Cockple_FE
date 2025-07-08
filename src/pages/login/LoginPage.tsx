@@ -35,7 +35,7 @@ export const LoginPage = () => {
           className="flex-1"
         >
           {TextMap.map((item, index) => (
-            <SwiperSlide key={index}>
+            <SwiperSlide key={index} className="pb-6">
               <LoginSwiping
                 title={item.title}
                 title2={item.title2}
