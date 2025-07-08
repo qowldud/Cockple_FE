@@ -16,6 +16,11 @@ const dirname =
 // More info at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon
 export default defineConfig({
   plugins: [react(), svgr(), tailwindcss()],
+  resolve: {
+    alias: {
+      "@": path.resolve(dirname, "src"), // ✅ 경로 alias 등록
+    },
+  },
   test: {
     projects: [
       {
