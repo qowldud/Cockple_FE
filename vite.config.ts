@@ -23,6 +23,9 @@ export default defineConfig({
     },
     extensions: [".js", ".ts", ".jsx", ".tsx"],
   },
+  server: {
+    host: true,
+  },
   test: {
     projects: [
       {
