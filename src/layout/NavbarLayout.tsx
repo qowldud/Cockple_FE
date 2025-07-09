@@ -4,7 +4,7 @@ import { Navbar } from "../components/common/system/navbar/Navbar";
 export const NavbarLayout = () => {
   return (
     <div className="h-full">
-      <div className="h-full pb-26">
+      <div className="h-auto pb-25 bg-white">
         <Outlet />
       </div>
       <Navbar />

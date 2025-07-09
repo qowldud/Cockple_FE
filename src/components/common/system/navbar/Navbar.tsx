@@ -58,7 +58,7 @@ export const Navbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
   return (
-    <nav className="fixed w-[calc(100%-2rem)] max-w-[412px] bottom-0 flex pt-2 pb-8 justify-between box-border">
+    <nav className="fixed w-full max-w-[444px] bottom-0 -ml-4 flex px-4 pt-2 pb-8 justify-between box-border bg-white">
       {NAV_ITEMS.map(item => {
         const isActive = location.pathname === item.path;
         const IconComponent = isActive ? item.icon.filled : item.icon.outline;
