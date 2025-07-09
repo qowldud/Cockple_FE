@@ -39,6 +39,17 @@
   /* 그라디언트 */
   --color-gradient-ye-gr: linear-gradient(90deg, #fcd55c 0%, #1abb65 100%);
   --color-gradient-gy: linear-gradient(83deg, #d6dae0 9.02%, #a8aebd 90.81%);
+  --color-gradient-home-header:
+    linear-gradient(
+      180deg,
+      #49e792 -33.96%,
+      rgba(176, 211, 119, 0.35) 58.02%,
+      rgba(227, 219, 109, 0.23) 72.17%,
+      rgba(255, 224, 129, 0) 99.83%
+    ),
+    #fcfcff;
+
+  /* Drop Shadows */
   --color-gradient-white_100_0: linear-gradient(
     180deg,
     #fcfcff 10%,
@@ -151,6 +162,14 @@
     letter-spacing: -0.025rem;
   }
 
+  .body-lg-700 {
+    font-family: var(--font-family-suit);
+    font-size: 1.125rem;
+    font-weight: 700;
+    line-height: 156%;
+    letter-spacing: -0.0225rem;
+  }
+
   .body-lg-500 {
     font-family: var(--font-family-suit);
     font-size: 1.125rem;
@@ -165,6 +184,14 @@
     font-weight: 400;
     line-height: 156%;
     letter-spacing: -0.0225rem;
+  }
+
+  .body-md-700 {
+    font-family: var(--font-family-suit);
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 150%;
+    letter-spacing: -0.02rem;
   }
 
   .body-md-500 {

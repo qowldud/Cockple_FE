@@ -17,7 +17,7 @@ export const MainHeader = ({
   return (
     <div
       className={clsx(
-        "flex justify-between items-center w-full px-4 h-14",
+        "fixed top-0 flex w-full max-w-[444px] justify-between items-center px-4 h-14",
         background === "white" ? "bg-white" : "bg-transparent",
       )}
     >
