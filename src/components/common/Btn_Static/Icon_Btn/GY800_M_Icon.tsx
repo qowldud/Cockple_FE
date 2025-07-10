@@ -7,19 +7,19 @@ type BtnStatus = "disabled" | "default" | "pressing" | "clicked";
 
 interface GY800MIconProps {
   initialStatus?: BtnStatus;
-  iconMap?: Partial<Record<BtnStatus, string>>; // 상태별 아이콘
   onClick?: () => void;
+  iconMap?: Partial<Record<BtnStatus, string>>; // 상태별 아이콘
 }
 
 const GY800_M_Icon = ({
   initialStatus = "default",
-  iconMap,
   onClick,
+  iconMap,
 }: GY800MIconProps) => {
   const [status, setStatus] = useState<BtnStatus>(initialStatus);
+  const currentIcon = iconMap?.[status];
 
   const isDisabled = status === "disabled";
-  const currentIcon = iconMap?.[status];
 
   const handleMouseDown = () => {
     if (!isDisabled) setStatus("pressing");
@@ -63,13 +63,11 @@ const GY800_M_Icon = ({
       onMouseDown={handleMouseDown}
       onMouseUp={handleMouseUp}
     >
-      {currentIcon && (
-        <img
-          src={currentIcon}
-          alt="삭제"
-          className="w-[1.5rem] h-[1.5rem] aspect-square"
-        />
-      )}
+      <img
+        src={`${currentIcon ? currentIcon : getIcon()}`}
+        alt="삭제"
+        className="w-[1.5rem] h-[1.5rem] aspect-square"
+      />
     </button>
   );
 };

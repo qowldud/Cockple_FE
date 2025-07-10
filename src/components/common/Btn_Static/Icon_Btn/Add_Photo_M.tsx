@@ -1,6 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Camera from "../../../../assets/icons/camera.svg";
 import CameraGY400 from "../../../../assets/icons/camera_gy_400.svg";
+import Clear_M from "./Clear_M";
+
+//아이콘
+import Delete from "../../../../assets/icons/dismiss_gy800.svg";
 
 type BtnStatus = "disabled" | "default" | "pressing" | "clicked";
 
@@ -14,7 +18,11 @@ const Add_Photo_M = ({ initialStatus = "default" }: AddPhotoMProps) => {
   const [images, setImages] = useState<string[]>([]);
   const [status, setStatus] = useState<BtnStatus>(initialStatus);
 
-  // 이미지 개수에 따라 상태 자동 갱신
+  const scrollRef = useRef<HTMLDivElement | null>(null);
+  const isDragging = useRef(false);
+  const startX = useRef(0);
+  const scrollLeft = useRef(0);
+
   useEffect(() => {
     if (images.length >= MAX_IMAGES) {
       setStatus("disabled");
@@ -41,46 +49,73 @@ const Add_Photo_M = ({ initialStatus = "default" }: AddPhotoMProps) => {
     const updated = [...images];
     updated.splice(index, 1);
     setImages(updated);
-    //setStatus("default");
   };
 
-  const getIcon = () => {
-    switch (status) {
-      case "disabled":
-        return CameraGY400;
-      default:
-        return Camera;
-    }
+  const handleMouseDown = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (!scrollRef.current) return;
+    isDragging.current = true;
+    scrollRef.current.classList.add("cursor-grabbing");
+    startX.current = e.pageX - scrollRef.current.offsetLeft;
+    scrollLeft.current = scrollRef.current.scrollLeft;
   };
 
-  const getBg = () => {
-    return status === "pressing" ? "bg-gy-100" : "";
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!isDragging.current || !scrollRef.current) return;
+    e.preventDefault();
+    const x = e.pageX - scrollRef.current.offsetLeft;
+    const walk = x - startX.current;
+    scrollRef.current.scrollLeft = scrollLeft.current - walk;
   };
 
-  const getTextColor = () => {
-    return status === "disabled" ? "text-gy-400" : "text-black";
+  const handleMouseUp = () => {
+    isDragging.current = false;
+    scrollRef.current?.classList.remove("cursor-grabbing");
   };
 
+  const getIcon = () => (status === "disabled" ? CameraGY400 : Camera);
+  const getTextColor = () =>
+    status === "disabled" ? "text-gy-400" : "text-black";
   const isDisabled = status === "disabled" || images.length >= MAX_IMAGES;
 
   return (
-    <div className={`flex items-start self-stretch gap-3 overflow-x-auto `}>
-      {/* 상태 기반 업로드 버튼 */}
+    <div
+      ref={scrollRef}
+      className="flex gap-3 overflow-x-auto no-scrollbar select-none cursor-grab"
+      onMouseDown={handleMouseDown}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseUp}
+      onMouseUp={handleMouseUp}
+      onDragStart={e => e.preventDefault()}
+    >
+      {/* 스크롤바 숨기기 */}
+      <style>
+        {`
+          .no-scrollbar::-webkit-scrollbar {
+            display: none;
+          }
+          .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+          }
+        `}
+      </style>
+
+      {/* 업로드 버튼 */}
       <label
-        className={`flex flex-col justify-center items-center gap-1 w-[6.25rem] h-[6.25rem] aspect-square border border-soft border-gy-200 ${getBg()} 
-            ${isDisabled ? "cursor-not-allowed" : "cursor-pointer"}`}
+        className={`flex flex-col justify-center items-center gap-1 w-[100px] h-[100px] rounded-xl border ${
+          isDisabled
+            ? "cursor-not-allowed bg-gray-100 border-gray-300"
+            : "cursor-pointer border-gray-300"
+        } flex-shrink-0`}
         onMouseDown={() => !isDisabled && setStatus("pressing")}
         onMouseUp={() => !isDisabled && setStatus("clicked")}
         onMouseLeave={() => !isDisabled && setStatus("default")}
       >
-        <img
-          src={getIcon()}
-          alt="upload"
-          className="flex w-[1.5rem] h-[1.5rem] shrink-0 aspect-square"
-        />
-        <div className={`body-rg-500 ${getTextColor()}`}>
+        <img src={getIcon()} alt="upload" className="w-6 h-6" />
+        <span className={`text-sm ${getTextColor()}`}>
           {images.length} / {MAX_IMAGES}
-        </div>
+        </span>
         <input
           type="file"
           accept="image/*"
@@ -94,19 +129,30 @@ const Add_Photo_M = ({ initialStatus = "default" }: AddPhotoMProps) => {
       {images.map((img, index) => (
         <div
           key={index}
-          className="relative w-[6.25rem] h-[6.25rem] flex-shrink-0 rounded-[0.75rem] overflow-hidden"
+          className="relative w-[100px] h-[100px] rounded-xl overflow-hidden flex-shrink-0"
         >
           <img
             src={img}
             alt={`uploaded-${index}`}
             className="w-full h-full object-cover"
           />
-          <button
+          {/* <button
             onClick={() => handleDeleteImage(index)}
-            className="absolute top-1 right-1 text-white"
+            className="absolute top-1 right-1 w-5 h-5 text-white text-xs rounded-full bg-black bg-opacity-60"
           >
             X
-          </button>
+          </button> */}
+          <div className="absolute top-1 right-1 z-10">
+            <Clear_M
+              onClick={() => handleDeleteImage(index)}
+              iconMap={{
+                disabled: Delete,
+                default: Delete,
+                pressing: Delete,
+                clicked: Delete,
+              }}
+            />
+          </div>
         </div>
       ))}
     </div>
