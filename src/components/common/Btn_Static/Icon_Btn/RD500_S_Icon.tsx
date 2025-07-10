@@ -1,21 +1,22 @@
-// components/Btn_Static/Text/RD500_M.tsx
 import React, { useState } from "react";
-import ArrowLeftWhite from "../../../../assets/icons/arrow_left_white.svg";
-import ArrowLeftGY400 from "../../../../assets/icons/arrow_left-gy-400.svg";
+import HeartGY400 from "../../../../assets/icons/heart_GY400.svg";
+import HeartGY300 from "../../../../assets/icons/heart_GY300.svg";
+import HeartFilledGY300 from "../../../../assets/icons/heart_filled_GY300.svg";
+import HeartSystemError from "../../../../assets/icons/heart_filled_systemError.svg";
 
 type BtnStatus = "disabled" | "default" | "pressing" | "clicked";
 
-interface GY800MProps {
+interface RD500SProps {
   initialStatus?: BtnStatus;
   iconMap?: Partial<Record<BtnStatus, string>>; // 상태별 아이콘
   onClick?: () => void;
 }
 
-const GY800_M = ({
+const RD500_S_Icon = ({
   initialStatus = "default",
   iconMap,
   onClick,
-}: GY800MProps) => {
+}: RD500SProps) => {
   const [status, setStatus] = useState<BtnStatus>(initialStatus);
 
   const isDisabled = status === "disabled";
@@ -32,32 +33,24 @@ const GY800_M = ({
     }
   };
 
-  const getBg = () => {
-    switch (status) {
-      case "pressing":
-        return "bg-black-60";
-      case "disabled":
-      case "default":
-      case "clicked":
-      default:
-        return "bg-black-20";
-    }
-  };
-
   const getIcon = () => {
     switch (status) {
       case "disabled":
-        return ArrowLeftGY400;
+        return HeartGY400;
+      case "default":
+        return HeartGY300;
+      case "pressing":
+        return HeartFilledGY300;
+      case "clicked":
+        return HeartSystemError;
       default:
-        return ArrowLeftWhite;
     }
   };
 
   return (
     <button
       className={`
-        inline-flex p-1 items-center gap-3 border-hard 
-        ${getBg()} 
+        inline-flex p-1 items-center gap-1 border-hard
         ${isDisabled ? "cursor-not-allowed" : "cursor-pointer"}`}
       disabled={status === "disabled"}
       onMouseDown={handleMouseDown}
@@ -67,11 +60,11 @@ const GY800_M = ({
         <img
           src={currentIcon}
           alt="삭제"
-          className="w-[1.5rem] h-[1.5rem] aspect-square"
+          className="w-[1.125rem] h-[1.125rem] aspect-square"
         />
       )}
     </button>
   );
 };
 
-export default GY800_M;
+export default RD500_S_Icon;
