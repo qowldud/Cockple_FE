@@ -1,6 +1,8 @@
+import { useNavigate } from "react-router-dom";
 import Grad_GR400_L from "../../components/common/Btn_Static/Text/Grad_GR400_L";
 
 export const OnboardingPage = () => {
+  const navigate = useNavigate();
   return (
     <>
       <div className=" w-full min-h-screen flex flex-col">
@@ -21,7 +23,10 @@ export const OnboardingPage = () => {
             <p className="header-h4 mb-20">닉네임</p>
           </div>
         </div>
-        <div className="flex items-center justify-center header-h4 ">
+        <div
+          className="flex items-center justify-center header-h4 "
+          onClick={() => navigate("info")}
+        >
           <Grad_GR400_L label="회원 정보 입력" />
         </div>
       </div>
