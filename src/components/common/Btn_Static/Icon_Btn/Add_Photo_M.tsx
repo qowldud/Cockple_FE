@@ -136,13 +136,7 @@ const Add_Photo_M = ({ initialStatus = "default" }: AddPhotoMProps) => {
             alt={`uploaded-${index}`}
             className="w-full h-full object-cover"
           />
-          {/* <button
-            onClick={() => handleDeleteImage(index)}
-            className="absolute top-1 right-1 w-5 h-5 text-white text-xs rounded-full bg-black bg-opacity-60"
-          >
-            X
-          </button> */}
-          <div className="absolute top-1 right-1 z-10">
+          <div className="absolute top-0 right-0 z-10">
             <Clear_M
               onClick={() => handleDeleteImage(index)}
               iconMap={{
