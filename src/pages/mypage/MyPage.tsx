@@ -21,7 +21,6 @@ interface MyPageProps {
   bronzeMedals?: number;
   disabled?: boolean;
 }
-
 export const MyPage = ({
   name,
   gender,
@@ -29,14 +28,14 @@ export const MyPage = ({
   birth,
   imageSrc,
 
-  totalMedalsCount = 0, //메달이 0개(초기)
+  totalMedalsCount = 0,
   goldMedals = 0,
   silverMedals = 0,
   bronzeMedals = 0,
   disabled = false,
 }: MyPageProps) => {
   return (
-    <div className="flex flex-col p-4">
+    <div className="flex flex-col p-4 pb-26 overflow-auto">
       <div className="gap-[1.25rem]">
         <MainHeader hasNotification={true} />
         <Profile
@@ -48,7 +47,6 @@ export const MyPage = ({
         />
       </div>
 
-      {/* 정보 수정하기 버튼 */}
       <div className="mt-4">
         <Btn_Static
           kind="White"
@@ -67,8 +65,6 @@ export const MyPage = ({
       <div className="my-8 flex flex-col gap-4">
         <MyPage_Text textLabel="내 모임" numberValue={0} />
         <MyPage_Text textLabel="내 운동" numberValue={0} />
-        
-        {/* 메달 섹션 렌더링 */}
         <MyPageContentcard
           totalMedalsCount={totalMedalsCount}
           goldMedals={goldMedals}
@@ -78,7 +74,6 @@ export const MyPage = ({
         />
       </div>
 
-      {/* 공지사항, 이용약관, 설정 버튼 */}
       <div className="gap-[0.25rem]">
         <Btn_Static kind="White" size="L" label="공지사항" justify="flex-start" />
         <Btn_Static kind="White" size="L" label="이용약관" justify="flex-start" />
@@ -87,3 +82,4 @@ export const MyPage = ({
     </div>
   );
 };
+

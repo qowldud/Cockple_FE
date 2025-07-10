@@ -7,3 +7,5 @@ export { MyPageMyExercisePage } from "./MyPageMyExercisePage";
 export { MyPageMyGroupPage } from "./MyPageMyGroupPage";
 export { MyPageMyMedalPage } from "./MyPageMyMedalPage";
 export { MyPageMedalAddPage } from "./MyPageMedalAddPage";
+
+export { MyPageAddressSearchPage } from "./MyPageAddressSearchPage";

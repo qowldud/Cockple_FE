@@ -75,7 +75,7 @@ export const MyPageEditPage = ({
           alt="profile"
           className="w-24 h-24 rounded-full object-cover"
         />
-        <div className="absolute bottom-0 right-[calc(50%-40px)] bg-white border border-gray-300 rounded-full p-1">
+        <div className="absolute bottom-0 right-[calc(50%-40px)] bg-white border shadow-ds100 rounded-full p-1">
           <Camer_gy_400 className="w-4 h-4" />
         </div>
       </div>

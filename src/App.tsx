@@ -30,6 +30,7 @@ import {
   MyPageMyExercisePage,
   MyPageMyGroupPage,
   MyPageMyMedalPage,
+  MyPageAddressSearchPage,
 } from "./pages/mypage";
 
 const router = createBrowserRouter([
@@ -75,6 +76,7 @@ const router = createBrowserRouter([
     children: [
       { path: "/mypage/edit", element: <MyPageEditPage /> },
       { path: "/mypage/edit/location", element: <MyPageEditLocationPage /> },
+      { path: "/mypage/edit/location/address", element: <MyPageAddressSearchPage /> },
       { path: "/mypage/mygroup", element: <MyPageMyGroupPage /> },
       { path: "/mypage/myexercise", element: <MyPageMyExercisePage /> },
       {
