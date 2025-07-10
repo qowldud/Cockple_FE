@@ -46,7 +46,7 @@ export const MyPageEditPage = ({
 
   // export const MyPageEditPage = () => {
   // // 임시값 직접 선언
-  // const profileUrl = Profile;  // 이미지 import 되어 있다고 가정
+  // const profileUrl = Profile; 
   // const initialName = "김태연";
   // const gender = "male";
   // const birth = "2000.03.12";

@@ -20,7 +20,7 @@ export const MyPageAddressSearchPage = ({
 }: MyPageAddressSearchPageProps) => {
 
   return (
-    <div className="flex flex-col h-full w-full max-w-[23.4375rem]relativ">
+    <div className="flex flex-col h-full w-full max-w-[23.4375rem] relativ">
       <PageHeader title="주소 검색" />
 
       {/* 주소 검색창 */}
