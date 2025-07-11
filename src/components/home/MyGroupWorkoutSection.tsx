@@ -5,8 +5,10 @@ import AddIcon from "@/assets/icons/add.svg";
 import { groupExerciseData } from "./mock/homeMock";
 import Btn_Static from "../common/Btn_Static/Btn_Static";
 import type { GroupExerciseItem } from "../../pages/home/HomePage";
+import { useNavigate } from "react-router-dom";
 
 export const MyGroupWorkoutSection = () => {
+  const navigate = useNavigate();
   const data: GroupExerciseItem[] = groupExerciseData;
   return (
     <div className="flex flex-col gap-3 w-full">
@@ -20,11 +22,12 @@ export const MyGroupWorkoutSection = () => {
               pressing: ArrowRight,
               clicked: ArrowRight,
             }}
+            onClick={() => navigate("/mygroup-exercise")}
           />
         )}
       </div>
       {data.length > 0 ? (
-        <div className="flex overflow-x-scroll gap-1">
+        <div className="flex overflow-x-scroll gap-1 scrollbar-hide">
           {data.map(item => (
             <Exercise_S
               key={item.id}

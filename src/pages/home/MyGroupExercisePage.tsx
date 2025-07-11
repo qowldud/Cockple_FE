@@ -1,3 +1,3 @@
 export const MyGroupExercisePage = () => {
-  return <div>MyGroupExercisePage</div>;
+  return <div className=""></div>;
 };
