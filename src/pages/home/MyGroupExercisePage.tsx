@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Exercise_M } from "../../components/common/contentcard/Exercise_M";
-import { SortButton } from "../../components/common/SortButton";
+import { SortButton } from "../../components/home/SortButton";
 import { PageHeader } from "../../components/common/system/header/PageHeader";
 import { groupExerciseData } from "../../components/home/mock/homeMock";
 import { SortBottomSheet } from "../../components/home/SortBottomSheet";
@@ -10,7 +10,7 @@ export const MyGroupExercisePage = () => {
   const [sortOption, setSortOption] = useState("최신순");
   const data = groupExerciseData;
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col -mx-4 px-4 bg-white">
       <PageHeader title="내 모임 운동" />
       <div className="flex flex-col gap-3 my-2">
         <div className="h-17">{/* 달력 */}</div>
@@ -24,9 +24,11 @@ export const MyGroupExercisePage = () => {
 
         <div className="flex flex-col gap-3">
           {data.map(item => (
-            <div className="flex flex-col pb-3 border-b-[1px] border-gy-200">
+            <div
+              className="flex flex-col pb-3 border-b-[1px] border-gy-200"
+              key={item.id}
+            >
               <Exercise_M
-                key={item.id}
                 title={item.title}
                 date={item.date}
                 time={item.time}

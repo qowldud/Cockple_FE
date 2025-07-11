@@ -2,14 +2,21 @@ import ArrowDown from "@/assets/icons/arrow_down.svg";
 
 interface SortButtonProps {
   label: string;
+  disabled?: false;
   open?: boolean;
   onClick?: () => void;
 }
 
-export const SortButton = ({ label, open, onClick }: SortButtonProps) => {
+export const SortButton = ({
+  label,
+  open,
+  onClick,
+  disabled,
+}: SortButtonProps) => {
   return (
-    <div
-      className="flex items-center gap-2 px-2 py-1 body-rg-500"
+    <button
+      className="flex items-center gap-2 px-2 py-1 body-rg-500 disabled:text-gy-400 active:bg-gy-100 active:border-hard"
+      disabled={disabled}
       onClick={onClick}
     >
       {label}{" "}
@@ -18,6 +25,6 @@ export const SortButton = ({ label, open, onClick }: SortButtonProps) => {
       >
         <img src={ArrowDown} alt="arrow" className="w-4" />
       </span>
-    </div>
+    </button>
   );
 };

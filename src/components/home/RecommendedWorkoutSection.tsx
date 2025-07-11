@@ -3,7 +3,9 @@ import Clear_XS from "../common/Btn_Static/Icon_Btn/Clear_XS";
 import { Exercise_M } from "../common/contentcard/Exercise_M";
 import type { GroupExerciseItem } from "../../pages/home/HomePage";
 import { groupExerciseData } from "./mock/homeMock";
+import { useNavigate } from "react-router-dom";
 export const RecommendedWorkoutSection = () => {
+  const navigate = useNavigate();
   const data: GroupExerciseItem[] = groupExerciseData;
   return (
     <div className="flex flex-col gap-3 w-full">
@@ -16,6 +18,7 @@ export const RecommendedWorkoutSection = () => {
             pressing: ArrowRight,
             clicked: ArrowRight,
           }}
+          onClick={() => navigate("/recommend")}
         />
       </div>
 
