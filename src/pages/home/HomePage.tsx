@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { MainHeader } from "../../components/common/system/header/MainHeader";
 import { WorkoutDayEntry } from "../../components/home/WorkoutDayEntry";
 import Clear_XS from "../../components/common/Btn_Static/Icon_Btn/Clear_XS";
@@ -39,9 +39,21 @@ export const HomePage = () => {
   const [exerciseData, setExerciseData] = useState<DailyExerciseItem[] | null>(
     data,
   );
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollY = window.scrollY;
+      setIsScrolled(scrollY > 80);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
     <div className="flex flex-col justify-center items-center gap-vertical-section">
-      <MainHeader background="clear" />
+      <MainHeader background={isScrolled ? "white" : "clear"} />
       {/* 배경색 적용 */}
       <div
         className="w-full min-h-94 flex flex-col gap-vertical-section"
