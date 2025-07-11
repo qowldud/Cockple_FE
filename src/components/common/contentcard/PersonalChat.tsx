@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Num_Noti_99 from "../../../assets/icons/Num_Noti_99.svg?react";
+import { Num_Noti } from "./Num_Noti";
 
 interface PersonalChatProps {
   imageSrc: string;
@@ -59,7 +59,7 @@ export const PersonalChat = ({
       <div className="flex flex-col justify-between w-[3rem] h-[4rem] items-center">
         <p className="body-sm-400 text-[#9195A1]">{lastMessageTime}</p> 
         <div className="flex items-center justify-center w-full">
-          {unreadCount > 0 && <Num_Noti_99 className="w-[1.9375rem] h-[1.25rem]" />}
+          {unreadCount > 0 && <Num_Noti unreadCount={unreadCount} />}
         </div>
       </div>
     </div>

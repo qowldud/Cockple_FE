@@ -3,9 +3,9 @@ import { useState } from "react";
 import ArrowDown from "@/assets/icons/arrow_down.svg?react";
 import CheckIcon from "@/assets/icons/check.svg?react"; 
 
-const sortOptions = ["최신순", "오래된 순", "운동 많은 순"];
+const sortOptions = ["최신순", "오래된 순"];
 
-export const Sort = () => {
+export const MyExerciseSort = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [selected, setSelected] = useState("최신순");
 

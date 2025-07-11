@@ -1,9 +1,13 @@
+import { useState } from "react";
 import { PageHeader } from "../../components/common/system/header/PageHeader";
-import CheckCircled from "../../assets/icons/check_circled.svg?react";
-import CheckCircledFilled from "../../assets/icons/check_circled_filled.svg?react";
 import { Sort } from "../../components/MyPage/Sort";
 import { Group_M } from "../../components/common/contentcard/Group_M";
-import { useState } from "react";
+import { MyGroupNone } from "../../components/MyPage/MyGroupNone";
+
+import CheckCircled from "../../assets/icons/check_circled.svg?react";
+import CheckCircledFilled from "../../assets/icons/check_circled_filled.svg?react";
+
+
 
 interface GroupMProps {
   title: string;
@@ -55,7 +59,7 @@ export const MyPageMyGroupPage = ({ groups }: MyPageMyGroupPageProps) => {
               </div>
             ))
           ) : (
-            <p className="text-gray-400 text-sm text-center">표시할 모임이 없습니다.</p>
+            <MyGroupNone/>
           )}
         </div>
 
