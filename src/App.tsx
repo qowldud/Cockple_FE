@@ -33,6 +33,7 @@ import {
 import { RecommendPage } from "./pages/home/RecommendPage";
 import { GroupChatDetailPage } from "./pages/chat/GroupChatDetailPage";
 import { PersonalChatDetailPage } from "./pages/chat/PersonalChatDetailPage";
+import { MyGroupExercisePage } from "./pages/home/MyGroupExercisePage";
 import OnboardingLayout from "./pages/onboarding/OnBoardingLayout";
 import { OnboardingAddressSearchPage } from "./pages/onboarding/OnboardingAddressSearchPage";
 import { OnboardingConfirmStartPage } from "./pages/onboarding/OnBoardingConfirmStartPage";
@@ -99,6 +100,7 @@ const router = createBrowserRouter([
       { path: "/mypage/mymedal/:medalId", element: <MyPageMedalDetailPage /> },
       { path: "/mypage/mymedal/add", element: <MyPageMedalAddPage /> },
       { path: "/recommend", element: <RecommendPage /> },
+      { path: "/mygroup-exercise", element: <MyGroupExercisePage /> },
       { path: "/exercise-map", element: <ExerciseMapPage /> },
       // { path: "/chat/:chatId", element: <ChatDetailPage /> },
       { path: "/chat/group/:chatId", element: <GroupChatDetailPage /> },
