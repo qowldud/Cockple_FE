@@ -8,12 +8,19 @@ type BtnStatus = "disabled" | "default" | "pressing" | "clicked";
 
 interface RD500SProps {
   initialStatus?: BtnStatus;
+  iconMap?: Partial<Record<BtnStatus, string>>; // 상태별 아이콘
+  onClick?: () => void;
 }
 
-const RD500_S = ({ initialStatus = "default" }: RD500SProps) => {
+const RD500_S = ({
+  initialStatus = "default",
+  iconMap,
+  onClick,
+}: RD500SProps) => {
   const [status, setStatus] = useState<BtnStatus>(initialStatus);
 
   const isDisabled = status === "disabled";
+  const currentIcon = iconMap?.[status];
 
   const handleMouseDown = () => {
     if (!isDisabled) setStatus("pressing");
@@ -22,6 +29,7 @@ const RD500_S = ({ initialStatus = "default" }: RD500SProps) => {
   const handleMouseUp = () => {
     if (!isDisabled && status === "pressing") {
       setStatus("clicked");
+      onClick?.();
     }
   };
 
@@ -48,11 +56,13 @@ const RD500_S = ({ initialStatus = "default" }: RD500SProps) => {
       onMouseDown={handleMouseDown}
       onMouseUp={handleMouseUp}
     >
-      <img
-        src={getIcon()}
-        alt="삭제"
-        className="w-[1.125rem] h-[1.125rem] aspect-square"
-      />
+      {currentIcon && (
+        <img
+          src={currentIcon}
+          alt="삭제"
+          className="w-[1.125rem] h-[1.125rem] aspect-square"
+        />
+      )}
     </button>
   );
 };

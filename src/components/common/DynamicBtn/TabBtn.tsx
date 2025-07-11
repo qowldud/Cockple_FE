@@ -1,20 +1,32 @@
 import type { BaseBtnProps, TextIconStatus } from "../../../types/DynamicBtn";
-import useDynamicStatus from "../../../hooks/useDynamicStatus";
+import { useState } from "react";
+
+interface TabBtnProps extends BaseBtnProps {
+  isSelected: boolean;
+}
 
 export default function TabBtn({
   children,
   disabled = false,
   onClick,
   type,
-}: BaseBtnProps) {
-  const { status, onMouseDown, onMouseLeave, onMouseUp } = useDynamicStatus(
-    disabled,
-    false,
-  );
+  isSelected,
+}: TabBtnProps) {
+  const [isPressing, setIsPressing] = useState(false);
 
+  const status: TextIconStatus = disabled
+    ? "disabled"
+    : isPressing
+      ? "pressing"
+      : isSelected
+        ? "clicked"
+        : "default";
+
+  // console.log(isSelected);
   const statusMap: Record<TextIconStatus, { bg?: string; span?: string }> = {
+    //clicked
     clicked: {
-      span: "w-full h-[0.125rem] bg-gr-500 ",
+      span: "w-full h-[0.125rem] bg-gr-500 ", //click했을 때.
     },
     pressing: {
       bg: "bg-gy-100 ",
@@ -32,10 +44,11 @@ export default function TabBtn({
   return (
     <button
       className={`header-h5 inline-flex  flex-col justify-center items-start  rounded-lg relative py-2 gap-1 px-3 ${bg}`}
-      onMouseDown={onMouseDown}
-      onMouseUp={onMouseUp}
-      onMouseLeave={onMouseLeave}
+      onMouseDown={() => setIsPressing(true)}
+      onMouseUp={() => setIsPressing(false)}
+      onMouseLeave={() => setIsPressing(false)}
       onClick={onClick}
+      disabled={disabled}
       type={type ? type : "button"}
     >
       {children}

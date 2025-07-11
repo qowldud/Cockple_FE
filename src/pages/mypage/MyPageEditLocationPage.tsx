@@ -11,7 +11,7 @@ export const MyPageEditLocationPage = () => {
   return (
     <>
       <PageHeader title="주소 검색" />
-      <div className="flex flex-col p-4">
+      <div className="flex flex-col">
         <div className="mb-2">
           <div className="relative">
             <input

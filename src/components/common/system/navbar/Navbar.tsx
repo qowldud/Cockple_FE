@@ -4,7 +4,7 @@ import GroupIcon from "@/assets/icons/collections.svg";
 import GroupIconFilled from "@/assets/icons/collections_filled.svg";
 import ChatIcon from "@/assets/icons/chat.svg";
 import ChatIconFilled from "@/assets/icons/chat_filled.svg";
-import HeartIcon from "@/assets/icons/heart.svg";
+import HeartBlackIcon from "@/assets/icons/heart_black.svg";
 import HeartIconFilled from "@/assets/icons/heart_filled.svg";
 import MypageIcon from "@/assets/icons/mypage.svg";
 import MypageIconFilled from "@/assets/icons/mypage_filled.svg";
@@ -40,9 +40,9 @@ const NAV_ITEMS = [
     label: "찜",
     icon: {
       filled: HeartIconFilled,
-      outline: HeartIcon,
+      outline: HeartBlackIcon,
     },
-    path: "/like",
+    path: "/liked",
   },
   {
     label: "마이페이지",
@@ -58,7 +58,7 @@ export const Navbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
   return (
-    <nav className="fixed w-full max-w-[444px] bottom-0 flex px-4 pt-2 pb-8 justify-between box-border">
+    <nav className="fixed w-[calc(100%-2rem)] max-w-[412px] bottom-0 flex pt-2 pb-8 justify-between box-border">
       {NAV_ITEMS.map(item => {
         const isActive = location.pathname === item.path;
         const IconComponent = isActive ? item.icon.filled : item.icon.outline;

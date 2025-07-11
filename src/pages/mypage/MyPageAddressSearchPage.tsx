@@ -18,7 +18,15 @@ export const MyPageAddressSearchPage = ({
   inputAddress,
   onChangeInput,
 }: MyPageAddressSearchPageProps) => {
-
+  // 마커 이동에 필요한 부분입니다. -> 클릭시 마커 이동
+  const [markerPosition, setMarkerPosition] = useState<{ x: number; y: number } | null>(null);
+  
+  const handleMapClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    setMarkerPosition({ x, y });
+  };
   return (
     <div className="flex flex-col h-full w-full max-w-[23.4375rem] relativ">
       <PageHeader title="주소 검색" />
@@ -34,15 +42,30 @@ export const MyPageAddressSearchPage = ({
         <Search className="w-6 h-6" />
       </div>
 
-      {/* 지도 영역 */}
-      <div className="relative w-full h-[26.625rem] mt-4">
+    {/* 지도 영역 */}
+      <div
+        className="relative w-full h-[26.625rem] mt-4"
+        onClick={handleMapClick}
+      >
+      <div className="absolute inset-0 bg-gray-100 flex items-center justify-center text-gray-500 text-sm z-0">
          {/* <img
           src={MapPlaceholder}
           alt="지도 이미지"
           className="w-full h-full object-cover"
-        /> */}
-        {/* 중앙 마커 */}
-        <MapMarker className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-full" />
+        /> */}  
+      </div>
+      {/* 중앙 마커 */}
+        {markerPosition ? (
+          <MapMarker
+            className="absolute transform -translate-x-1/2 -translate-y-full"
+            style={{ left: markerPosition.x, top: markerPosition.y }}
+          />
+        ) : (
+          // 마커 표시
+          <MapMarker className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-full" />
+        )}
+
+      {/* 현위치 버튼 */}
         <div className="absolute right-4 bottom-2">
           <div className="w-11 h-11 bg-white shadow-ds200 rounded-full p-1 flex items-center justify-center">
             <LocationIcon className="w-6 h-6" />
@@ -51,7 +74,7 @@ export const MyPageAddressSearchPage = ({
       </div>
 
       {/* 주소 */}
-      <div className="bg-white w-full px-4 pt-5 pb-4 rounded-t-2xl shadow-md mt-auto text-left ">
+      <div className="bg-white w-full  pt-5 pb-4 rounded-t-2xl shadow-md mt-auto text-left ">
         <p className="body-md-500 pl-1">{mainAddress}</p>
         <p className="body-rg-500 mt-1 pl-1">{subAddress}</p>
 
@@ -65,6 +88,7 @@ export const MyPageAddressSearchPage = ({
             justify="justify-center"
           />
         </div>
+        
       </div>
 
     </div>

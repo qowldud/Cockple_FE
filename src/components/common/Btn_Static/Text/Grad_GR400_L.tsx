@@ -1,7 +1,11 @@
 import React from "react";
 import Btn_Static from "../Btn_Static";
 
-const Grad_GR400_L = () => {
+interface GradGR400LProps {
+  label?: string;
+}
+
+const Grad_GR400_L = ({ label = "Btn" }: GradGR400LProps) => {
   return (
     <div
       className={`
@@ -12,7 +16,7 @@ const Grad_GR400_L = () => {
         from-[rgba(252,252,255,0)] via-[rgba(252,252,255,0.8)] to-[#FCFCFF]
       `}
     >
-      <Btn_Static kind="GR400" size="L" label="Btn" shadow="shadow-ds100" />
+      <Btn_Static kind="GR400" size="L" label={label} shadow="shadow-ds100" />
     </div>
   );
 };
