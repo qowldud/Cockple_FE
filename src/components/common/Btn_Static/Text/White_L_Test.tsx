@@ -25,9 +25,6 @@ const White_L_Test = ({
   const handleMouseUp = () => {
     if (!isDisabled && status === "pressing") {
       setStatus("clicked");
-      setTimeout(() => {
-        setStatus("default");
-      }, 200);
     }
   };
 

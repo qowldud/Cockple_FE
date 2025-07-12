@@ -5,21 +5,21 @@ import ArrowLeftGY400 from "../../../../assets/icons/arrow_left-gy-400.svg";
 
 type BtnStatus = "disabled" | "default" | "pressing" | "clicked";
 
-interface GY800MProps {
+interface GY800MIconProps {
   initialStatus?: BtnStatus;
-  iconMap?: Partial<Record<BtnStatus, string>>; // 상태별 아이콘
   onClick?: () => void;
+  iconMap?: Partial<Record<BtnStatus, string>>; // 상태별 아이콘
 }
 
-const GY800_M = ({
+const GY800_M_Icon = ({
   initialStatus = "default",
-  iconMap,
   onClick,
-}: GY800MProps) => {
+  iconMap,
+}: GY800MIconProps) => {
   const [status, setStatus] = useState<BtnStatus>(initialStatus);
+  const currentIcon = iconMap?.[status];
 
   const isDisabled = status === "disabled";
-  const currentIcon = iconMap?.[status];
 
   const handleMouseDown = () => {
     if (!isDisabled) setStatus("pressing");
@@ -63,15 +63,13 @@ const GY800_M = ({
       onMouseDown={handleMouseDown}
       onMouseUp={handleMouseUp}
     >
-      {currentIcon && (
-        <img
-          src={currentIcon}
-          alt="삭제"
-          className="w-[1.5rem] h-[1.5rem] aspect-square"
-        />
-      )}
+      <img
+        src={`${currentIcon ? currentIcon : getIcon()}`}
+        alt="삭제"
+        className="w-[1.5rem] h-[1.5rem] aspect-square"
+      />
     </button>
   );
 };
 
-export default GY800_M;
+export default GY800_M_Icon;

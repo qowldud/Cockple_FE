@@ -19,8 +19,9 @@ export default defineConfig({
   //@ 경로 오류가 나서 추가했습니다 - 연두
   resolve: {
     alias: {
-      "@": path.resolve(dirname, "src"),
+      "@": "/src",
     },
+    extensions: [".js", ".ts", ".jsx", ".tsx"],
   },
   test: {
     projects: [
@@ -33,6 +34,7 @@ export default defineConfig({
             configDir: path.join(dirname, ".storybook"),
           }),
         ],
+
         test: {
           name: "storybook",
           browser: {

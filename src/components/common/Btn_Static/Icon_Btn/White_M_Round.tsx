@@ -7,19 +7,19 @@ type BtnStatus = "disabled" | "default" | "pressing" | "clicked";
 
 interface WhiteMRoundProps {
   initialStatus?: BtnStatus;
-  iconMap?: Partial<Record<BtnStatus, string>>; // 상태별 아이콘
   onClick?: () => void;
+  iconMap?: Partial<Record<BtnStatus, string>>; // 상태별 아이콘
 }
 
 const White_M_Round = ({
   initialStatus = "default",
-  iconMap,
   onClick,
+  iconMap,
 }: WhiteMRoundProps) => {
   const [status, setStatus] = useState<BtnStatus>(initialStatus);
+  const currentIcon = iconMap?.[status];
 
   const isDisabled = status === "disabled";
-  const currentIcon = iconMap?.[status];
 
   const handleMouseDown = () => {
     if (!isDisabled) setStatus("pressing");
@@ -56,20 +56,18 @@ const White_M_Round = ({
   return (
     <button
       className={`
-        flex justify-center items-center shrink-0 w-[2rem] h-[2rem] gap-3 border-round shadow-ds100
+        inline-flex justify-center items-center gap-3 border-round shadow-ds100
         ${getBg()} 
         ${isDisabled ? "cursor-not-allowed" : "cursor-pointer"}`}
       disabled={status === "disabled"}
       onMouseDown={handleMouseDown}
       onMouseUp={handleMouseUp}
     >
-      {currentIcon && (
-        <img
-          src={currentIcon}
-          alt="삭제"
-          className="w-[1.25rem] h-[1.25rem] shrink-0 aspect-1/1"
-        />
-      )}
+      <img
+        src={`${currentIcon ? currentIcon : getIcon()}`}
+        alt="삭제"
+        className="w-[1.25rem] h-[1.25rem] shrink-0 aspect-1/1"
+      />
     </button>
   );
 };

@@ -1,4 +1,3 @@
-// components/common/Btn_Static/presets.ts
 import type { BtnPreset, SizePreset } from "./types";
 
 export const buttonPresets: Record<string, BtnPreset> = {
@@ -25,10 +24,10 @@ export const buttonPresets: Record<string, BtnPreset> = {
       disabled: "bg-white",
     },
     textColor: {
-      default: "text-gr-600",
+      default: "text-[#0b9a4e]",
       pressing: "text-white",
-      clicked: "text-gr-600",
-      disabled: "text-gy-400",
+      clicked: "text-[#0b9a4e]",
+      disabled: "text-[#c0c4cd]",
     },
     borderColor: {
       default: "border border-gr-600",
@@ -46,10 +45,10 @@ export const buttonPresets: Record<string, BtnPreset> = {
       disabled: "bg-white",
     },
     textColor: {
-      default: "text-rd-500",
+      default: "text-[#f62d2d]",
       pressing: "text-white",
-      clicked: "text-rd-500",
-      disabled: "text-gy-400",
+      clicked: "text-[#f62d2d]",
+      disabled: "text-[#c0c4cd]",
     },
     borderColor: {
       default: "border border-rd-500",
@@ -70,7 +69,7 @@ export const buttonPresets: Record<string, BtnPreset> = {
       default: "",
       pressing: "",
       clicked: "",
-      disabled: "text-gy-400",
+      disabled: "text-[#c0c4cd]",
     },
   },
 
@@ -85,7 +84,7 @@ export const buttonPresets: Record<string, BtnPreset> = {
       default: "",
       pressing: "text-white",
       clicked: "",
-      disabled: "text-gy-400",
+      disabled: "text-[#c0c4cd]",
     },
     borderColor: {
       default: "border border-gy-800",
@@ -97,16 +96,46 @@ export const buttonPresets: Record<string, BtnPreset> = {
 
   White: {
     bgColor: {
-      default: "bg-gy-50",
+      default: "bg-white",
       pressing: "bg-gy-100",
-      clicked: "bg-gy-50",
+      clicked: "bg-white",
       disabled: "bg-white",
     },
     textColor: {
       default: "",
       pressing: "",
       clicked: "",
-      disabled: "text-gy-400",
+      disabled: "text-[#c0c4cd]",
+    },
+  },
+
+  GY100_RD500_S: {
+    bgColor: {
+      default: "bg-gy-100",
+      pressing: "bg-gy-200",
+      clicked: "bg-gy-100",
+      disabled: "bg-gy-100",
+    },
+    textColor: {
+      default: "text-[#f62d2d]",
+      pressing: "text-[#f62d2d]",
+      clicked: "text-[#f62d2d]",
+      disabled: "text-[#c0c4cd]",
+    },
+  },
+
+  GY100_GR600_S: {
+    bgColor: {
+      default: "bg-gy-100",
+      pressing: "bg-gy-200",
+      clicked: "bg-gy-100",
+      disabled: "bg-gy-100",
+    },
+    textColor: {
+      default: "text-[#0b9a4e]",
+      pressing: "text-[#0b9a4e]",
+      clicked: "text-[#0b9a4e]",
+      disabled: "text-[#c0c4cd]",
     },
   },
 };
