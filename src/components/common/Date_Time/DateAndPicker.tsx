@@ -1,50 +1,10 @@
-import { useState, useRef, useEffect } from "react";
+import { useState } from "react";
 import PropTypes from "prop-types";
-
-Picker.propTypes = {
-  options: PropTypes.arrayOf(PropTypes.string).isRequired,
-  selectedValue: PropTypes.string.isRequired,
-  onChange: PropTypes.func.isRequired,
-};
+import Picker from "./Picker";
 
 DateAndTimePicker.propTypes = {
   onDueChange: PropTypes.func.isRequired,
 };
-
-function Picker({ options, selectedValue, onChange }) {
-  const containerRef = useRef(null);
-
-  const handleScroll = () => {
-    const scrollIndex = Math.round(containerRef.current.scrollTop / 40);
-    onChange(options[scrollIndex]);
-  };
-
-  return (
-    <div
-      ref={containerRef}
-      onScroll={handleScroll}
-      className="w-full h-40 overflow-y-scroll scrollbar-hide snap-y snap-mandatory rounded-lg text-center "
-    >
-      <div className="flex flex-col" />
-
-      <div>
-        {options.map(option => (
-          <div
-            key={option}
-            className={`h-10 flex items-center justify-center snap-center ${
-              option === selectedValue
-                ? "font-bold text-black"
-                : "text-gray-400"
-            }`}
-          >
-            {option}
-          </div>
-        ))}
-      </div>
-      <div className="h-20" />
-    </div>
-  );
-}
 
 export default function DateAndTimePicker({ onDueChange }) {
   const [selectedYear, setSelectedYear] = useState("2025");
@@ -55,16 +15,15 @@ export default function DateAndTimePicker({ onDueChange }) {
   const [confirmedDue, setConfirmedDue] = useState("");
 
   const handleConfirm = () => {
-    const dueString = `${selectedYear}년 ${selectedMonth}월 ${selectedDay}일, ${selectedHour}시 ${selectedMinute}분`;
+    const dueString = `${selectedYear}년 ${selectedMonth}월 ${selectedDay}일`;
     setConfirmedDue(dueString); // 선택된 일시로 업데이트
-
     // New.jsx 로 전달
-    onDueChange(
-      `${selectedYear}.${selectedMonth}.${selectedDay} ${selectedHour}:${selectedMinute}:00`,
-    );
+    onDueChange(`${selectedYear}.${selectedMonth}.${selectedDay}`);
   };
-
-  const years = Array.from({ length: 10 }, (_, i) => (2025 + i).toString());
+  const currentYear = new Date().getFullYear();
+  const years = Array.from({ length: 75 }, (_, i) =>
+    (currentYear - i).toString(),
+  );
   const months = Array.from({ length: 12 }, (_, i) =>
     String(i + 1).padStart(2, "0"),
   );
@@ -72,16 +31,9 @@ export default function DateAndTimePicker({ onDueChange }) {
     String(i + 1).padStart(2, "0"),
   );
 
-  //   const hours = Array.from({ length: 24 }, (_, i) =>
-  //     String(i).padStart(2, "0"),
-  //   );
-  //   const minutes = Array.from({ length: 60 }, (_, i) =>
-  //     String(i).padStart(2, "0"),
-  //   );
-
   return (
     <>
-      <div className=" flex w-80  mx-auto border border-gray-300 shadow-ds400 rounded-3xl relative ">
+      <div className=" flex w-80 bg-white  mx-auto border border-gray-300 shadow-ds400 rounded-3xl relative ">
         <div className="w-1/3 z-2">
           <Picker
             options={years}
@@ -108,20 +60,19 @@ export default function DateAndTimePicker({ onDueChange }) {
         </div>
       </div>
 
-      {/* 
       {confirmedDue && (
         <div className="font-pretendard font-bold text-xl text-center">
           {confirmedDue}
         </div>
-      )} */}
+      )}
 
-      {/* <button
+      <button
         type="button"
         onClick={handleConfirm}
         className="p-2 bg-gray-200 font-pretendard text-card-price text-lg text-gray-800 rounded-lg"
       >
         결정
-      </button> */}
+      </button>
     </>
   );
 }
