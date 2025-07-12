@@ -3,6 +3,7 @@ import { PageHeader } from "../../components/common/system/header/PageHeader";
 import Grad_GR400_L from "../../components/common/Btn_Static/Text/Grad_GR400_L";
 import { MyMedal } from "../../components/common/contentcard/MyMedal";
 import { MyPage_Medal2 } from "../../components/common/contentcard/MyPage_Medal2";
+import { MyMedal_None } from "../../components/MyPage/MyMedal_None";
 
 interface MedalItem {
   title: string;
@@ -24,7 +25,7 @@ interface MyMedalProps {
   bronzeMedals?: number;
   disabled?: boolean;
 
-  medals: MedalItem[]; // ✅ 메달 리스트 prop
+  medals: MedalItem[];
 }
 
 export const MyPageMyMedalPage = ({
@@ -105,6 +106,7 @@ export const MyPageMyMedalPage = ({
         onClick={() => alert("대화 기록 추가하기 클릭")}
         className="mt-5"
       />
+      {/* <MyMedal_None/> */}
     </>
   );
 };
