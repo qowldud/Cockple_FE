@@ -1,12 +1,40 @@
 // pages/Chats/ChatMainPage.tsx
 import { useState } from "react";
-import GroupChat from "./GroupChat";
-import PersonalChat from "./PersonalChat";
+import { GroupChat } from "../../components/common/contentcard/GroupChat";
+import { PersonalChat } from "../../components/common/contentcard/PersonalChat";
 import TabBtn from "../../components/common/DynamicBtn/TabBtn";
 import Search from "../../assets/icons/search.svg";
+import ChatImg from "../../assets/images/image.png";
+import { useNavigate } from "react-router-dom";
 
 export const ChatPage = () => {
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<"group" | "personal">("group");
+
+  // 더미 데이터
+  const groupChats = [
+    {
+      id: 1,
+      imageSrc: ChatImg,
+      chatName: "민턴콕콕",
+      memberCount: 10,
+      lastMessage:
+        "오늘 운동 오실래요???오늘 운동 오실래요???오늘 운동 오실래요??",
+      lastMessageTime: "10:00 am",
+      unreadCount: 99,
+    },
+  ];
+
+  const personalChats = [
+    {
+      id: 100,
+      imageSrc: ChatImg,
+      userName: "김세익스피어",
+      lastMessage: "민턴클로버",
+      lastMessageTime: "08:00 am",
+      unreadCount: 12,
+    },
+  ];
 
   return (
     <>
@@ -41,6 +69,21 @@ export const ChatPage = () => {
         </div>
 
         {/* Chat List */}
+        <div className="flex flex-col gap-[0.625rem]">
+          {activeTab === "group" &&
+            groupChats.map(chat => (
+              <div key={chat.id} onClick={() => navigate(`/chat/${chat.id}`)}>
+                <GroupChat {...chat} />
+              </div>
+            ))}
+
+          {activeTab === "personal" &&
+            personalChats.map(chat => (
+              <div key={chat.id} onClick={() => navigate(`/chat/${chat.id}`)}>
+                <PersonalChat {...chat} />
+              </div>
+            ))}
+        </div>
       </section>
     </>
   );

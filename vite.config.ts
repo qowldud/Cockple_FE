@@ -18,8 +18,9 @@ export default defineConfig({
   plugins: [react(), svgr(), tailwindcss()],
   resolve: {
     alias: {
-      "@": path.resolve(dirname, "src"),
+      "@": "/src",
     },
+    extensions: [".js", ".ts", ".jsx", ".tsx"],
   },
   test: {
     projects: [
@@ -32,6 +33,7 @@ export default defineConfig({
             configDir: path.join(dirname, ".storybook"),
           }),
         ],
+
         test: {
           name: "storybook",
           browser: {
