@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import HeartGY400 from "../../../../assets/icons/heart_GY400.svg";
 import HeartGY300 from "../../../../assets/icons/heart_GY300.svg";
 import HeartFilledGY300 from "../../../../assets/icons/heart_filled_GY300.svg";
@@ -8,27 +8,38 @@ type BtnStatus = "disabled" | "default" | "pressing" | "clicked";
 
 interface RD500SProps {
   initialStatus?: BtnStatus;
+  isActive: boolean;
+  disabled?: boolean;
   onClick?: () => void;
   iconMap?: Partial<Record<BtnStatus, string>>; // 상태별 아이콘
 }
 
 const RD500_S_Icon = ({
   initialStatus = "default",
+  isActive,
+  disabled = false,
   onClick,
   iconMap,
 }: RD500SProps) => {
-  const [status, setStatus] = useState<BtnStatus>(initialStatus);
+  const [status, setStatus] = useState<BtnStatus>(
+    isActive ? "clicked" : "default",
+  );
   const currentIcon = iconMap?.[status];
 
   const isDisabled = status === "disabled";
 
+  useEffect(() => {
+    setStatus(isActive ? "clicked" : "default");
+  }, [isActive]);
+
   const handleMouseDown = () => {
-    if (!isDisabled) setStatus("pressing");
+    if (!disabled) setStatus("pressing");
   };
 
   const handleMouseUp = () => {
-    if (!isDisabled && status === "pressing") {
-      setStatus("clicked");
+    if (!disabled) {
+      const nextActive = status !== "clicked";
+      setStatus(nextActive ? "clicked" : "default");
       onClick?.();
     }
   };
