@@ -5,11 +5,14 @@ import { PersonalChat } from "../../components/common/contentcard/PersonalChat";
 import TabBtn from "../../components/common/DynamicBtn/TabBtn";
 import Search from "../../assets/icons/search.svg";
 import ChatImg from "../../assets/images/image.png";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export const ChatPage = () => {
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState<"group" | "personal">("group");
+  const location = useLocation();
+  const [activeTab, setActiveTab] = useState<"group" | "personal">(
+    location.state?.tab === "personal" ? "personal" : "group",
+  );
 
   // 더미 데이터
   const groupChats = [
@@ -21,7 +24,18 @@ export const ChatPage = () => {
       lastMessage:
         "오늘 운동 오실래요???오늘 운동 오실래요???오늘 운동 오실래요??",
       lastMessageTime: "10:00 am",
-      unreadCount: 99,
+      unreadCount: 10,
+    },
+
+    {
+      id: 2,
+      imageSrc: ChatImg,
+      chatName: "민턴콱콱",
+      memberCount: 10,
+      lastMessage:
+        "오늘 운동 오실래요???오늘 운동 오실래요???오늘 운동 오실래요??",
+      lastMessageTime: "10:00 am",
+      unreadCount: 10,
     },
   ];
 
@@ -37,23 +51,25 @@ export const ChatPage = () => {
   ];
 
   return (
-    <>
+    <div className="flex flex-col">
       {/* 네비게이션 탭 */}
       {/* 이부분은 나중에 수정 */}
-      <div className="flex mb-4 text-black items-center gap-x-[0.75rem] px-[1rem] border-b-2 border-gray-100">
+      <div className="flex mb-4 text-black items-center gap-x-[0.75rem] border-b-2 border-gray-100">
         <TabBtn
           children="모임채팅"
           onClick={() => setActiveTab("group")}
           disabled={false}
+          isSelected={activeTab === "group"}
         />
         <TabBtn
           children="개인채팅"
           onClick={() => setActiveTab("personal")}
           disabled={false}
+          isSelected={activeTab === "personal"}
         />
       </div>
 
-      <section className="flex flex-col w-[23.4375rem] justify-center items-center px-4 gap-y-[1.25rem]">
+      <section className="flex flex-col w-full max-w-[23.4375rem] justify-center items-center gap-y-[1.25rem]">
         {/* Search */}
         <div className="relative w-full h-[2.75rem] gap-2">
           <input
@@ -69,22 +85,37 @@ export const ChatPage = () => {
         </div>
 
         {/* Chat List */}
-        <div className="flex flex-col gap-[0.625rem]">
+        <div className="flex flex-col gap-[0.625rem] w-full">
           {activeTab === "group" &&
             groupChats.map(chat => (
-              <div key={chat.id} onClick={() => navigate(`/chat/${chat.id}`)}>
+              <div
+                key={chat.id}
+                onClick={() =>
+                  navigate(`/chat/group/${chat.id}`, {
+                    state: { tab: "group", chatName: chat.chatName },
+                  })
+                }
+                className="border-b border-gy-200 pb-1"
+              >
                 <GroupChat {...chat} />
               </div>
             ))}
 
           {activeTab === "personal" &&
             personalChats.map(chat => (
-              <div key={chat.id} onClick={() => navigate(`/chat/${chat.id}`)}>
+              <div
+                key={chat.id}
+                onClick={() =>
+                  navigate(`/chat/personal/${chat.id}`, {
+                    state: { tab: "personal", chatName: chat.userName },
+                  })
+                }
+              >
                 <PersonalChat {...chat} />
               </div>
             ))}
         </div>
       </section>
-    </>
+    </div>
   );
 };

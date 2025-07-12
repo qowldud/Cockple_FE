@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import ChattingComponent from "./ChattingComponent";
-import Search from "../../assets/icons/search.svg";
 import ProfileImg from "../../assets/images/Profile_Image.png";
 import Clear_M from "../../components/common/Btn_Static/Icon_Btn/Clear_M";
 import ArrowLeft from "../../assets/icons/arrow_left.svg";
@@ -17,6 +16,7 @@ interface Chatting {
   chatting: string;
   time: string;
   isMe: boolean;
+  unreadCount: number;
 }
 
 export const ChatDetailPage = () => {
@@ -48,6 +48,7 @@ export const ChatDetailPage = () => {
                   주세요.`,
       time: "17:06",
       isMe: false,
+      unreadCount: 8,
     },
     {
       id: 2,
@@ -58,6 +59,7 @@ export const ChatDetailPage = () => {
                   자료에 포함시킬 예정입니다.`,
       time: "17:07",
       isMe: true,
+      unreadCount: 8,
     },
     {
       id: 3,
@@ -67,6 +69,7 @@ export const ChatDetailPage = () => {
                   정리하여 곧 공유드리겠습니다!`,
       time: "17:08",
       isMe: false,
+      unreadCount: 8,
     },
     {
       id: 4,
@@ -77,6 +80,7 @@ export const ChatDetailPage = () => {
                   자료에 포함시킬 예정입니다.`,
       time: "17:09",
       isMe: true,
+      unreadCount: 8,
     },
   ]);
 
@@ -94,35 +98,26 @@ export const ChatDetailPage = () => {
   //메세지 전송 핸들러
   const handleSendMessage = () => {
     if (input.trim()) {
-      setChattings(prevChattings => {
-        //이전 채팅 배열이 비어있는지 확인하고, 비어 있지 않으면 마지막 채팅의 id를 가져옴
-        const newId =
-          prevChattings.length > 0
-            ? prevChattings[prevChattings.length - 1].id + 1
-            : 1;
-        return [
-          ...prevChattings,
-          {
-            id: newId,
-            nickname: "아무개",
-            profile: ProfileImg,
-            chatting: input,
-            time: new Date().toLocaleDateString(),
-            isMe: true,
-          },
-        ];
-      });
+      const newId =
+        chattings.length > 0 ? chattings[chattings.length - 1].id + 1 : 1;
+      const newChat: Chatting = {
+        id: newId,
+        nickname: "나",
+        profile: ProfileImg,
+        chatting: input,
+        time: new Date().toLocaleTimeString([], {
+          hour: "2-digit",
+          minute: "2-digit",
+        }),
+        isMe: true,
+        unreadCount: 5, // 더미 데이터니까 고정 값으로
+      };
+      setChattings(prev => [...prev, newChat]);
       setInput("");
     }
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLAreaElement>) => {
-    if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault();
-      handleSendMessage();
-    }
-  };
-  const handleKeyUp = (e: React.KeyboardEvent<HTMLTemplateElement>) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
       handleSendMessage();
@@ -161,15 +156,18 @@ export const ChatDetailPage = () => {
       {/* 메시지 영역 */}
       <div className="flex-1 overflow-y-auto [&::-webkit-scrollbar]:hidden bg-gr-200">
         <div className="flex flex-col gap-5 shrink-0 p-4">
-          {chattings.map(({ id, nickname, chatting, time, isMe }) => (
-            <ChattingComponent
-              key={id}
-              nickname={nickname}
-              chatting={chatting}
-              time={time}
-              isMe={isMe}
-            />
-          ))}
+          {chattings.map(
+            ({ id, nickname, chatting, time, isMe, unreadCount }) => (
+              <ChattingComponent
+                key={id}
+                nickname={nickname}
+                chatting={chatting}
+                time={time}
+                isMe={isMe}
+                unreadCount={unreadCount}
+              />
+            ),
+          )}
           <div className="h-5" ref={chatEndRef}></div>
         </div>
       </div>
@@ -186,20 +184,6 @@ export const ChatDetailPage = () => {
           onClick={() => console.log("clicked")}
         />
         <div className="flex h-14 py-[0.625rem] px-3 flex-end items-center gap-2">
-          {/* <input
-            className="outline-0"
-            onKeyDown={handleKeyDown}
-            // onKeyDown={e => {
-            //   if (e.key === "Enter" && !e.shiftKey) {
-            //     e.preventDefault();
-            //     handleSendMessage();
-            //   }
-            // }}
-            onKeyUp={handleKeyUp}
-            onCompositionStart={handleCompositionStart}
-            onCompositionEnd={handleCompositionEnd}
-            onClick={handleSendMessage}
-          /> */}
           <input
             type="text"
             value={input}
