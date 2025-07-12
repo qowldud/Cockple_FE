@@ -11,6 +11,7 @@ const meta = {
   argTypes: {
     isUserJoined: { control: 'boolean', description: '사용자가 운동에 참여했는지 여부' },
     isGuestAllowedByOwner: { control: 'boolean', description: '주최자가 게스트 초대를 허용했는지 여부' },
+    isCompleted: { control: 'boolean', description: '참여 완료인 경우에 버튼X' },
     title: { control: 'text', description: '운동 제목' },
     date: { control: 'text', description: '날짜 (예: 2024.07.08)' },
     day: { control: 'text', description: '요일 (예: 월)' },
@@ -31,6 +32,7 @@ export const Default: Story = {
   args: {
     isUserJoined: true,
     isGuestAllowedByOwner: true,
+    isCompleted: false,
     title: "민턴콕콕 정기모임",
     date: "2024.07.08",
     day: "월",
@@ -49,6 +51,7 @@ export const NotJoined: Story = {
     ...Default.args,
     isUserJoined: false,
     isGuestAllowedByOwner: true, 
+    isCompleted: false,
     title: "새로운 배드민턴 모임",
     currentPeople: 5,
     maxPeople: 12,
@@ -61,6 +64,7 @@ export const JoinedNoGuestAllowed: Story = {
     ...Default.args,
     isUserJoined: true,
     isGuestAllowedByOwner: false,
+    isCompleted: false,
     title: "클럽 내부 친선전",
     currentPeople: 10,
     maxPeople: 10,
@@ -91,5 +95,23 @@ export const LongLevels: Story = {
     ...Default.args,
     femaleLevel: "전국 초심~준자강 (경력 5년 이상)",
     maleLevel: "전국 준자강 이상 (경력 10년 이상)",
+  },
+};
+
+
+export const Completed: Story = {
+  args: {
+    isUserJoined: true,
+    isGuestAllowedByOwner: true,
+    isCompleted: true,
+    title: "민턴콕콕 정기모임",
+    date: "2024.07.08",
+    day: "월",
+    location: "산성 실내 배드민턴장",
+    time: "08:00 am ~ 10:00 am",
+    femaleLevel: "전국 초심~준자강",
+    maleLevel: "전국 준자강 이상",
+    currentPeople: 8,
+    maxPeople: 10,
   },
 };
