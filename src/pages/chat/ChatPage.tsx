@@ -1,20 +1,28 @@
 // 메인 채팅 페이지
 import { useMemo, useState } from "react";
-import TabBtn from "../../components/common/DynamicBtn/TabBtn";
 import ChatImg from "../../assets/images/image.png";
 import { useLocation, useNavigate } from "react-router-dom";
 import SearchInput from "../../components/chat/SearchInput";
 import ChatList from "../../components/chat/ChatList";
 import { disassembleHangul } from "../../utils/disassembleHangul";
+import TabSelector from "../../components/common/TabSelector";
 
 export const ChatPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [activeTab, setActiveTab] = useState<"group" | "personal">(
-    location.state?.tab === "personal" ? "personal" : "group",
-  );
+  const [activeTab, setActiveTab] = useState<"group" | "personal">(() => {
+    if (location.state && location.state.tab === "personal") {
+      return "personal";
+    }
+    return "group"; // 기본값
+  });
 
   const [searchTerm, setSearchTerm] = useState("");
+
+  const tabOptions = [
+    { label: "모임채팅", value: "group" },
+    { label: "개인채팅", value: "personal" },
+  ];
 
   // 더미 데이터
   const groupChats = [
@@ -87,21 +95,11 @@ export const ChatPage = () => {
   return (
     <div className="flex flex-col">
       {/* 네비게이션 탭 */}
-      {/* 이부분은 나중에 수정 */}
-      <div className="flex mb-4 text-black items-center gap-x-[0.75rem] border-b-2 border-gray-100">
-        <TabBtn
-          children="모임채팅"
-          onClick={() => setActiveTab("group")}
-          disabled={false}
-          isSelected={activeTab === "group"}
-        />
-        <TabBtn
-          children="개인채팅"
-          onClick={() => setActiveTab("personal")}
-          disabled={false}
-          isSelected={activeTab === "personal"}
-        />
-      </div>
+      <TabSelector
+        options={tabOptions}
+        selected={activeTab}
+        onChange={setActiveTab}
+      />
 
       <section className="flex flex-col w-full max-w-[23.4375rem] justify-center items-center gap-y-[1.25rem]">
         {/* 검색창 */}
