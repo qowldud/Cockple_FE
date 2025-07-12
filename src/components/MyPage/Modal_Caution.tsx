@@ -7,11 +7,11 @@ export const Modal_Caution = () => {
     <div className="bg-white w-[21.4375rem] h-[15.75rem] flex flex-col p-3 shadow-ds300 rounded-2xl">
     
         <div className="flex justify-end mb-2">
-            <Dismiss className="w-[1.5rem] h-[1.5rem]" />
+            <Dismiss className="w-8 h-8" />
         </div>
 
         <div className="flex flex-col items-center text-center gap-1 mb-4 leading-snug">
-            <EmojiSurprise className="w-[2rem] h-[2rem]" />
+            <EmojiSurprise className="w-8 h-8" />
             <p className="header-h4">정말 떠나시겠어요?</p>
             <p className="body-rg-500">필수입력 정보가 모두 입력되지 않았어요.</p>
             <p className="body-rg-500">‘뒤로가기’를 선택하시면, 마이페이지로 이동하며</p>
