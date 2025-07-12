@@ -1,7 +1,7 @@
 // 개인채팅창 페이지
 
 import { useParams, useLocation, useNavigate } from "react-router-dom";
-import { ChatDetailTemplate } from "./ChatDetailTemplate";
+import { ChatDetailTemplate } from "../../components/chat/ChatDetailTemplate";
 import ProfileImg from "../../assets/images/Profile_Image.png";
 import type { Chatting } from "../../types/chat";
 

@@ -1,11 +1,11 @@
-// pages/Chats/ChatMainPage.tsx
-import { useState } from "react";
-import { GroupChat } from "../../components/common/contentcard/GroupChat";
-import { PersonalChat } from "../../components/common/contentcard/PersonalChat";
+// 메인 채팅 페이지
+import { useMemo, useState } from "react";
 import TabBtn from "../../components/common/DynamicBtn/TabBtn";
-import Search from "../../assets/icons/search.svg";
 import ChatImg from "../../assets/images/image.png";
 import { useLocation, useNavigate } from "react-router-dom";
+import SearchInput from "../../components/chat/SearchInput";
+import ChatList from "../../components/chat/ChatList";
+import { disassembleHangul } from "../../utils/disassembleHangul";
 
 export const ChatPage = () => {
   const navigate = useNavigate();
@@ -13,6 +13,8 @@ export const ChatPage = () => {
   const [activeTab, setActiveTab] = useState<"group" | "personal">(
     location.state?.tab === "personal" ? "personal" : "group",
   );
+
+  const [searchTerm, setSearchTerm] = useState("");
 
   // 더미 데이터
   const groupChats = [
@@ -37,6 +39,16 @@ export const ChatPage = () => {
       lastMessageTime: "10:00 am",
       unreadCount: 10,
     },
+    {
+      id: 3,
+      imageSrc: ChatImg,
+      chatName: "민턴콱콱!",
+      memberCount: 10,
+      lastMessage:
+        "오늘 운동 오실래요???오늘 운동 오실래요???오늘 운동 오실래요??",
+      lastMessageTime: "10:00 am",
+      unreadCount: 10,
+    },
   ];
 
   const personalChats = [
@@ -49,6 +61,28 @@ export const ChatPage = () => {
       unreadCount: 12,
     },
   ];
+
+  // 전체 사용 문자
+  const allChatNames = [
+    ...groupChats.map(c => c.chatName),
+    ...personalChats.map(p => p.userName),
+  ];
+  const allUsedCharacters = useMemo(() => {
+    return new Set(allChatNames.flatMap(name => [...disassembleHangul(name)]));
+  }, [allChatNames]);
+
+  // 검색어 유효성
+  const isValidSearch = [...disassembleHangul(searchTerm)].every(char =>
+    allUsedCharacters.has(char),
+  );
+
+  // 자모 기반 검색
+  const filteredGroupChats = groupChats.filter(chat =>
+    disassembleHangul(chat.chatName).includes(disassembleHangul(searchTerm)),
+  );
+  const filteredPersonalChats = personalChats.filter(chat =>
+    disassembleHangul(chat.userName).includes(disassembleHangul(searchTerm)),
+  );
 
   return (
     <div className="flex flex-col">
@@ -70,51 +104,21 @@ export const ChatPage = () => {
       </div>
 
       <section className="flex flex-col w-full max-w-[23.4375rem] justify-center items-center gap-y-[1.25rem]">
-        {/* Search */}
-        <div className="relative w-full h-[2.75rem] gap-2">
-          <input
-            type="text"
-            placeholder="모임명으로 검색"
-            className="w-full h-full pl-[0.625rem] pr-[2.5rem] rounded-[0.75rem] header-h5 placeholder:text-gy-400 border border-gy-400"
-          />
-          <img
-            src={Search}
-            alt="search"
-            className="absolute right-[0.75rem] top-1/2 transform -translate-y-1/2 w-6 h-6 cursor-pointer"
-          />
-        </div>
+        {/* 검색창 */}
+        <SearchInput
+          value={searchTerm}
+          onChange={e => setSearchTerm(e.target.value)}
+        />
 
-        {/* Chat List */}
-        <div className="flex flex-col gap-[0.625rem] w-full">
-          {activeTab === "group" &&
-            groupChats.map(chat => (
-              <div
-                key={chat.id}
-                onClick={() =>
-                  navigate(`/chat/group/${chat.id}`, {
-                    state: { tab: "group", chatName: chat.chatName },
-                  })
-                }
-                className="border-b border-gy-200 pb-1"
-              >
-                <GroupChat {...chat} />
-              </div>
-            ))}
-
-          {activeTab === "personal" &&
-            personalChats.map(chat => (
-              <div
-                key={chat.id}
-                onClick={() =>
-                  navigate(`/chat/personal/${chat.id}`, {
-                    state: { tab: "personal", chatName: chat.userName },
-                  })
-                }
-              >
-                <PersonalChat {...chat} />
-              </div>
-            ))}
-        </div>
+        {/* 채팅 리스트 또는 결과 없음 */}
+        <ChatList
+          tab={activeTab}
+          groupChats={filteredGroupChats}
+          personalChats={filteredPersonalChats}
+          isValidSearch={isValidSearch}
+          searchTerm={searchTerm}
+          navigate={navigate}
+        />
       </section>
     </div>
   );
