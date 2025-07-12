@@ -7,19 +7,19 @@ type BtnStatus = "disabled" | "default" | "pressing" | "clicked";
 
 interface ClearXSProps {
   initialStatus?: BtnStatus;
-  iconMap?: Partial<Record<BtnStatus, string>>; // 상태별 아이콘
   onClick?: () => void;
+  iconMap?: Partial<Record<BtnStatus, string>>; // 상태별 아이콘
 }
 
 const Clear_XS = ({
   initialStatus = "default",
-  iconMap,
   onClick,
+  iconMap,
 }: ClearXSProps) => {
   const [status, setStatus] = useState<BtnStatus>(initialStatus);
+  const currentIcon = iconMap?.[status];
 
   const isDisabled = status === "disabled";
-  const currentIcon = iconMap?.[status];
 
   const handleMouseDown = () => {
     if (!isDisabled) setStatus("pressing");
@@ -55,20 +55,18 @@ const Clear_XS = ({
   return (
     <button
       className={`
-        flex p-1 items-center w-[1.5rem] h-[1.5rem] gap-1 border-hard shrink-0
+        inline-flex p-1 items-center gap-3 border-hard
         ${getBg()} 
         ${isDisabled ? "cursor-not-allowed" : "cursor-pointer"}`}
       disabled={status === "disabled"}
       onMouseDown={handleMouseDown}
       onMouseUp={handleMouseUp}
     >
-      {currentIcon && (
-        <img
-          src={currentIcon}
-          alt="icon"
-          className="w-[1rem] h-[1rem] shrink-0 aspect-square"
-        />
-      )}
+      <img
+        src={`${currentIcon ? currentIcon : getIcon()}`}
+        alt="icon"
+        className="w-[1rem] h-[1rem] shrink-0 aspect-square"
+      />
     </button>
   );
 };

@@ -7,19 +7,19 @@ type BtnStatus = "disabled" | "default" | "pressing" | "clicked";
 
 interface ClearMProps {
   initialStatus?: BtnStatus;
-  iconMap?: Partial<Record<BtnStatus, string>>; // 상태별 아이콘
   onClick?: () => void;
+  iconMap?: Partial<Record<BtnStatus, string>>; // 상태별 아이콘
 }
 
 const Clear_M = ({
   initialStatus = "default",
-  iconMap,
   onClick,
+  iconMap,
 }: ClearMProps) => {
   const [status, setStatus] = useState<BtnStatus>(initialStatus);
+  const currentIcon = iconMap?.[status];
 
   const isDisabled = status === "disabled";
-  const currentIcon = iconMap?.[status];
 
   const handleMouseDown = () => {
     if (!isDisabled) setStatus("pressing");
@@ -62,13 +62,11 @@ const Clear_M = ({
       onMouseDown={handleMouseDown}
       onMouseUp={handleMouseUp}
     >
-      {currentIcon && (
-        <img
-          src={currentIcon}
-          alt="icon"
-          className="w-[1.5rem] h-[1.5rem] aspect-square"
-        />
-      )}
+      <img
+        src={`${currentIcon ? currentIcon : getIcon()}`}
+        alt="icon"
+        className="w-[1.5rem] h-[1.5rem] aspect-square"
+      />
     </button>
   );
 };
