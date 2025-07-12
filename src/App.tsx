@@ -38,6 +38,7 @@ import OnboardingLayout from "./pages/onboarding/OnBoardingLayout";
 import { OnboardingAddressSearchPage } from "./pages/onboarding/OnboardingAddressSearchPage";
 import { OnboardingConfirmStartPage } from "./pages/onboarding/OnBoardingConfirmStartPage";
 // import { OnboardingProfileInputPage } from "./pages/onboarding/OnBoardingProfileInputPage";
+import { ExerciseFilterPage } from "./pages/home/ExerciseFilterPage";
 
 const router = createBrowserRouter([
   {
@@ -101,6 +102,7 @@ const router = createBrowserRouter([
       { path: "/mypage/mymedal/add", element: <MyPageMedalAddPage /> },
       { path: "/recommend", element: <RecommendPage /> },
       { path: "/mygroup-exercise", element: <MyGroupExercisePage /> },
+      { path: "/recommend/filter", element: <ExerciseFilterPage /> },
       { path: "/exercise-map", element: <ExerciseMapPage /> },
       // { path: "/chat/:chatId", element: <ChatDetailPage /> },
       { path: "/chat/group/:chatId", element: <GroupChatDetailPage /> },

@@ -99,8 +99,6 @@
   /* Background Blur */
   --blur-bg: 20px;
 
-  --Gaps-Vertical-Section: 32px;
-
   /* 폰트 패밀리 */
   --font-family-suit:
     "SUIT Variable", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -355,10 +353,6 @@
   .bg-white-50 {
     background-color: var(--color-white-50);
   }
-
-  .gap-vertical-section {
-    gap: var(--Gaps-Vertical-Section);
-  }
 }
 
 @layer utilities {
@@ -370,6 +364,12 @@
   .scrollbar-hide::-webkit-scrollbar {
     width: 0px;
     background: transparent;
+  }
+  .gap-vertical-section-s {
+    gap: 1.25rem;
+  }
+  .gap-vertical-section {
+    gap: 2rem;
   }
 }
 

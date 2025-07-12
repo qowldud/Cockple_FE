@@ -6,8 +6,10 @@ import { SortButton } from "../../components/home/SortButton";
 import { PageHeader } from "../../components/common/system/header/PageHeader";
 import { groupExerciseData } from "../../components/home/mock/homeMock";
 import { SortBottomSheet } from "../../components/home/SortBottomSheet";
+import { useNavigate } from "react-router-dom";
 
 export const RecommendPage = () => {
+  const navigate = useNavigate();
   const [isSortOpen, setIsSortOpen] = useState(false);
   const [sortOption, setSortOption] = useState("최신순");
   const data = groupExerciseData;
@@ -22,7 +24,7 @@ export const RecommendPage = () => {
           </CheckBoxBtn>
 
           <div className="flex items-center">
-            <FilterBtn>
+            <FilterBtn onClick={() => navigate("/recommend/filter")}>
               <span>필터</span>
             </FilterBtn>
             <div className="h-4 w-px bg-gray-200 mx-1"></div>
