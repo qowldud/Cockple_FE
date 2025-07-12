@@ -1,3 +1,5 @@
+//채팅창 말풍선 컴포넌트
+
 import React, { useState, useEffect } from "react";
 import type { ChattingComponentProps } from "../../types/chat";
 

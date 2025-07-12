@@ -1,5 +1,7 @@
+// 채팅창에서 보낸 이미지 클릭시 띄워지는 모달창
+
 import React from "react";
-import GY800_M from "../../components/common/Btn_Static/Icon_Btn/GY800_M_Icon";
+import GY800_M from "../common/Btn_Static/Icon_Btn/GY800_M_Icon";
 
 // 아이콘
 import DownLoad from "../../assets/icons/download.svg";

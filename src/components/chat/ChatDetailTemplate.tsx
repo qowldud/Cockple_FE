@@ -3,10 +3,10 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import ChattingComponent from "./ChattingComponent";
-import Clear_M from "../../components/common/Btn_Static/Icon_Btn/Clear_M";
+import Clear_M from "../common/Btn_Static/Icon_Btn/Clear_M";
 import FileSendModal from "./FileSendModal";
 import ImagePreviewModal from "./ImagePreviewModal";
-import ChatBtn from "../../components/common/DynamicBtn/ChatBtn";
+import ChatBtn from "../common/DynamicBtn/ChatBtn";
 
 import type { Chatting } from "../../types/chat";
 
