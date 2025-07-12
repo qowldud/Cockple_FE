@@ -3,9 +3,8 @@ import { MyPage_Text } from "../../components/common/contentcard/MyPage_Text";
 import { Profile } from "../../components/MyPage/Profile";
 import { MyPage as MyPageContentcard } from "../../components/common/contentcard/MyPage";
 
-import Btn_Static from "../../components/common/Btn_Static/Btn_Static";
-import PenIcon from "../../assets/icons/pen.svg";
-import PenDisabledIcon from "../../assets/icons/pen-gy-400.svg";
+import White_L_Thin from "../../components/common/Btn_Static/Text/White_L_Thin";
+import White_L from "../../components/common/Btn_Static/Text/White_L";
 
 
 interface MyPageProps {
@@ -48,18 +47,12 @@ export const MyPage = ({
       </div>
 
       <div className="mt-4">
-        <Btn_Static
-          kind="White"
-          size="L_Thin"
+        <White_L_Thin 
           label="정보 수정하기"
-          iconMap={{
-            default: PenIcon,
-            pressing: PenIcon,
-            clicked: PenIcon,
-            disabled: PenDisabledIcon,
-          }}
-          iconSize="w-[1.125rem] h-[1.125rem]"
+          initialStatus="clicked" 
+          onClick={() => alert("정보 수정하기 클릭 -> /MyPage/EditInfo 이동")} 
         />
+
       </div>
 
       <div className="my-8 flex flex-col gap-4">
@@ -75,9 +68,9 @@ export const MyPage = ({
       </div>
 
       <div className="gap-[0.25rem]">
-        <Btn_Static kind="White" size="L" label="공지사항" justify="flex-start" />
-        <Btn_Static kind="White" size="L" label="이용약관" justify="flex-start" />
-        <Btn_Static kind="White" size="L" label="설정" justify="flex-start" />
+        <White_L initialStatus="Clicked" label="공지사항" onClick={() => alert("공지사항 클릭")} />
+        <White_L initialStatus="Clicked" label="이용약관" onClick={() => alert("이용약관 클릭")} />
+        <White_L initialStatus="Clicked" label=" 설정" onClick={() => alert("설정 클릭")} />
       </div>
     </div>
   );

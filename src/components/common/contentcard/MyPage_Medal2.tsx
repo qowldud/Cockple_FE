@@ -20,7 +20,7 @@ export const MyPage_Medal2 = ({
     <div className="flex flex-col gap-[1rem]"> 
 
       {/* 내 메달 섹션 */}
-      <div className="w-[21.4375rem] h-[13.5rem] px-[1rem] py-[0.75rem] shadow-ds100 rounded-[1rem] flex flex-col justify-between gap-[1rem]"> 
+      <div className="w-[21.4375rem] h-[13.5rem] px-[1rem] py-[0.75rem] rounded-[1rem] flex flex-col justify-between gap-[1rem]"> 
 
         <div className="w-[13.5rem] h-[1.75rem] shadow-ds200-gr rounded-[0.5rem] mx-auto flex items-center justify-center"> 
           <p className="body-rg-500 text-center">

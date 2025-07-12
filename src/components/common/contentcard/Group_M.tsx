@@ -1,29 +1,40 @@
 import { useState } from "react";
-import Heart_GY from "../../../assets/icons/heart_GY.svg?react";
 import Female from "../../../assets/icons/female.svg?react";
 import Male from "../../../assets/icons/male.svg?react";
 import Vector from "../../../assets/icons/Vector.svg?react";
+import RD500_S_Icon from "../Btn_Static/Icon_Btn/RD500_S_Icon";
 
 interface GroupMProps {
+  id: number;
   title: string;
   location: string;
-  femaleLevel: string; 
-  maleLevel: string;   
-  summary: string;     
-  imageSrc: string;    
-  isFavorite?: boolean; 
+  femaleLevel: string;
+  maleLevel: string;
+  summary: string;
+  imageSrc: string;
+  isFavorite?: boolean;
+  onToggleFavorite?: (id: number) => void;
 }
 
 export const Group_M = ({
+  id,
   title,
   location,
   femaleLevel,
   maleLevel,
   summary,
   imageSrc,
-  isFavorite = false, 
+  isFavorite = false,
+  onToggleFavorite,
 }: GroupMProps) => {
   const [isPressing, setIsPressing] = useState(false);
+  const [favorite, setFavorite] = useState(isFavorite);
+
+  const handleToggleFavorite = () => {
+    const newFavorite = !favorite;
+    setFavorite(newFavorite);
+    onToggleFavorite?.(id);
+  };
 
   return (
     <div
@@ -35,21 +46,25 @@ export const Group_M = ({
       className={`p-[0.5rem] w-[21.4375rem] h-[6.5rem] rounded-[0.75rem] 
         ${isPressing ? "bg-[#F4F5F6]" : "bg-white"} 
          flex items-center gap-[0.75rem] transition-colors duration-150`}
-    >      
+    >
       {/* 이미지 영역 */}
       <div className="relative">
         <img
-          src={imageSrc} 
-          alt={title} 
+          src={imageSrc}
+          alt={title}
           className="w-[5.5rem] h-[5.5rem] rounded-[0.5rem] object-cover"
         />
-        {isFavorite && (
-          <Heart_GY className="w-[1.625rem] h-[1.625rem] absolute bottom-[0.25rem] right-[0.25rem]" />
-        )}
+        <div className="w-[1.625rem] h-[1.625rem] absolute bottom-[0.25rem] right-[0.25rem]">
+          <RD500_S_Icon
+            isActive={favorite} 
+            onClick={() => handleToggleFavorite?.(id)}
+          />
+
+        </div>
       </div>
 
       {/* 글/정보 영역 */}
-     <div className="w-[14.1875rem] h-[5.5rem] flex flex-col gap-[0.5rem] items-start text-black overflow-hidden">
+      <div className="w-[14.1875rem] h-[5.5rem] flex flex-col gap-[0.5rem] items-start text-black overflow-hidden">
         <p className="body-rg-500 truncate w-full" title={title}>
           {title}
         </p>
@@ -85,7 +100,6 @@ export const Group_M = ({
           </p>
         </div>
       </div>
-
     </div>
   );
 };

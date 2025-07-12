@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import Heart_GY from "../../../assets/icons/heart_GY.svg?react";
+import RD500_S_Icon from "../Btn_Static/Icon_Btn/RD500_S_Icon";
 import Calendar from "../../../assets/icons/calendar.svg?react";
 import Clock from "../../../assets/icons/clock.svg?react";
 import Female from "../../../assets/icons/female.svg?react";
@@ -55,7 +55,7 @@ export const ContentCardL = ({
       <div className="flex items-center justify-between">
        <div className="flex items-center gap-2 max-w-[16rem]">
           <p className="body-md-500 truncate">{title}</p>
-          <Heart_GY className="w-[1.625rem] h-[1.625rem] shrink-0" />
+            <RD500_S_Icon />
         </div>
         <RightAngle className="w-4 h-4" />
       </div>

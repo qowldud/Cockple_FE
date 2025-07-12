@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import HeartGY400 from "../../../../assets/icons/heart_GY400.svg";
 import HeartGY300 from "../../../../assets/icons/heart_GY300.svg";
 import HeartFilledGY300 from "../../../../assets/icons/heart_filled_GY300.svg";
@@ -7,33 +7,31 @@ import HeartSystemError from "../../../../assets/icons/heart_filled_systemError.
 type BtnStatus = "disabled" | "default" | "pressing" | "clicked";
 
 interface RD500SProps {
-  initialStatus?: BtnStatus;
+  isActive: boolean;
+  disabled?: boolean;
   onClick?: () => void;
   iconMap?: Partial<Record<BtnStatus, string>>; // 상태별 아이콘
 }
 
 const RD500_S_Icon = ({
-  initialStatus = "default",
+  isActive,
+  disabled = false,
   onClick,
   iconMap,
 }: RD500SProps) => {
-  const [status, setStatus] = useState<BtnStatus>(initialStatus);
-  const currentIcon = iconMap?.[status];
+  const [isPressing, setIsPressing] = React.useState(false);
 
-  const isDisabled = status === "disabled";
+  // 상태 계산 (외부 prop 기반)
+  const status: BtnStatus = disabled
+    ? "disabled"
+    : isPressing
+      ? "pressing"
+      : isActive
+        ? "clicked"
+        : "default";
 
-  const handleMouseDown = () => {
-    if (!isDisabled) setStatus("pressing");
-  };
-
-  const handleMouseUp = () => {
-    if (!isDisabled && status === "pressing") {
-      setStatus("clicked");
-      onClick?.();
-    }
-  };
-
-  const getIcon = () => {
+  const getIcon = (): string => {
+    if (iconMap && iconMap[status]) return iconMap[status]!;
     switch (status) {
       case "disabled":
         return HeartGY400;
@@ -44,21 +42,25 @@ const RD500_S_Icon = ({
       case "clicked":
         return HeartSystemError;
       default:
+        return HeartGY300;
     }
   };
 
   return (
     <button
-      className={`
-        inline-flex p-1 items-center gap-1 border-hard
-        ${isDisabled ? "cursor-not-allowed" : "cursor-pointer"}`}
-      disabled={status === "disabled"}
-      onMouseDown={handleMouseDown}
-      onMouseUp={handleMouseUp}
+      className={`inline-flex p-1 items-center gap-1 border-hard
+        ${disabled ? "cursor-not-allowed" : "cursor-pointer"}`}
+      disabled={disabled}
+      onMouseDown={() => setIsPressing(true)}
+      onMouseUp={() => {
+        setIsPressing(false);
+        onClick?.();
+      }}
+      onMouseLeave={() => setIsPressing(false)}
     >
       <img
-        src={`${currentIcon ? currentIcon : getIcon()}`}
-        alt="삭제"
+        src={getIcon()}
+        alt="하트"
         className="w-[1.125rem] h-[1.125rem] aspect-square"
       />
     </button>

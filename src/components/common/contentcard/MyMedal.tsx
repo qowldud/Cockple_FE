@@ -2,6 +2,7 @@
 import { useState } from "react";
 import RightAngle from "../../../assets/icons/RightAngle.svg?react";
 
+
 interface MyMedalProps {
   title: string;
   date: string;

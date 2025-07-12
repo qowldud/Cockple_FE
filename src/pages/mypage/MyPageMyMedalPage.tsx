@@ -1,8 +1,15 @@
 import { useState } from "react";
 import { PageHeader } from "../../components/common/system/header/PageHeader";
-import Btn_Static from "../../components/common/Btn_Static/Btn_Static";
+import Grad_GR400_L from "../../components/common/Btn_Static/Text/Grad_GR400_L";
 import { MyMedal } from "../../components/common/contentcard/MyMedal";
 import { MyPage_Medal2 } from "../../components/common/contentcard/MyPage_Medal2";
+
+interface MedalItem {
+  title: string;
+  date: string;
+  medalImageSrc: string;
+  isAwarded: boolean;
+}
 
 interface MyMedalProps {
   name: string;
@@ -16,6 +23,8 @@ interface MyMedalProps {
   silverMedals?: number;
   bronzeMedals?: number;
   disabled?: boolean;
+
+  medals: MedalItem[]; // ✅ 메달 리스트 prop
 }
 
 export const MyPageMyMedalPage = ({
@@ -30,17 +39,12 @@ export const MyPageMyMedalPage = ({
   silverMedals = 0,
   bronzeMedals = 0,
   disabled = false,
+
+  medals = [],
 }: MyMedalProps) => {
   const [selectedTab, setSelectedTab] = useState<"전체" | "미입상 기록">("전체");
 
-  // 예시용 리스트 데이터
-  const dummyList = [
-    { name: "배드민턴 대회", isAwarded: true },
-    { name: "탁구 친선전", isAwarded: false },
-    { name: "농구 리그", isAwarded: true },
-  ];
-
-  const filteredList = dummyList.filter((item) => {
+  const filteredList = medals.filter((item) => {
     if (selectedTab === "전체") return true;
     if (selectedTab === "미입상 기록") return !item.isAwarded;
     return true;
@@ -48,7 +52,10 @@ export const MyPageMyMedalPage = ({
 
   return (
     <>
-      <PageHeader title="내 메달" />
+      <div className="mb-5">
+        <PageHeader title="내 메달" />
+      </div>
+
       <MyPage_Medal2
         totalMedalsCount={totalMedalsCount}
         goldMedals={goldMedals}
@@ -57,39 +64,47 @@ export const MyPageMyMedalPage = ({
         disabled={disabled}
       />
 
-      <div className="flex gap-1 mb-2">
-        {["전체", "미입상 기록"].map((tab) => (
-          <button
-            key={tab}
-            onClick={() => setSelectedTab(tab as "전체" | "미입상 기록")}
-            className="flex flex-col items-center w-[6rem]"
-          >
-            <span className="header-h5">{tab}</span>
-            <div
-              className={`h-[2px] w-full mt-1 transition-all duration-150 ${
-                selectedTab === tab ? "bg-[#1ABB65]" : "bg-transparent"
-              }`}
-            />
-          </button>
+      <div className="mt-8" />
+
+      <div className="w-[375px] mb-5">
+        <div className="flex gap-4 px-4 relative h-10">
+          <div className="absolute bottom-0 left-0 right-0 h-[0.125rem] bg-[#F4F5F6]" />
+          {["전체", "미입상 기록"].map((tab) => (
+            <button
+              key={tab}
+              onClick={() => setSelectedTab(tab as "전체" | "미입상 기록")}
+              className="flex flex-col items-center w-max relative"
+            >
+              <span className="header-h5 inline-block">{tab}</span>
+              {selectedTab === tab && (
+                <span
+                  className="absolute bottom-0 h-[0.125rem] bg-[#1ABB65] rounded-full transition-all duration-150"
+                  style={{ width: `${tab.length + 2}ch` }}
+                />
+              )}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div className="flex flex-col gap-4">
+        {filteredList.map((item, idx) => (
+          <MyMedal
+            key={idx}
+            title={item.title}
+            date={item.date}
+            medalImageSrc={item.medalImageSrc} //여기 사진이 무엇인지...일단 메달 사진입니다.
+            // disabled={!item.isAwarded} // 만약에 미입상 기록이라면 클릭X 일단 모두 클릭 가능하게 했습니다.
+          />
         ))}
       </div>
 
-      {/* 필터링된 메달 또는 경기 기록을 나타내는 리스트 (예시) */}
-      {/* <div className="flex flex-col gap-2 mb-4">
-        {filteredList.map((item, index) => (
-          <div key={index} className="px-4 py-2 border rounded-lg text-sm">
-            {item.name}{" "}
-            <span className="text-gray-500">
-              {item.isAwarded ? "(입상)" : "(미입상)"}
-            </span>
-          </div>
-        ))}
-      </div> */}
-
-      {/* 실제 메달 카드 (추가 props 필요시 수정) */}
-      <MyMedal />
-
-      <Btn_Static kind="GR600" textColor="text-white" bgColor="bg-[#0B9A4E]" size="L_Thin" label="대화 기록 추가하기" />
+      <Grad_GR400_L
+        initialStatus="Clicked"
+        label="대화 기록 추가하기"
+        onClick={() => alert("대화 기록 추가하기 클릭")}
+        className="mt-5"
+      />
     </>
   );
 };
