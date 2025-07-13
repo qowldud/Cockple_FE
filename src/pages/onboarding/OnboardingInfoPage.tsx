@@ -5,6 +5,7 @@ import TextBox from "../../components/common/Text_Box/TextBox";
 import { useState } from "react";
 
 import DateAndTimePicker from "../../components/common/Date_Time/DateAndPicker";
+import { useNavigate } from "react-router-dom";
 
 export const OnboardingInfoPage = () => {
   const {
@@ -14,6 +15,7 @@ export const OnboardingInfoPage = () => {
     setValue,
     formState: { errors },
   } = useForm();
+  const navigate = useNavigate();
 
   const [selected, isSelected] = useState<"boy" | "girl" | null>(null);
   const handleDueChange = date =>
@@ -116,7 +118,8 @@ export const OnboardingInfoPage = () => {
             label="다음"
             size="L"
             kind="GR400"
-            initialStatus="disabled"
+            // initialStatus="disabled"
+            onClick={() => navigate("/onboarding/level")}
           />
         </div>
       </div>
