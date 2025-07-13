@@ -1,5 +1,5 @@
 import React from "react";
-import DeleteIcon from "../../../../assets/icons/delete.svg";
+import DeleteIcon from "../../../../assets/icons/delete-rd-500.svg";
 import RefreshIcon from "../../../../assets/icons/refresh.svg";
 import ChatQuestionIcon from "../../../../assets/icons/chat_question.svg";
 import Btn_Static from "../Btn_Static";
@@ -15,9 +15,9 @@ const Grad_Mix_L = ({ type, label = "Btn" }: GradMixLProps) => {
   const getLeftButtonStyle = () => {
     switch (type) {
       case "delete":
-        return "border border-error text-error";
+        return "border border-rd-500 text-error";
       default:
-        return "border border-default text-black";
+        return "border border-gy-800 text-black";
     }
   };
 
@@ -42,10 +42,13 @@ const Grad_Mix_L = ({ type, label = "Btn" }: GradMixLProps) => {
     >
       {/* 왼쪽 버튼 */}
       <button
-        className={`w-[5rem] h-[3.25rem] px-[1rem] py-[0.75rem] rounded-[1rem] bg-white border-[1px] ${getLeftButtonStyle()} cursor-pointer`}
-        style={{ boxShadow: "0 0 0.25rem 0 rgba(18, 18, 18, 0.12)" }}
+        className={`flex justify-center w-[5rem] h-[3.25rem] px-[1rem] py-[0.75rem] border-round border-2 bg-white ${getLeftButtonStyle()} cursor-pointer`}
       >
-        <img src={getIcon()} alt={`${type} icon`} className="w-6 h-6 mx-auto" />
+        <img
+          src={getIcon()}
+          alt={`${type} icon`}
+          className="w-6 h-6 aspect-square"
+        />
       </button>
 
       {/* 오른쪽 버튼 */}

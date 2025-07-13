@@ -20,6 +20,7 @@ interface MemberProps {
   onReject?: () => void;
 }
 
+export type { MemberProps };  
 
 const MemberInfo = ({
   name,
