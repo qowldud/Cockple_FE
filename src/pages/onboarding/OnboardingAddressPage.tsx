@@ -1,16 +1,15 @@
 import { useForm } from "react-hook-form";
 import { PageHeader } from "../../components/common/system/header/PageHeader";
-import White_L_Thin from "../../components/common/Btn_Static/Text/White_L_Thin";
 import { useNavigate } from "react-router-dom";
 import SearchField from "../../components/common/Search_Filed/SearchField";
 
 export const OnboardingAddressPage = () => {
   const {
-    data,
+    // data,
     register,
-    handleSubmit,
-    setValue,
-    formState: { errors },
+    // handleSubmit,
+    // setValue,
+    // formState: { errors },
   } = useForm();
   const navigate = useNavigate();
 
@@ -27,13 +26,11 @@ export const OnboardingAddressPage = () => {
           </div>
         </div>
 
-        <div className="text-left flex flex-col gap-2">
-          <div className="flex px-1 gap-[2px] items-center">
-            <p className="header-h5">위치</p>
-            <img src="/src/assets/icons/cicle_s_red.svg" alt="icon-cicle" />
-          </div>
-          <SearchField />
-        </div>
+        <SearchField
+          register={register("location")}
+          label="위치"
+          onSearchClick={() => navigate("/onboarding/address/search")}
+        />
       </section>
     </div>
   );
