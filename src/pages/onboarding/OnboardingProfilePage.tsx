@@ -2,9 +2,18 @@ import { useState } from "react";
 import Grad_GR400_L from "../../components/common/Btn_Static/Text/Grad_GR400_L";
 import { PageHeader } from "../../components/common/system/header/PageHeader";
 import ProfileImg from "../../components/common/Etc/ProfileImg";
+import { useNavigate } from "react-router-dom";
 
 export const OnboardingProfilePage = () => {
   const [setProfile, setIsProfile] = useState(false);
+  const navigate = useNavigate();
+  const handleClick = () => {
+    if (setProfile) {
+      navigate("/onboarding/confirm");
+    } else {
+      setIsProfile(true);
+    }
+  };
   return (
     <div className="w-full min-h-screen flex flex-col">
       <PageHeader title="회원 정보 입력" />
@@ -33,7 +42,7 @@ export const OnboardingProfilePage = () => {
           기본 프로필 사용하기
         </p>
       </div>
-      <div className="flex justify-center" onClick={() => setIsProfile(true)}>
+      <div className="flex justify-center" onClick={handleClick}>
         <Grad_GR400_L label={setProfile ? "등록" : "프로필 등록"} />
       </div>
     </div>
