@@ -34,6 +34,8 @@ export const OnboardingInfoPage = () => {
         <PageHeader title="회원 정보 입력" />
         <div className="text-left flex flex-col  gap-8 w-full flex-1">
           <p className="header-h4 pt-15">기본 정보를 입력해주세요</p>
+
+          {/* 첫번째 */}
           <div className="text-left flex flex-col gap-2">
             <div className="flex px-1 gap-[2px] items-center">
               <p className="header-h5">이름</p>
