@@ -23,3 +23,5 @@ const Grad_GR400_L = ({ label = "Btn" }: GradGR400LProps) => {
 };
 
 export default Grad_GR400_L;
+
+
