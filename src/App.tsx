@@ -33,6 +33,10 @@ import {
 import { RecommendPage } from "./pages/home/RecommendPage";
 import { GroupChatDetailPage } from "./pages/chat/GroupChatDetailPage";
 import { PersonalChatDetailPage } from "./pages/chat/PersonalChatDetailPage";
+import OnboardingLayout from "./pages/onboarding/OnBoardingLayout";
+import { OnboardingAddressSearchPage } from "./pages/onboarding/OnboardingAddressSearchPage";
+import { OnboardingConfirmStartPage } from "./pages/onboarding/OnBoardingConfirmStartPage";
+// import { OnboardingProfileInputPage } from "./pages/onboarding/OnBoardingProfileInputPage";
 
 const router = createBrowserRouter([
   {
@@ -45,13 +49,17 @@ const router = createBrowserRouter([
   },
   {
     path: "/onboarding",
-    element: <OnboardingPage />,
+    element: <OnboardingLayout />, //공통
     children: [
+      { index: true, element: <OnboardingPage /> },
       { path: "info", element: <OnboardingInfoPage /> },
       { path: "level", element: <OnboardingLevelPage /> },
       { path: "address", element: <OnboardingAddressPage /> },
+      { path: "address/search", element: <OnboardingAddressSearchPage /> },
       { path: "profile", element: <OnboardingProfilePage /> },
+      // { path: "profile/input", element: <OnboardingProfileInputPage /> },
       { path: "confirm", element: <OnboardingConfirmPage /> },
+      { path: "confirm/start", element: <OnboardingConfirmStartPage /> },
     ],
   },
   {
@@ -77,7 +85,10 @@ const router = createBrowserRouter([
     children: [
       { path: "/mypage/edit", element: <MyPageEditPage /> },
       { path: "/mypage/edit/location", element: <MyPageEditLocationPage /> },
-      { path: "/mypage/edit/location/address", element: <MyPageAddressSearchPage /> },
+      {
+        path: "/mypage/edit/location/address",
+        element: <MyPageAddressSearchPage />,
+      },
       { path: "/mypage/mygroup", element: <MyPageMyGroupPage /> },
       { path: "/mypage/myexercise", element: <MyPageMyExercisePage /> },
       {
@@ -101,7 +112,7 @@ function App() {
   return (
     <div className="h-full w-full flex justify-center items-center">
       <main
-        className="w-full h-full max-w-[444px] px-4 bg-white"
+        className="w-full min-h-screen max-w-[444px] px-4 bg-white"
         style={{ maxWidth: "444px" }}
       >
         <RouterProvider router={router} />
