@@ -4,7 +4,7 @@ import { PageHeader } from "../../components/common/system/header/PageHeader";
 import ProfileImg from "../../components/common/Etc/ProfileImg";
 import { useNavigate } from "react-router-dom";
 
-export const OnboardingProfilePage = () => {
+export const OnboardingProfileInputPage = () => {
   const [setProfile, setIsProfile] = useState(false);
   const navigate = useNavigate();
   const handleClick = () => {
