@@ -22,7 +22,7 @@ const TabSelector = <T extends string>({
   onChange,
 }: TabSelectorProps<T>) => {
   return (
-    <div className="flex mb-4 text-black items-center gap-x-[0.75rem] border-b-2 border-gray-100">
+    <div className="flex mb-4 text-black items-center gap-x-3 border-b-2 border-gray-100">
       {options.map(option => (
         <TabBtn
           key={option.value}
