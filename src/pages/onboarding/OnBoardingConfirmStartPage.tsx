@@ -2,17 +2,15 @@ import { useNavigate } from "react-router-dom";
 import Grad_GR400_L from "../../components/common/Btn_Static/Text/Grad_GR400_L";
 import { PageHeader } from "../../components/common/system/header/PageHeader";
 
-export const OnboardingConfirmsStartPage = () => {
+export const OnboardingConfirmStartPage = () => {
   const navigate = useNavigate();
 
   return (
     <div className="w-full min-h-screen flex flex-col">
       <PageHeader title="가입 완료" />
-      <section className="flex items-center flex-col  grow gap-25">
+      <section className="flex items-center flex-col  grow gap-15">
         <div className="flex flex-col gap-2  items-stretch text-left w-full">
-          <p className="header-h4 pt-15">
-            입상 기록이 나를 더 잘 보여줄거에요!
-          </p>
+          <p className="header-h4 pt-9">입상 기록이 나를 더 잘 보여줄거에요!</p>
           <div className="body-md-500">
             <p>마이페이지에서 대회 경력을 등록해보세요.</p>
           </div>

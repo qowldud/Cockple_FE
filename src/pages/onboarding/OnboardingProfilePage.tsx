@@ -3,6 +3,7 @@ import Grad_GR400_L from "../../components/common/Btn_Static/Text/Grad_GR400_L";
 import { PageHeader } from "../../components/common/system/header/PageHeader";
 import ProfileImg from "../../components/common/Etc/ProfileImg";
 import { useNavigate } from "react-router-dom";
+import { ProgressBar } from "../../components/common/ProgressBar";
 
 export const OnboardingProfilePage = () => {
   const [setProfile, setIsProfile] = useState(false);
@@ -17,7 +18,9 @@ export const OnboardingProfilePage = () => {
   return (
     <div className="w-full min-h-screen flex flex-col">
       <PageHeader title="회원 정보 입력" />
-      <section className=" flex flex-col gap-[6.25rem] text-left  flex-1 pt-15">
+      <ProgressBar width={setProfile ? "96" : "72"} />
+
+      <section className=" flex flex-col gap-[6.25rem] text-left  flex-1 pt-8">
         <div>
           <div className="flex gap-2 flex-col">
             <p className="header-h4">프로필을 등록해주세요</p>

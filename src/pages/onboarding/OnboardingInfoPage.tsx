@@ -1,4 +1,3 @@
-import Btn_Static from "../../components/common/Btn_Static/Btn_Static";
 import { PageHeader } from "../../components/common/system/header/PageHeader";
 import { useForm } from "react-hook-form";
 import TextBox from "../../components/common/Text_Box/TextBox";
@@ -7,6 +6,7 @@ import { useState } from "react";
 import DateAndTimePicker from "../../components/common/Date_Time/DateAndPicker";
 import { useNavigate } from "react-router-dom";
 import Grad_GR400_L from "../../components/common/Btn_Static/Text/Grad_GR400_L";
+import { ProgressBar } from "../../components/common/ProgressBar";
 
 export const OnboardingInfoPage = () => {
   const {
@@ -33,8 +33,10 @@ export const OnboardingInfoPage = () => {
     <>
       <div className="min-h-screen flex flex-col">
         <PageHeader title="회원 정보 입력" />
+        <ProgressBar width="4" />
+
         <div className="text-left flex flex-col  gap-8 w-full flex-1">
-          <p className="header-h4 pt-15">기본 정보를 입력해주세요</p>
+          <p className="header-h4 pt-8">기본 정보를 입력해주세요</p>
 
           {/* 첫번째 */}
           <div className="text-left flex flex-col gap-2">

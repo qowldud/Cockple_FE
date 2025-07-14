@@ -1,9 +1,9 @@
 import { useState } from "react";
-import Btn_Static from "../../components/common/Btn_Static/Btn_Static";
 import CheckBoxBtn from "../../components/common/DynamicBtn/CheckBoxBtn";
 import { PageHeader } from "../../components/common/system/header/PageHeader";
 import { useNavigate } from "react-router-dom";
 import Grad_GR400_L from "../../components/common/Btn_Static/Text/Grad_GR400_L";
+import { ProgressBar } from "../../components/common/ProgressBar";
 
 export const OnboardingLevelPage = () => {
   const level = ["초심", "C조", "D조"];
@@ -16,7 +16,9 @@ export const OnboardingLevelPage = () => {
   return (
     <div className="w-full min-h-screen flex flex-col">
       <PageHeader title="회원 정보 입력" />
-      <section className="flex gap-8 text-left flex-col flex-1 pt-15">
+      <ProgressBar width="24" />
+
+      <section className="flex gap-8 text-left flex-col flex-1 pt-8">
         <div className="flex flex-col gap-2">
           <p className="header-h4 text-left">전국 급수를 입력해주세요.</p>
           <div className="body-md-500 ">

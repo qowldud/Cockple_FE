@@ -2,6 +2,7 @@ import { useForm } from "react-hook-form";
 import { PageHeader } from "../../components/common/system/header/PageHeader";
 import { useNavigate } from "react-router-dom";
 import SearchField from "../../components/common/Search_Filed/SearchField";
+import { ProgressBar } from "../../components/common/ProgressBar";
 
 export const OnboardingAddressPage = () => {
   const {
@@ -16,8 +17,9 @@ export const OnboardingAddressPage = () => {
   return (
     <div className="w-full min-h-screen flex flex-col">
       <PageHeader title="회원 정보 입력" />
+      <ProgressBar width="28" />
 
-      <section className="flex gap-8 text-left flex-col flex-1 pt-15">
+      <section className="flex gap-8 text-left flex-col flex-1 pt-8">
         <div className="flex flex-col gap-2">
           <p className="header-h4 text-left">위치 정보를 입력해주세요</p>
           <div className="body-md-500 ">

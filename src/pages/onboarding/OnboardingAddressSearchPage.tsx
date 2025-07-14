@@ -5,6 +5,7 @@ import SearchField from "../../components/common/Search_Filed/SearchField";
 import { LocationList } from "../../components/common/contentcard/LocationList";
 import { useState } from "react";
 import Grad_GR400_L from "../../components/common/Btn_Static/Text/Grad_GR400_L";
+import { ProgressBar } from "../../components/common/ProgressBar";
 
 export const OnboardingAddressSearchPage = () => {
   const [setRegister, setIsRegister] = useState(false);
@@ -22,6 +23,8 @@ export const OnboardingAddressSearchPage = () => {
     <>
       <div className="w-full min-h-screen flex flex-col">
         <PageHeader title="주소 검색" />
+        <ProgressBar width="52" />
+
         <div className="flex flex-col flex-1">
           <div className="mt-2 mb-6">
             <SearchField register={register("location")} showLabel={false} />
