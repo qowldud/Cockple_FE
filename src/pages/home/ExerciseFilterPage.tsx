@@ -10,7 +10,9 @@ export const ExerciseFilterPage = () => {
       <PageHeader title="필터" />
 
       <div className="flex flex-col gap-vertical-section-s">
-        <Accordion title="지역"></Accordion>
+        <Accordion title="지역">
+          <></>
+        </Accordion>
         <Accordion title="전국 급수">
           <MultiSelectButtonGroup
             options={[
@@ -32,6 +34,7 @@ export const ExerciseFilterPage = () => {
           <MultiSelectButtonGroup
             options={["전체", "여복", "남복", "혼복"]}
             selected={style}
+            singleSelect={true}
             onChange={newVal => setFilter("style", newVal)}
           />
         </Accordion>
@@ -39,6 +42,7 @@ export const ExerciseFilterPage = () => {
           <MultiSelectButtonGroup
             options={["상시", "오전", "오후"]}
             selected={time}
+            singleSelect={true}
             onChange={newVal => setFilter("time", newVal)}
           />
         </Accordion>

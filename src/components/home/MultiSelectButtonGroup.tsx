@@ -2,22 +2,33 @@ import clsx from "clsx";
 
 interface MultiSelectButtonGroupProps {
   options: string[];
-  selected: string[];
-  onChange: (select: string[]) => void;
+  selected: string[] | string;
+  onChange: (select: string[] | string) => void;
+  singleSelect?: boolean;
 }
 
 export const MultiSelectButtonGroup = ({
   options,
   selected,
   onChange,
+  singleSelect = false,
 }: MultiSelectButtonGroupProps) => {
+  const isArray = Array.isArray(selected);
   const toggleOption = (option: string) => {
-    if (selected.includes(option)) {
-      onChange(selected.filter(item => item !== option));
-    } else {
-      onChange([...selected, option]);
+    if (singleSelect) {
+      onChange(option);
+    } else if (isArray) {
+      if (selected.includes(option)) {
+        onChange(selected.filter(item => item !== option));
+      } else {
+        onChange([...selected, option]);
+      }
     }
   };
+
+  const isSelected = (option: string) =>
+    isArray ? selected.includes(option) : selected === option;
+
   return (
     <div className="flex flex-wrap gap-3">
       {options.map(option => (
@@ -26,7 +37,7 @@ export const MultiSelectButtonGroup = ({
           onClick={() => toggleOption(option)}
           className={clsx(
             "w-18.5 h-9.5 border-hard border-1 bg-white body-rg-500",
-            selected.includes(option)
+            isSelected(option)
               ? "border-gr-600 shadow-ds200-gr"
               : "border-gy-100 shadow-ds100",
           )}
