@@ -4,7 +4,6 @@ import { SplashPage } from "./pages/login/SplashPage";
 import { LoginPage } from "./pages/login/LoginPage";
 import { ChatPage } from "./pages/chat/ChatPage";
 import { LikedPage } from "./pages/like/LikedPage";
-import { ChatDetailPage } from "./pages/chat/ChatDetailPage";
 import { PrivateRoute } from "./layout/PrivateRoute";
 import { NavbarLayout } from "./layout/NavbarLayout";
 import { GroupPage } from "./pages/group";
@@ -32,6 +31,8 @@ import {
   MyPageAddressSearchPage,
 } from "./pages/mypage";
 import { RecommendPage } from "./pages/home/RecommendPage";
+import { GroupChatDetailPage } from "./pages/chat/GroupChatDetailPage";
+import { PersonalChatDetailPage } from "./pages/chat/PersonalChatDetailPage";
 
 const router = createBrowserRouter([
   {
@@ -88,7 +89,9 @@ const router = createBrowserRouter([
       { path: "/mypage/mymedal/add", element: <MyPageMedalAddPage /> },
       { path: "/recommend", element: <RecommendPage /> },
       { path: "/exercise-map", element: <ExerciseMapPage /> },
-      { path: "/chat/:chatId", element: <ChatDetailPage /> },
+      // { path: "/chat/:chatId", element: <ChatDetailPage /> },
+      { path: "/chat/group/:chatId", element: <GroupChatDetailPage /> },
+      { path: "/chat/personal/:chatId", element: <PersonalChatDetailPage /> },
       { path: "/alarm", element: <AlarmPage /> },
     ],
   },
