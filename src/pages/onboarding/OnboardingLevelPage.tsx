@@ -3,6 +3,7 @@ import Btn_Static from "../../components/common/Btn_Static/Btn_Static";
 import CheckBoxBtn from "../../components/common/DynamicBtn/CheckBoxBtn";
 import { PageHeader } from "../../components/common/system/header/PageHeader";
 import { useNavigate } from "react-router-dom";
+import Grad_GR400_L from "../../components/common/Btn_Static/Text/Grad_GR400_L";
 
 export const OnboardingLevelPage = () => {
   const level = ["초심", "C조", "D조"];
@@ -87,14 +88,11 @@ export const OnboardingLevelPage = () => {
           </div>
         </div>
       </section>
-      <div className="flex items-center justify-center mb-3">
-        <Btn_Static
-          label="다음"
-          size="L"
-          kind="GR400"
-          // initialStatus="disabled"
-          onClick={() => navigate("/onboarding/address")}
-        />
+      <div
+        className="flex items-center justify-center"
+        onClick={() => navigate("/onboarding/address")}
+      >
+        <Grad_GR400_L label="다음" />
       </div>
     </div>
   );

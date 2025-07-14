@@ -6,6 +6,7 @@ import { useState } from "react";
 
 import DateAndTimePicker from "../../components/common/Date_Time/DateAndPicker";
 import { useNavigate } from "react-router-dom";
+import Grad_GR400_L from "../../components/common/Btn_Static/Text/Grad_GR400_L";
 
 export const OnboardingInfoPage = () => {
   const {
@@ -115,14 +116,11 @@ export const OnboardingInfoPage = () => {
         </div>
 
         {/* 버튼 */}
-        <div className="flex items-center justify-center mb-3">
-          <Btn_Static
-            label="다음"
-            size="L"
-            kind="GR400"
-            // initialStatus="disabled"
-            onClick={() => navigate("/onboarding/level")}
-          />
+        <div
+          className="flex items-center justify-center"
+          onClick={() => navigate("/onboarding/level")}
+        >
+          <Grad_GR400_L label="다음" />
         </div>
       </div>
     </>
