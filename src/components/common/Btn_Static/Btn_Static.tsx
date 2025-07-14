@@ -1,18 +1,19 @@
 // components/common/Btn_Static/Button.tsx
-import React, { useState } from "react";
+
+import React, { useState, useEffect } from "react";
 import type { BtnKind, BtnSize, BtnStatus } from "./types";
 import { buttonPresets, sizePresets } from "./presets";
 
 interface Btn_StaticProps {
-  kind: BtnKind; //색: GR400, GR600, RD500, GY100, GY800, White
-  size: BtnSize; //크기: L, L_Thin, M, S, XS
+  kind: BtnKind;
+  size: BtnSize;
   label?: string;
-  iconMap?: Partial<Record<BtnStatus, string>>; // 상태별 아이콘
-  textColorMap?: Partial<Record<BtnStatus, string>>; // 상태별 글자색
-  initialStatus?: BtnStatus; //상태: default, pressing, clicked, disabled
+  iconMap?: Partial<Record<BtnStatus, string>>;
+  textColorMap?: Partial<Record<BtnStatus, string>>;
+  initialStatus?: BtnStatus;
   onClick?: () => void;
 
-  // Override (optional), 위의 정형적인 속성 말고 커스텀하고 싶을 때
+  // Custom style overrides
   bgColor?: string;
   textColor?: string;
   borderColor?: string;
@@ -32,11 +33,11 @@ const Btn_Static = ({
   size,
   label = "Btn",
   iconMap,
+  textColorMap,
   initialStatus = "default",
   onClick,
   bgColor,
   textColor,
-  textColorMap,
   borderColor,
   iconSize,
   textSize,
@@ -49,6 +50,12 @@ const Btn_Static = ({
   justify = "justify-center",
 }: Btn_StaticProps) => {
   const [status, setStatus] = useState<BtnStatus>(initialStatus);
+
+  // 외부에서 initialStatus가 바뀌면 내부 상태도 업데이트
+  useEffect(() => {
+    setStatus(initialStatus);
+  }, [initialStatus]);
+
   const isDisabled = status === "disabled";
 
   const preset = buttonPresets[kind];
