@@ -89,24 +89,30 @@ export const MyPageMyMedalPage = ({
       </div>
 
       <div className="flex flex-col gap-4">
-        {filteredList.map((item, idx) => (
-          <MyMedal
-            key={idx}
-            title={item.title}
-            date={item.date}
-            medalImageSrc={item.medalImageSrc} //여기 사진이 무엇인지...일단 메달 사진입니다.
-            // disabled={!item.isAwarded} // 만약에 미입상 기록이라면 클릭X 일단 모두 클릭 가능하게 했습니다.
-          />
-        ))}
+        {filteredList.length > 0 ? (
+          filteredList.map((item, idx) => (
+            <MyMedal
+              key={idx}
+              title={item.title}
+              date={item.date}
+              medalImageSrc={item.medalImageSrc}
+              // disabled={!item.isAwarded}
+            />
+          ))
+        ) : (
+          <MyMedal_None />
+        )}
       </div>
 
-      <Grad_GR400_L
-        initialStatus="Clicked"
-        label="대화 기록 추가하기"
-        onClick={() => alert("대화 기록 추가하기 클릭")}
-        className="mt-5"
-      />
-      {/* <MyMedal_None/> */}
+
+      {filteredList.length > 0 && (
+        <Grad_GR400_L
+          initialStatus="Clicked"
+          label="대화 기록 추가하기"
+          onClick={() => alert("대회 기록 추가하기 클릭")}
+          className="mt-8"
+        />
+      )}
     </>
   );
 };

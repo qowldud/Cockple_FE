@@ -7,8 +7,8 @@ export const MyMedal_None = () => {
     <div className="w-full min-h-screen flex flex-col items-center justify-center text-center gap-[2rem]">
       {/* 텍스트 */}
       <div className="flex flex-col gap-[0.5rem]">
-        <p className="header-h5">대화 기록이 없어요!</p>
-        <p className="header-h5">대화 기록을 추가하고 메달을 가져볼까요?</p>
+        <p className="header-h5">대회 기록이 없어요!</p>
+        <p className="header-h5">대회 기록을 추가하고 메달을 가져볼까요?</p>
       </div>
 
       {/* 로고 (임시 이미지) */}

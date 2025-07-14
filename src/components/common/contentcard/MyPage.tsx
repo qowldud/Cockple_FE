@@ -17,6 +17,7 @@ export const MyPage = ({
   bronzeMedals = 0,
   disabled = false,
 }: MyPageProps) => {
+  
   // 메달이 없으면 MyPage_Text 
   if (totalMedalsCount === 0) {
     return (
