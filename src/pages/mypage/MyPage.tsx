@@ -5,44 +5,47 @@ import { MyPage as MyPageContentcard } from "../../components/common/contentcard
 
 import White_L_Thin from "../../components/common/Btn_Static/Text/White_L_Thin";
 import White_L from "../../components/common/Btn_Static/Text/White_L";
-
+import { useNavigate } from "react-router-dom"; 
 
 interface MyPageProps {
   name: string;
-  gender: string;
-  group: string;
+  gender: "female" | "male";
+  level: string;
   birth: string;
-  imageSrc: string;
+  profileImage: File;
 
-  totalMedalsCount?: number;
-  goldMedals?: number;
-  silverMedals?: number;
-  bronzeMedals?: number;
+  myMedalTotal?: number;
+  goldCount?: number;
+  silverCount?: number;
+  bronzeCount?: number;
   disabled?: boolean;
 }
 export const MyPage = ({
   name,
   gender,
-  group,
+  level,
   birth,
-  imageSrc,
+  profileImage,
 
-  totalMedalsCount = 0,
-  goldMedals = 0,
-  silverMedals = 0,
-  bronzeMedals = 0,
+  myMedalTotal = 0,
+  goldCount = 0,
+  silverCount = 0,
+  bronzeCount = 0,
   disabled = false,
 }: MyPageProps) => {
+  
+  const navigate = useNavigate(); 
+
   return (
-    <div className="flex flex-col p-4 pb-26 overflow-auto">
-      <div className="gap-[1.25rem]">
+    <div className="flex flex-col pb-26 overflow-auto">
+      <div className="flex flex-col gap-[1.25rem]">
         <MainHeader hasNotification={true} />
         <Profile
           name={name}
           gender={gender}
-          group={group}
+          level={level}
           birth={birth}
-          imageSrc={imageSrc}
+          profileImage={profileImage}
         />
       </div>
 
@@ -50,8 +53,7 @@ export const MyPage = ({
         <White_L_Thin 
           label="정보 수정하기"
           initialStatus="clicked" 
-          onClick={() => alert("정보 수정하기 클릭 -> /MyPage/EditInfo 이동")} 
-        />
+          onClick={() => navigate("/myPage/edit")}/>
 
       </div>
 
@@ -59,10 +61,10 @@ export const MyPage = ({
         <MyPage_Text textLabel="내 모임" numberValue={0} />
         <MyPage_Text textLabel="내 운동" numberValue={0} />
         <MyPageContentcard
-          totalMedalsCount={totalMedalsCount}
-          goldMedals={goldMedals}
-          silverMedals={silverMedals}
-          bronzeMedals={bronzeMedals}
+          myMedalTotal={myMedalTotal}
+          goldCount={goldCount}
+          silverCount={silverCount}
+          bronzeCount={bronzeCount}
           disabled={disabled}
         />
       </div>

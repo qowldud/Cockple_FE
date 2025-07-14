@@ -1,4 +1,8 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import { format } from "date-fns";
 import { PageHeader } from "../../components/common/system/header/PageHeader";
 import Btn_Static from "../../components/common/Btn_Static/Btn_Static";
 import LocationIcon from "../../assets/icons/mylocation.svg";
@@ -9,12 +13,9 @@ import Male from "../../assets/icons/male.svg?react";
 import CheckCircled from "../../assets/icons/check_circled.svg?react";
 import CheckCircledFilled from "../../assets/icons/check_circled_filled.svg?react";
 import Search from "../../assets/icons/search.svg?react";
-import ArrowDown from "../../assets/icons/arrow_down.svg?react";
 import { Select } from "../../components/MyPage/Select";
 import  { Location } from "../../components/common/contentcard/Location";
-
-import Profile from "../../assets/images/Profile_Image.png";
-
+ 
 interface MyPageEditProps {
   profileUrl?: string;
   name?: string;
@@ -34,39 +35,41 @@ export const MyPageEditPage = ({
   hasNoRank: initialHasNoRank,
   location,
 }: MyPageEditProps) => {
-  const [name, setName] = useState(initialName ?? ""); // 기본값 빈 문자열로 설정
+
+  const [name, setName] = useState(initialName ?? "");
   //급수없음 버튼
-  const [hasNoRank, setHasNoRank] = useState(initialHasNoRank ?? false);
-  const [rank, setRank] = useState(initialRank ?? "");
-   const rankOptions = [
-    { value: 'D조', label: 'D조' },
-    { value: 'C조', label: 'C조' },
-    { value: 'B조', label: 'B조' },
-  ];
+  const [selectedRank, setSelectedRank] = useState("");
+  const [hasNoRank, setHasNoRank] = useState(false);
+  const navigate = useNavigate();
 
-  // export const MyPageEditPage = () => {
-  // // 임시값 직접 선언
-  // const profileUrl = Profile; 
-  // const initialName = "김태연";
-  // const gender = "male";
-  // const birth = "2000.03.12";
-  // const initialRank = "D조";
-  // const initialHasNoRank = false;
-  // const location = "부산";
+  // 이름 기능부분
+  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let input = e.target.value;
 
-  // const [name, setName] = useState(initialName);
-  // const [hasNoRank, setHasNoRank] = useState(initialHasNoRank);
-  // const [rank, setRank] = useState(initialRank);
-  // const rankOptions = [
-  //   { value: "D조", label: "D조" },
-  //   { value: "C조", label: "C조" },
-  //   { value: "B조", label: "B조" },
-  // ];
+    // 한영
+    input = input.replace(/[^ㄱ-ㅎ가-힣a-zA-Z]/g, "");
+
+    // 17글자까지
+    if (input.length > 17) {
+      input = input.slice(0, 17);
+    }
+
+    setName(input);
+  };
+
+  // 날짜 기능부분
+  const [selectedDate, setSelectedDate] = useState<Date | null>(
+    birth ? new Date(birth) : null
+  );
+  const handleDateChange = (date: Date | null) => {
+    setSelectedDate(date);
+  };
+
   return (
     <>
     <PageHeader title="정보 수정하기" />
 
-    <div className="flex flex-col p-4">
+    <div className="flex flex-col">
 
       {/* 프로필 사진 */}
       <div className="flex justify-center mb-8 relative">
@@ -75,7 +78,7 @@ export const MyPageEditPage = ({
           alt="profile"
           className="w-24 h-24 rounded-full object-cover"
         />
-        <div className="absolute bottom-0 right-[calc(50%-40px)] bg-white border shadow-ds100 rounded-full p-1">
+        <div className="absolute bottom-0 right-[calc(50%-40px)] bg-white shadow-ds100 rounded-full p-1">
           <Camer_gy_400 className="w-4 h-4" />
         </div>
       </div>
@@ -91,7 +94,7 @@ export const MyPageEditPage = ({
             type="text"
             value={name}
             maxLength={17}
-            onChange={(e) => setName(e.target.value)}
+            onChange={handleNameChange}
             className="w-full border rounded-xl	p-2 pr-14 body-md-500 border-[#E4E7EA] focus:outline-none"
           />
           <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[#C0C4CD] body-rg-500">
@@ -118,19 +121,26 @@ export const MyPageEditPage = ({
         </div>
       </div>
 
-
       {/* 생년월일 */}
-      <div className="mb-8">
+      <div className="mb-8 flex flex-col items-start">
         <label className="flex items-center text-left header-h5 mb-1">
           생년월일
           <VectorRed className="ml-1 w-2 h-2" />
         </label>
-        <input
-          type="text"
-          value={birth}
-          className="w-full border rounded-xl	p-2 pr-14 body-md-500 border-[#E4E7EA] focus:outline-none"
+        <DatePicker
+          selected={selectedDate}
+          onChange={handleDateChange}
+          dateFormat="yyyy-MM-dd"
+          className="w-full border rounded-xl p-2 pr-14 body-md-500 border-[#E4E7EA] focus:outline-none"
+          // 키보드 입력방지
+          onKeyDown={(e) => e.preventDefault()}
+          onChangeRaw={(e) => e.preventDefault()}
+          onPaste={(e) => e.preventDefault()}
+          style={{ margin: 0 }}
         />
       </div>
+
+
 
       {/* 전국 급수 */}
       <div className="mb-8">
@@ -139,15 +149,10 @@ export const MyPageEditPage = ({
           <VectorRed className="ml-1 w-2 h-2" />
         </label>
         <div className="flex items-center gap-4">
-          <div className="relative w-40">
-            <Select
-              options={rankOptions}
-              selected={rankOptions.find(opt => opt.value === rank) || rankOptions[0]} 
-              onChange={(selectedOption) => setRank(selectedOption.value)} 
-              disabled={hasNoRank}
-            />
-        <ArrowDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 pointer-events-none" />
-      </div>
+        <Select
+          selected={selectedRank}
+          onSelect={(grade) => setSelectedRank(grade)}
+        />
       {/* 급수 없음 토글 */}
           <button
             type="button"
@@ -177,6 +182,7 @@ export const MyPageEditPage = ({
             value={location}
             placeholder="건물명, 도로명으로 검색"
             className="w-full border rounded-xl	p-2 pr-14 body-md-500  text-[#C0C4CD] border-[#E4E7EA] focus:outline-none"
+            onClick={() => navigate("/myPage/edit/location")}
           />
           <span className="absolute right-3 top-1/2 -translate-y-1/2">
             <Search className="w-6 h-6" />
@@ -194,7 +200,8 @@ export const MyPageEditPage = ({
           pressing: LocationIcon,
           clicked: LocationIcon,
         }}
-        iconSize="w-[1.125rem] h-[1.125rem] "
+        iconSize="w-[1.125rem] h-[1.125rem]"
+        onClick={() => navigate("/myPage/edit/location/address")}
       />
 
       
