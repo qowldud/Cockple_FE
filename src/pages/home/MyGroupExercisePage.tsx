@@ -3,7 +3,7 @@ import { Exercise_M } from "../../components/common/contentcard/Exercise_M";
 import { SortButton } from "../../components/home/SortButton";
 import { PageHeader } from "../../components/common/system/header/PageHeader";
 import { groupExerciseData } from "../../components/home/mock/homeMock";
-import { SortBottomSheet } from "../../components/home/SortBottomSheet";
+import { SortBottomSheet } from "../../components/common/SortBottomSheet";
 
 export const MyGroupExercisePage = () => {
   const [isSortOpen, setIsSortOpen] = useState(false);

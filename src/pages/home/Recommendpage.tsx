@@ -5,7 +5,7 @@ import FilterBtn from "../../components/common/DynamicBtn/FilterBtn";
 import { SortButton } from "../../components/home/SortButton";
 import { PageHeader } from "../../components/common/system/header/PageHeader";
 import { groupExerciseData } from "../../components/home/mock/homeMock";
-import { SortBottomSheet } from "../../components/home/SortBottomSheet";
+import { SortBottomSheet } from "../../components/common/SortBottomSheet";
 import { useNavigate } from "react-router-dom";
 
 export const RecommendPage = () => {
@@ -54,6 +54,7 @@ export const RecommendPage = () => {
           ))}
         </div>
       </div>
+
       <SortBottomSheet
         isOpen={isSortOpen}
         onClose={() => setIsSortOpen(false)}

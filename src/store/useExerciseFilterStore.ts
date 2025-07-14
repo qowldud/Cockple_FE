@@ -25,3 +25,12 @@ export const useExerciseFilterStore = create<ExerciseFilterState>(set => ({
       time: "",
     })),
 }));
+
+export const isFilterDirty = (filter: Pick<ExerciseFilterState, FilterKey>) => {
+  return (
+    filter.region.length > 0 ||
+    filter.level.length > 0 ||
+    filter.style !== "" ||
+    filter.time !== ""
+  );
+};

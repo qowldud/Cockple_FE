@@ -6,22 +6,24 @@ interface SortBottomSheetProps {
   onClose: () => void;
   selected: string;
   onSelect: (option: string) => void;
+  options?: string[];
 }
 
-const options = ["최신순", "참여 인원 많은 순"];
+const defaultOptions = ["최신순", "참여 인원 많은 순"];
 
 export const SortBottomSheet = ({
   isOpen,
   onClose,
   selected,
   onSelect,
+  options = defaultOptions,
 }: SortBottomSheetProps) => {
   useLockBodyScroll(isOpen);
 
   if (!isOpen) return;
   return (
     <div
-      className="fixed bottom-0 bg-black/20 -mx-4 w-full h-full"
+      className="fixed bottom-0 bg-black/20 -mx-4 w-full max-w-[444px] h-full"
       onClick={onClose}
     >
       <div
