@@ -3,15 +3,23 @@ import DeleteIcon from "../../../../assets/icons/delete-rd-500.svg";
 import RefreshIcon from "../../../../assets/icons/refresh.svg";
 import ChatQuestionIcon from "../../../../assets/icons/chat_question.svg";
 import Btn_Static from "../Btn_Static";
+import type { BtnStatus } from "../types";
 
 type GradMixType = "delete" | "refresh" | "chat_question";
 
 interface GradMixLProps {
   type: GradMixType;
   label?: string;
+  initialStatus?: BtnStatus;
+  onClick?: () => void;
 }
 
-const Grad_Mix_L = ({ type, label = "Btn" }: GradMixLProps) => {
+const Grad_Mix_L = ({
+  type,
+  label = "Btn",
+  initialStatus = "default",
+  onClick,
+}: GradMixLProps) => {
   const getLeftButtonStyle = () => {
     switch (type) {
       case "delete":
@@ -34,7 +42,7 @@ const Grad_Mix_L = ({ type, label = "Btn" }: GradMixLProps) => {
 
   return (
     <div
-      className="w-[23.4375rem] h-[6rem] pt-[0.5rem] pr-[1rem] pb-[2.25rem] pl-[1rem] gap-[0.5625rem] flex"
+      className="w-full h-[6rem] pt-[0.5rem] pr-[1rem] pb-[2.25rem] pl-[1rem] gap-[0.5625rem] flex"
       style={{
         background:
           "linear-gradient(180deg, rgba(252, 252, 255, 0) 0%, rgba(252, 252, 255, 0.8) 50%, #FCFCFF 90%)",
@@ -52,7 +60,13 @@ const Grad_Mix_L = ({ type, label = "Btn" }: GradMixLProps) => {
       </button>
 
       {/* 오른쪽 버튼 */}
-      <Btn_Static kind="GR400" size="M" label={label} />
+      <Btn_Static
+        kind="GR400"
+        size="M"
+        label={label}
+        initialStatus={initialStatus}
+        onClick={onClick}
+      />
     </div>
   );
 };
