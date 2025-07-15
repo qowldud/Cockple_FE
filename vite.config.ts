@@ -16,6 +16,7 @@ const dirname =
 // More info at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon
 export default defineConfig({
   plugins: [react(), svgr(), tailwindcss()],
+  //@ 경로 오류가 나서 추가했습니다 - 연두
   resolve: {
     alias: {
       "@": "/src",

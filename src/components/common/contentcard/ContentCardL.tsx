@@ -12,6 +12,7 @@ import RightAngle from "../../../assets/icons/RightAngle.svg?react";
 interface ContentCardLProps {
   isUserJoined: boolean;
   isGuestAllowedByOwner: boolean;
+  isCompleted: boolean; // 참여 완료일때 버튼X
   title: String;
   date: string;
   day: string;
@@ -22,11 +23,12 @@ interface ContentCardLProps {
   currentPeople: number;
   maxPeople: number;
 }
-
+export type { ContentCardLProps };  
 //임시입니다.
 export const ContentCardL = ({
   isUserJoined,
   isGuestAllowedByOwner,
+  isCompleted,
   title,
   date,
   day,
@@ -46,7 +48,7 @@ export const ContentCardL = ({
 
   return (
     <div
-      className={`w-[21.4375rem] h-[13.375rem] rounded-[1rem] p-3 space-y-3 transition-colors duration-150
+      className={`w-[21.4375rem]  rounded-[1rem] p-3 space-y-3 transition-colors duration-150
         ${containerPressed ? "bg-[#F4F5F6]" : "bg-white"} shadow`}
     >
       {/* 상단 */}
@@ -74,11 +76,11 @@ export const ContentCardL = ({
         </div>
         
        <div className="w-[19.9375rem] flex gap-[0.8125rem]">
-          <div className="flex items-center gap-1 max-w-[9rem] truncate">
+          <div className="flex items-center gap-1 w-[9rem] truncate">
             <Female className="w-[0.875rem] h-[0.875rem] shrink-0" />
             <span className="truncate">{femaleLevel}</span>
           </div>
-          <div className="flex items-center gap-1 max-w-[9rem] truncate">
+          <div className="flex items-center gap-1 w-[9rem] truncate">
             <Male className="w-[0.875rem] h-[0.875rem] shrink-0" />
             <span className="truncate">{maleLevel}</span>
           </div>
@@ -91,35 +93,38 @@ export const ContentCardL = ({
       </div>
 
       {/* 버튼 */}
-      <div className={`flex ${showGuestButton ? "gap-[0.8125rem]" : ""} w-[19.9375rem]`}>
-        <button
-          onClick={() => setIsStarted(prev => !prev)}
-          onMouseDown={() => setIsStartPressing(true)}
-          onMouseUp={() => setIsStartPressing(false)}
-          onMouseLeave={() => setIsStartPressing(false)}
-          onTouchStart={() => setIsStartPressing(true)}
-          onTouchEnd={() => setIsStartPressing(false)}
-          className={`h-[2.25rem] rounded body-rg-500 
-            bg-[#F4F5F6] transition-colors duration-150
-            ${showGuestButton ? "w-[9.5625rem]" : "w-[19.9375rem]"}
-            ${isStarted ? "text-red-500" : "text-[#0B9A4E]"}`}
-        >
-          {isStarted ? "운동 취소하기" : "운동 시작하기"}
-        </button>
-
-        {showGuestButton && (
+      {!isCompleted && (
+        <div className={`flex ${showGuestButton ? "gap-[0.8125rem]" : ""} w-[19.9375rem]`}>
           <button
-            onMouseDown={() => setIsGuestPressing(true)}
-            onMouseUp={() => setIsGuestPressing(false)}
-            onMouseLeave={() => setIsGuestPressing(false)}
-            onTouchStart={() => setIsGuestPressing(true)}
-            onTouchEnd={() => setIsGuestPressing(false)}
-            className="w-[9.5625rem] h-[2.25rem] rounded bg-[#F4F5F6] body-rg-500 text-black transition-colors duration-150"
+            onClick={() => setIsStarted(prev => !prev)}
+            onMouseDown={() => setIsStartPressing(true)}
+            onMouseUp={() => setIsStartPressing(false)}
+            onMouseLeave={() => setIsStartPressing(false)}
+            onTouchStart={() => setIsStartPressing(true)}
+            onTouchEnd={() => setIsStartPressing(false)}
+            className={`h-[2.25rem] rounded body-rg-500 
+              bg-[#F4F5F6] transition-colors duration-150
+              ${showGuestButton ? "w-[9.5625rem]" : "w-[19.9375rem]"}
+              ${isStarted ? "text-red-500" : "text-[#0B9A4E]"}`}
           >
-            게스트 초대하기
+            {isStarted ? "운동 취소하기" : "운동 시작하기"}
           </button>
-        )}
-      </div>
+
+          {showGuestButton && (
+            <button
+              onMouseDown={() => setIsGuestPressing(true)}
+              onMouseUp={() => setIsGuestPressing(false)}
+              onMouseLeave={() => setIsGuestPressing(false)}
+              onTouchStart={() => setIsGuestPressing(true)}
+              onTouchEnd={() => setIsGuestPressing(false)}
+              className="w-[9.5625rem] h-[2.25rem] rounded bg-[#F4F5F6] body-rg-500 text-black transition-colors duration-150"
+            >
+              게스트 초대하기
+            </button>
+          )}
+        </div>
+      )}  
+
     </div>
   );
 };
