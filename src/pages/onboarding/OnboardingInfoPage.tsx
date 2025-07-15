@@ -104,7 +104,7 @@ export const OnboardingInfoPage = () => {
                 className="fixed inset-0 bg-black/50 z-40 flex items-center justify-center"
                 onClick={e => {
                   if (e.target.id === "date-picker-overlay") {
-                    handleCloseOverlay(); // 바깥 누르면 닫기
+                    handleCloseOverlay();
                   }
                 }}
               >
