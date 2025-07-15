@@ -5,6 +5,9 @@ import { Footer } from "../../components/common/system/Footer";
 import { dailyExerciseData } from "../../components/home/mock/homeMock";
 import { MyGroupWorkoutSection } from "../../components/home/MyGroupWorkoutSection";
 import { RecommendedWorkoutSection } from "../../components/home/RecommendedWorkoutSection";
+import { FloatingButton } from "../../components/common/system/FloatingButton";
+import MapIcon from "@/assets/icons/map_white.svg";
+import { useNavigate } from "react-router-dom";
 
 export type DailyExerciseItem = {
   id: number;
@@ -25,7 +28,22 @@ export type GroupExerciseItem = {
 
 export const HomePage = () => {
   const exerciseData = dailyExerciseData;
+  const navigate = useNavigate();
   const [isScrolled, setIsScrolled] = useState(false);
+  const [rightOffset, setRightOffset] = useState(0);
+
+  useEffect(() => {
+    const updateOffset = () => {
+      const screenWidth = window.innerWidth;
+      const contentWidth = Math.min(screenWidth, 444);
+      const offset = (screenWidth - contentWidth) / 2 + 16;
+      setRightOffset(offset);
+    };
+
+    updateOffset();
+    window.addEventListener("resize", updateOffset);
+    return () => window.removeEventListener("resize", updateOffset);
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -83,6 +101,14 @@ export const HomePage = () => {
       {/* 운동 추천 */}
       <RecommendedWorkoutSection />
       <Footer />
+      <FloatingButton
+        size="L"
+        color="green"
+        icon={MapIcon}
+        className="fixed z-50 bottom-30"
+        style={{ right: rightOffset }}
+        onClick={() => navigate("/exercise-map")}
+      />
     </div>
   );
 };

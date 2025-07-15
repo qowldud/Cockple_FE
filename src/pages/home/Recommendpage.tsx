@@ -15,7 +15,7 @@ export const RecommendPage = () => {
   const data = groupExerciseData;
   return (
     <div className="flex flex-col gap-2 -mx-4 px-4 bg-white">
-      <PageHeader title="운동 추천" />
+      <PageHeader title="운동 추천" onBackClick={() => navigate("/")} />
       <div className="flex flex-col gap-3">
         <div className="w-full h-17">{/* 달력 */}</div>
         <div className="flex justify-between w-full h-7">
