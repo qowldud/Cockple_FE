@@ -17,6 +17,7 @@ const Grad_GR400_L = ({ label = "Btn" }: GradGR400LProps) => {
         from-[rgba(252,252,255,0)] via-[rgba(252,252,255,0.8)] to-[#FCFCFF]
       `}
     >
+      
       <Btn_Static kind="GR400" size="L" label={label} shadow="shadow-ds100" />
     </div>
   );

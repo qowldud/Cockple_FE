@@ -1,15 +1,16 @@
 import { useState } from "react";
 
-import RD500_S_Icon from "../Btn_Static/Icon_Btn/RD500_S_Icon";
 import Calendar from "../../../assets/icons/calendar.svg?react";
 import Clock from "../../../assets/icons/clock.svg?react";
 import Female from "../../../assets/icons/female.svg?react";
 import Male from "../../../assets/icons/male.svg?react";
 import People from "../../../assets/icons/people.svg?react";
 import Vector from "../../../assets/icons/Vector.svg?react";
-import RightAngle from "../../../assets/icons/RightAngle.svg?react";
+import RightAngle from "../../../assets/icons/arrow_right.svg?react";
+import RD500_S_Icon from "../Btn_Static/Icon_Btn/RD500_S_Icon";
 
 interface ContentCardLProps {
+  id: number;
   isUserJoined: boolean;
   isGuestAllowedByOwner: boolean;
   isCompleted: boolean; // 참여 완료일때 버튼X
@@ -22,10 +23,13 @@ interface ContentCardLProps {
   maleLevel: string;
   currentPeople: number;
   maxPeople: number;
+  isFavorite?: boolean;
+  onToggleFavorite?: (id: number) => void;
 }
 export type { ContentCardLProps };  
 //임시입니다.
 export const ContentCardL = ({
+  id,
   isUserJoined,
   isGuestAllowedByOwner,
   isCompleted,
@@ -38,6 +42,8 @@ export const ContentCardL = ({
   maleLevel,
   currentPeople,
   maxPeople,
+  isFavorite = false,
+  onToggleFavorite,
 }: ContentCardLProps) => {
   const [isStarted, setIsStarted] = useState(false);
   const [isStartPressing, setIsStartPressing] = useState(false);
@@ -45,6 +51,15 @@ export const ContentCardL = ({
 
   const showGuestButton = isUserJoined && isGuestAllowedByOwner;
   const containerPressed = isStartPressing || isGuestPressing;
+
+  const [favorite, setFavorite] = useState(isFavorite);
+
+  const handleToggleFavorite = () => {
+    const newFavorite = !favorite;
+    setFavorite(newFavorite);
+    onToggleFavorite?.(id);
+  };
+
 
   return (
     <div
@@ -55,7 +70,10 @@ export const ContentCardL = ({
       <div className="flex items-center justify-between">
        <div className="flex items-center gap-2 max-w-[16rem]">
           <p className="body-md-500 truncate">{title}</p>
-            <RD500_S_Icon />
+            <RD500_S_Icon
+            isActive={favorite} 
+            onClick={() => handleToggleFavorite?.(id)}
+          />        
         </div>
         <RightAngle className="w-4 h-4" />
       </div>

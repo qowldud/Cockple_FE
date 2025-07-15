@@ -5,24 +5,36 @@ import Clock from "../../../assets/icons/clock.svg?react";
 import Vector from "../../../assets/icons/Vector.svg?react";
 
 interface ExerciseMProps {
+  id: number;
   title: string;
   date: string;
   time: string;
   location: string;
   imageSrc: string;
   isFavorite?: boolean; 
-}
+  onToggleFavorite?: (id: number) => void;
+};
 
 export const Exercise_M = ({
+  id,
   title,
   date,
   time,
   location,
   imageSrc,
   isFavorite = false, 
+  onToggleFavorite,
 }: ExerciseMProps) => {
   // pressing 상태 관리 
   const [isPressing, setIsPressing] = useState(false);
+
+  const [favorite, setFavorite] = useState(isFavorite);
+
+  const handleToggleFavorite = () => {
+    const newFavorite = !favorite;
+    setFavorite(newFavorite);
+    onToggleFavorite?.(id);
+  };
 
   return (
     <div
@@ -43,12 +55,11 @@ export const Exercise_M = ({
           className="w-[5.5rem] h-[5.5rem] rounded-[0.5rem] object-cover"
         />
         <div style={{ position: "absolute", bottom: "0.25rem", right: "0.25rem" }}>
-          <RD500_S_Icon />
-        </div>   
-        {/* isFavorite이 true일 때만 하트 아이콘을 보여줌 */}
-        {/* {isFavorite && (
-          <Heart_GY className="w-[1.625rem] h-[1.625rem] absolute bottom-[0.25rem] right-[0.25rem]" />
-        )} */}
+          <RD500_S_Icon
+            isActive={favorite} 
+            onClick={() => handleToggleFavorite?.(id)}        
+            />
+          </div>
       </div>
 
       {/* 글/정보 영역 */}

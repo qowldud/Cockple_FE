@@ -6,28 +6,28 @@ import Grad_GR400_L from "../../components/common/Btn_Static/Text/Grad_GR400_L";
 
 interface MyPageProps {
   name: string;
-  gender: string;
-  group: string;
+  gender: "female" | "male";
+  level: string;
   birth: string;
-  imageSrc: string;
+  profileImage: File;
 
-  totalMedalsCount?: number;
-  goldMedals?: number;
-  silverMedals?: number;
-  bronzeMedals?: number;
+  myMedalTotal?: number;
+  goldCount?: number;
+  silverCount?: number;
+  bronzeCount?: number;
   disabled?: boolean;
 }
 export const MyPageProfile = ({
   name,
   gender,
-  group,
+  level,
   birth,
-  imageSrc,
+  profileImage,
 
-  totalMedalsCount = 0,
-  goldMedals = 0,
-  silverMedals = 0,
-  bronzeMedals = 0,
+  myMedalTotal = 0,
+  goldCount = 0,
+  silverCount = 0,
+  bronzeCount = 0,
   disabled = false,
 }: MyPageProps) => {
   return (
@@ -37,22 +37,20 @@ export const MyPageProfile = ({
         <Profile
           name={name}
           gender={gender}
-          group={group}
+          level={level}
           birth={birth}
-          imageSrc={imageSrc}
+          profileImage={profileImage}
         />
       </div>
 
       <div className="my-8 flex flex-col gap-4">
         <MyPage_Text textLabel="모임" numberValue={0} />
         <MyPageContentcard
-          totalMedalsCount={totalMedalsCount}
-          goldMedals={goldMedals}
-          silverMedals={silverMedals}
-          bronzeMedals={bronzeMedals}
-          disabled={disabled}
-          isProfile 
-
+          myMedalTotal={myMedalTotal}
+          goldCount={goldCount}
+          silverCount={silverCount}
+          bronzeCount={bronzeCount}
+          disabled={disabled} 
         />
       </div>
 

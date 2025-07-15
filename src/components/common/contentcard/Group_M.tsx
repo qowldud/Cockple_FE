@@ -59,7 +59,6 @@ export const Group_M = ({
             isActive={favorite} 
             onClick={() => handleToggleFavorite?.(id)}
           />
-
         </div>
       </div>
 
