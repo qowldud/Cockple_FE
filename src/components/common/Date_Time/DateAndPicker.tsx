@@ -34,29 +34,32 @@ export default function DateAndTimePicker({ onDueChange }) {
   return (
     <>
       <div className=" flex w-80 bg-white  mx-auto border border-gray-300 shadow-ds400 rounded-3xl relative ">
-        <div className="w-1/3 z-2">
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
+          <div
+            className="bg-gy-100 h-10 rounded-lg"
+            style={{ width: "calc(100% - 2rem)" }}
+          ></div>
+        </div>
+        <div className="w-1/3 z-20">
           <Picker
             options={years}
             selectedValue={selectedYear}
             onChange={setSelectedYear}
           />
         </div>
-        <div className="w-1/3 z-2">
+        <div className="w-1/3 z-20">
           <Picker
             options={months}
             selectedValue={selectedMonth}
             onChange={setSelectedMonth}
           />
         </div>
-        <div className="flex w-1/3 z-2">
+        <div className="flex w-1/3 z-20">
           <Picker
             options={days}
             selectedValue={selectedDay}
             onChange={setSelectedDay}
           />
-        </div>
-        <div className="flex items-center justify-center">
-          <div className="w-75 bg-gy-100 z-0 px-[0.625rem] absolute top-1/2  left-1/2 translate-x-[-50%] translate-y-[-50%] h-10 rounded-lg"></div>
         </div>
       </div>
 
