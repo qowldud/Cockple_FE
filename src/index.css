@@ -76,7 +76,9 @@
         rgba(252, 252, 255, 0.8) 50%,
         rgba(252, 252, 255, 0) 100%
       );
-  } /* Drop Shadows */
+  }
+
+  /* Drop Shadows */
   --shadow-ds50: 0px 0px 12px 0px rgba(18, 18, 18, 0.04);
   --shadow-ds100: 0px 0px 4px 0px rgba(18, 18, 18, 0.12);
   --shadow-ds200: 0px 0px 16px 0px rgba(18, 18, 18, 0.16);
