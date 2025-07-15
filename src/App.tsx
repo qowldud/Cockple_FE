@@ -114,7 +114,7 @@ const router = createBrowserRouter([
 
 function App() {
   return (
-    <div className="h-full w-full flex justify-center items-center">
+    <div className="w-full flex justify-center items-center">
       <main
         className="w-full min-h-screen max-w-[444px] px-4 bg-white"
         style={{ maxWidth: "444px" }}

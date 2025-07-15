@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 export const RecommendedWorkoutSection = () => {
   const navigate = useNavigate();
   const data: GroupExerciseItem[] = groupExerciseData;
+
   return (
     <div className="flex flex-col gap-3 w-full">
       <div className="flex justify-between header-h4">
