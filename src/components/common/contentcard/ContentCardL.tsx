@@ -1,5 +1,4 @@
 import { useState } from "react";
-
 import Calendar from "../../../assets/icons/calendar.svg?react";
 import Clock from "../../../assets/icons/clock.svg?react";
 import Female from "../../../assets/icons/female.svg?react";
@@ -16,18 +15,17 @@ interface ContentCardLProps {
   isCompleted: boolean; // 참여 완료일때 버튼X
   title: String;
   date: string;
-  day: string;
   location: string;
   time: string;
   femaleLevel: string;
   maleLevel: string;
-  currentPeople: number;
-  maxPeople: number;
-  isFavorite?: boolean;
+  currentCount: number;
+  totalCount: number;
+  like?: boolean;
   onToggleFavorite?: (id: number) => void;
 }
 export type { ContentCardLProps };  
-//임시입니다.
+
 export const ContentCardL = ({
   id,
   isUserJoined,
@@ -35,14 +33,13 @@ export const ContentCardL = ({
   isCompleted,
   title,
   date,
-  day,
   location,
   time,
   femaleLevel,
   maleLevel,
-  currentPeople,
-  maxPeople,
-  isFavorite = false,
+  currentCount,
+  totalCount,
+  like = false,
   onToggleFavorite,
 }: ContentCardLProps) => {
   const [isStarted, setIsStarted] = useState(false);
@@ -52,7 +49,7 @@ export const ContentCardL = ({
   const showGuestButton = isUserJoined && isGuestAllowedByOwner;
   const containerPressed = isStartPressing || isGuestPressing;
 
-  const [favorite, setFavorite] = useState(isFavorite);
+  const [favorite, setFavorite] = useState(like);
 
   const handleToggleFavorite = () => {
     const newFavorite = !favorite;
@@ -60,6 +57,12 @@ export const ContentCardL = ({
     onToggleFavorite?.(id);
   };
 
+  function getDayOfWeek(dateString: string): string {
+    const days = ["일", "월", "화", "수", "목", "금", "토"];
+    const dateObj = new Date(dateString);
+    return days[dateObj.getDay()];
+  }
+  const day = getDayOfWeek(date);
 
   return (
     <div
@@ -81,8 +84,8 @@ export const ContentCardL = ({
       {/* 정보 */}
       <div className="flex flex-col gap-[0.375rem] text-black body-sm-400">
         <div className="flex items-center gap-1">
-          <Calendar className="w-[0.875rem] h-[0.875rem]" />
-          <span>{`${date} (${day})`}</span>
+        <Calendar className="w-[0.875rem] h-[0.875rem]" />
+        <span>{`${date} (${day})`}</span>
         </div>
         <div className="flex items-center gap-1">
           <Vector className="w-[0.875rem] h-[0.875rem]" />
@@ -106,7 +109,7 @@ export const ContentCardL = ({
 
         <div className="flex items-center gap-1">
           <People className="w-[0.875rem] h-[0.875rem]" />
-          <span>{`${currentPeople} / ${maxPeople}`}</span>
+          <span>{`${currentCount} / ${totalCount}`}</span>
         </div>
       </div>
 

@@ -1,15 +1,15 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { MyPageMyGroupPage } from '../../../../pages/mypage/MyPageMyGroupPage';
-import { MemoryRouter } from 'react-router-dom'; 
-import Kitty from "../../../../assets/images/kitty.png"; 
+import { MemoryRouter } from 'react-router-dom';
+import Kitty from "../../../../assets/images/kitty.png";
 
 const meta: Meta<typeof MyPageMyGroupPage> = {
-  title: 'Pages/MyPage/MyGroupPage', 
-  component: MyPageMyGroupPage, 
+  title: 'Pages/MyPage/MyGroupPage',
+  component: MyPageMyGroupPage,
   parameters: {
-    layout: 'fullscreen', 
+    layout: 'fullscreen',
   },
-  tags: ['autodocs'], // 자동문서
+  tags: ['autodocs'],
   argTypes: {
     groups: {
       description: '표시할 모임 목록이에요!',
@@ -18,7 +18,7 @@ const meta: Meta<typeof MyPageMyGroupPage> = {
   },
   decorators: [
     (Story) => (
-      <MemoryRouter> 
+      <MemoryRouter>
         <Story />
       </MemoryRouter>
     ),
@@ -27,44 +27,53 @@ const meta: Meta<typeof MyPageMyGroupPage> = {
 
 export default meta;
 
-// 🌟 그룹이 여러 개 있을 때의 모습이야!
+// ✅ 그룹이 여러 개 있을 때
 export const Default: StoryObj<typeof MyPageMyGroupPage> = {
   args: {
     groups: [
       {
-        title: '신나는 배드민턴 모임',
+        id: 1,
+        groupName: '신나는 배드민턴 모임',
+        groupImage: Kitty,
         location: '강남구',
         femaleLevel: '초급',
         maleLevel: '중급',
-        summary: '배드민턴으로 스트레스 날려버릴 사람 모여라!',
-        imageSrc: Kitty, 
-        isFavorite: true,
+        nextActivitDate: '2025-08-01',
+        upcomingCount: 3,
+        like: true,
+        isMine: true,
       },
       {
-        title: '주말 등산 크루',
+        id: 2,
+        groupName: '주말 등산 크루',
+        groupImage: Kitty,
         location: '북한산',
         femaleLevel: '상급',
         maleLevel: '상급',
-        summary: '주말에 함께 산을 오르며 건강도 챙기고 힐링도 해요!',
-        imageSrc: Kitty, 
-        isFavorite: false,
+        nextActivitDate: '2025-08-03',
+        upcomingCount: 2,
+        like: false,
+        isMine: false,
       },
       {
-        title: '독서 토론 클럽',
+        id: 3,
+        groupName: '독서 토론 클럽',
+        groupImage: Kitty,
         location: '홍대입구',
         femaleLevel: '제한 없음',
         maleLevel: '제한 없음',
-        summary: '매주 흥미로운 책을 읽고 생각을 나누는 모임이에요.',
-        imageSrc: Kitty, 
-        isFavorite: false,
+        nextActivitDate: '2025-08-05',
+        upcomingCount: 1,
+        like: false,
+        isMine: true,
       },
     ],
   },
 };
 
-// 😥 그룹이 하나도 없을 때의 모습이야!
+// ✅ 그룹이 하나도 없을 때
 export const EmptyGroups: StoryObj<typeof MyPageMyGroupPage> = {
   args: {
-    groups: [], // 텅 비어있지?
+    groups: [],
   },
 };

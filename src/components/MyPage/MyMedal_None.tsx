@@ -16,10 +16,6 @@ export const MyMedal_None = () => {
 
       {/* 버튼 */}
       <GR400_M
-        kind="GR600"
-        size="S"
-        bgColor="bg-[#0B9A4E]"
-        textColor="text-white"
         label="대회 기록 추가하기"
       />
     </div>

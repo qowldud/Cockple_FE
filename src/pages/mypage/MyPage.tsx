@@ -59,8 +59,8 @@ export const MyPage = ({
       </div>
 
       <div className="my-8 flex flex-col gap-4">
-        <MyPage_Text textLabel="내 모임" numberValue={0} />
-        <MyPage_Text textLabel="내 운동" numberValue={0} />
+        <MyPage_Text textLabel="내 모임" numberValue={0} onClick={() => navigate("/myPage/mygroup")} />
+        <MyPage_Text textLabel="내 운동" numberValue={0} onClick={() => navigate("/myPage/myexercise")}/>
         <MyPageContentcard
           myMedalTotal={myMedalTotal}
           goldCount={goldCount}
