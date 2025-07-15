@@ -112,6 +112,7 @@ export const OnboardingInfoPage = () => {
                   onClick={e => e.stopPropagation()} // 내부 클릭 시 닫히지 않도록 방지
                 >
                   <DateAndTimePicker ref={pickerRef} />
+                  {/* <DateAndTimePicker ref={pickerRef} showTime={true} /> */}
                 </div>
               </div>
             )}
