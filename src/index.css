@@ -1,6 +1,7 @@
 @import url("https://cdn.jsdelivr.net/gh/sun-typeface/SUIT@2/fonts/variable/woff2/SUIT-Variable.css");
 @import "tailwindcss";
-
+@import "swiper/css";
+@import "swiper/css/pagination";
 @theme {
   --color-gr-100: #eaf5ed;
   --color-gr-200: #d8edde;
@@ -38,8 +39,33 @@
   /* 그라디언트 */
   --color-gradient-ye-gr: linear-gradient(90deg, #fcd55c 0%, #1abb65 100%);
   --color-gradient-gy: linear-gradient(83deg, #d6dae0 9.02%, #a8aebd 90.81%);
-
-  /* Drop Shadows */
+  --color-gradient-white_100_0: linear-gradient(
+    180deg,
+    #fcfcff 10%,
+    rgba(252, 252, 255, 0.8) 50%,
+    rgba(252, 252, 255, 0) 100%
+  );
+  --color-gradient-White_0_100: linear-gradient(
+    180deg,
+    rgba(252, 252, 255, 0) 0%,
+    rgba(252, 252, 255, 0.8) 50%,
+    var(--Colors-GrayScale-White, #fcfcff) 90%
+  );
+  --color-gradient-fade-vertical {
+    background-image:
+      linear-gradient(
+        180deg,
+        #fcfcff 10%,
+        rgba(252, 252, 255, 0.8) 50%,
+        rgba(252, 252, 255, 0) 100%
+      ),
+      linear-gradient(
+        0deg,
+        #fcfcff 10%,
+        rgba(252, 252, 255, 0.8) 50%,
+        rgba(252, 252, 255, 0) 100%
+      );
+  } /* Drop Shadows */
   --shadow-ds50: 0px 0px 12px 0px rgba(18, 18, 18, 0.04);
   --shadow-ds100: 0px 0px 4px 0px rgba(18, 18, 18, 0.12);
   --shadow-ds200: 0px 0px 16px 0px rgba(18, 18, 18, 0.16);
@@ -316,4 +342,19 @@ body {
     BlinkMacSystemFont,
     "Segoe UI",
     sans-serif;
+}
+.swiper-pagination-bullet {
+  @apply bg-gy-500 size-2 rounded-full;
+  margin: 0 8px !important;
+}
+.swiper-pagination-bullet-active {
+  @apply bg-gr-500 mx-2;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }

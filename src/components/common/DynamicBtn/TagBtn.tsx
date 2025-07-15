@@ -41,7 +41,7 @@ export default function TagBtn({
 
   return (
     <button
-      className={`inline-flex pr-[0.625rem] py-2 pl-3 gap-1 rounded-2xl items-center body-rg-500 shadow-ds100 border ${bg} ${disabled ? "cursor-not-allowed" : "cursor-pointer"}`}
+      className={`inline-flex pr-[0.625rem] py-2 pl-3 gap-1 rounded-2xl items-center body-rg-500 shadow-ds100 border ${bg} `}
       onMouseDown={onMouseDown}
       onMouseUp={onMouseUp}
       onMouseLeave={onMouseLeave}
