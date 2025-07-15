@@ -1,8 +1,7 @@
 import { PageHeader } from "../../components/common/system/header/PageHeader";
 import { useForm } from "react-hook-form";
 import TextBox from "../../components/common/Text_Box/TextBox";
-import { useState } from "react";
-
+import { useRef, useState } from "react";
 import DateAndTimePicker from "../../components/common/Date_Time/DateAndPicker";
 import { useNavigate } from "react-router-dom";
 import Grad_GR400_L from "../../components/common/Btn_Static/Text/Grad_GR400_L";
@@ -19,14 +18,19 @@ export const OnboardingInfoPage = () => {
   const navigate = useNavigate();
 
   const [selected, isSelected] = useState<"boy" | "girl" | null>(null);
-  const handleDueChange = date =>
-    setValue("selectedDue", date, { shouldValidate: true });
 
-  // 입력값 변경 핸들러
-  // const handlePriceChange = e => {
-  //   const inputValue = e.target.value.replace(/[^0-9]/g, ""); // 숫자가 아닌 값 제거
-  //   setValue("price", inputValue, { shouldValidate: true }); // 숫자로만 이루어진 값을 react-hook-form 값으로 저장
-  // };
+  const [selectedDate, setSelectedDate] = useState("");
+  const pickerRef = useRef(null);
+
+  const handleCloseOverlay = () => {
+    if (pickerRef.current) {
+      const date = pickerRef.current.getDueString(); // 선택된 값
+      setSelectedDate(date); //  input에 넣기
+      setValue("birthday", date, { shouldValidate: true }); //set Value를 통해 useForm에 전달
+    }
+    setOpenModal(false); // 닫기
+  };
+
   const [openModal, setOpenModal] = useState(false);
 
   return (
@@ -91,26 +95,23 @@ export const OnboardingInfoPage = () => {
               type="text"
               className="w-full rounded-xl border-gy-200 border py-[0.625rem] px-3 focus:outline-none focus:border-active "
               onClick={() => setOpenModal(true)}
+              value={selectedDate}
             />
 
             {openModal && (
               <div
+                id="date-picker-overlay"
                 className="fixed inset-0 bg-black/50 z-40 flex items-center justify-center"
                 onClick={e => {
                   if (e.target.id === "date-picker-overlay") {
-                    setOpenModal(false); // 바깥 누르면 닫기
+                    handleCloseOverlay(); // 바깥 누르면 닫기
                   }
                 }}
               >
                 <div
-                  id="date-picker-overlay"
-                  className="w-full h-full flex items-center justify-center"
+                  onClick={e => e.stopPropagation()} // 내부 클릭 시 닫히지 않도록 방지
                 >
-                  <div
-                    onClick={e => e.stopPropagation()} // 내부 클릭 시 닫히지 않도록 방지
-                  >
-                    <DateAndTimePicker onDueChange={handleDueChange} />
-                  </div>
+                  <DateAndTimePicker ref={pickerRef} />
                 </div>
               </div>
             )}

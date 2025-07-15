@@ -1,25 +1,28 @@
-import { useState } from "react";
-import PropTypes from "prop-types";
+import { forwardRef, useImperativeHandle, useState } from "react";
 import Picker from "./Picker";
 
-DateAndTimePicker.propTypes = {
-  onDueChange: PropTypes.func.isRequired,
-};
-
-export default function DateAndTimePicker({ onDueChange }) {
+const DateAndTimePicker = forwardRef(function DateAndTimePicker(_, ref) {
   const [selectedYear, setSelectedYear] = useState("2025");
   const [selectedMonth, setSelectedMonth] = useState("01");
   const [selectedDay, setSelectedDay] = useState("01");
   //   const [selectedHour, setSelectedHour] = useState("12");
   //   const [selectedMinute, setSelectedMinute] = useState("00");
-  const [confirmedDue, setConfirmedDue] = useState("");
+  // const [confirmedDue, setConfirmedDue] = useState("");
 
-  const handleConfirm = () => {
-    const dueString = `${selectedYear}년 ${selectedMonth}월 ${selectedDay}일`;
-    setConfirmedDue(dueString); // 선택된 일시로 업데이트
-    // New.jsx 로 전달
-    onDueChange(`${selectedYear}.${selectedMonth}.${selectedDay}`);
+  const getDueString = () => {
+    return `${selectedYear}.${selectedMonth}.${selectedDay}`;
   };
+
+  // 부모가 ref로 접근할 수 있게 해줌
+  useImperativeHandle(ref, () => ({
+    getDueString,
+  }));
+
+  // const handleConfirm = () => {
+  //   const dueString = `${selectedYear}년 ${selectedMonth}월 ${selectedDay}일`;
+  //   setConfirmedDue(dueString); // 선택된 일시로 업데이트
+  //   onDueChange(`${selectedYear}.${selectedMonth}.${selectedDay}`);
+  // };
   const currentYear = new Date().getFullYear();
   const years = Array.from({ length: 75 }, (_, i) =>
     (currentYear - i).toString(),
@@ -62,20 +65,8 @@ export default function DateAndTimePicker({ onDueChange }) {
           />
         </div>
       </div>
-
-      {confirmedDue && (
-        <div className="font-pretendard font-bold text-xl text-center">
-          {confirmedDue}
-        </div>
-      )}
-
-      <button
-        type="button"
-        onClick={handleConfirm}
-        className="p-2 bg-gray-200 font-pretendard text-card-price text-lg text-gray-800 rounded-lg"
-      >
-        결정
-      </button>
     </>
   );
-}
+});
+
+export default DateAndTimePicker;
