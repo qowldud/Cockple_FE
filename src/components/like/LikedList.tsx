@@ -23,7 +23,7 @@ const LikedList = ({
               <Group_M
                 key={card.id}
                 {...card}
-                onToggleFavorite={onToggleFavorite}
+                // onToggleFavorite={onToggleFavorite}
               />
             </div>
           ))
