@@ -20,6 +20,7 @@ interface MyPageProps {
   bronzeCount?: number;
   disabled?: boolean;
 }
+
 export const MyPage = ({
   name,
   gender,
@@ -37,7 +38,7 @@ export const MyPage = ({
   const navigate = useNavigate(); 
 
   return (
-    <div className="flex flex-col pb-26 overflow-auto">
+    <div className="flex flex-col pt-[8rem] overflow-auto">
       <div className="flex flex-col gap-[1.25rem]">
         <MainHeader hasNotification={true} />
         <Profile
