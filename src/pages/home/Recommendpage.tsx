@@ -38,12 +38,13 @@ export const RecommendPage = () => {
         </div>
 
         <div className="flex flex-col gap-3">
-          {data.map(item => (
+          {data.map((item, idx) => (
             <div
               className="flex flex-col pb-3 border-b-[1px] border-gy-200"
               key={item.id}
             >
               <Exercise_M
+                id={idx}
                 title={item.title}
                 date={item.date}
                 time={item.time}
