@@ -8,7 +8,7 @@ import { PrivateRoute } from "./layout/PrivateRoute";
 import { NavbarLayout } from "./layout/NavbarLayout";
 import { GroupPage } from "./pages/group";
 import { ExerciseMapPage } from "./pages/home/ExerciseMapPage";
-import { AlarmPage } from "./pages/alarm/AlarmPage";
+import { AlertPage } from "./pages/alarm/AlertPage";
 import { HomePage } from "./pages/home/HomePage";
 import {
   OnboardingAddressPage,
@@ -113,7 +113,7 @@ const router = createBrowserRouter([
       // { path: "/chat/:chatId", element: <ChatDetailPage /> },
       { path: "/chat/group/:chatId", element: <GroupChatDetailPage /> },
       { path: "/chat/personal/:chatId", element: <PersonalChatDetailPage /> },
-      { path: "/alarm", element: <AlarmPage /> },
+      { path: "/alert", element: <AlertPage /> },
     ],
   },
 ]);

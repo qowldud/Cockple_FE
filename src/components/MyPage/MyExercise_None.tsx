@@ -6,7 +6,7 @@ export const MyExercise_None = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="flex items-center justify-center w-full h-[calc(100vh-8rem)]">
+    <div className="flex items-center justify-center w-full grow px-4 py-8">
       <div className="flex flex-col items-center gap-8">
         {/* 텍스트 */}
         <div className="flex flex-col gap-[0.5rem] text-center">
@@ -20,7 +20,7 @@ export const MyExercise_None = () => {
         {/* 버튼 */}
         <GR400_M
           label="모임 둘러보기"
-          onClick={() => navigate("/group")}
+          onClick={() => navigate("/")}
         />
       </div>
     </div>

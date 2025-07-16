@@ -62,10 +62,12 @@ export const MyPageMyGroupPage = ({ groups }: MyPageMyGroupPageProps) => {
   const hasGroups = filteredGroups.length > 0;
 
   return (
-    <>
-      <PageHeader title="내 모임" />
-
-      <div className="flex flex-col h-full w-full max-w-[23.4375rem] p-4">
+    
+    <div className="flex flex-col h-screen w-full max-w-[23.4375rem]">
+      <div className="sticky top-0 z-20 bg-white">
+        <PageHeader title="내 모임" />
+      </div>
+      <div className="flex-1 flex flex-col p-4">
         {hasGroups && (
           <div className="mb-8">
             <div className="flex justify-between items-start">
@@ -86,7 +88,7 @@ export const MyPageMyGroupPage = ({ groups }: MyPageMyGroupPageProps) => {
           </div>
         )}
 
-        <div className="flex flex-col gap-4">
+        <div className="flex-1 flex flex-col gap-4">
           {hasGroups ? (
             filteredGroups.map(group => (
               <div key={group.id}>
@@ -99,6 +101,6 @@ export const MyPageMyGroupPage = ({ groups }: MyPageMyGroupPageProps) => {
           )}
         </div>
       </div>
-    </>
+    </div>
   );
 };

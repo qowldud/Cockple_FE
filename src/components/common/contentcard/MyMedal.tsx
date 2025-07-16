@@ -1,13 +1,14 @@
 
 import { useState } from "react";
 import RightAngle from "../../../assets/icons/arrow_right.svg?react";
-
+import { useNavigate } from "react-router-dom";
 
 interface MyMedalProps {
   title: string;
   date: string;
   medalImageSrc: string;
   disabled?: boolean; 
+  onClick?: () => void
 }
 
 export const MyMedal = ({
@@ -15,7 +16,9 @@ export const MyMedal = ({
   date,
   medalImageSrc,
   disabled = false,
+  onClick,
 }: MyMedalProps) => {
+  const navigate = useNavigate();
   // pressing 상태 관리
   const [isPressing, setIsPressing] = useState(false);
 
@@ -74,7 +77,10 @@ export const MyMedal = ({
         </div>
       </div>
 
-      <RightAngle className={`w-[1.25rem] h-[1.25rem] ${iconColor}`} /> 
-    </div>
+      <RightAngle
+          className={`w-[1.25rem] h-[1.25rem] ${iconColor}`}
+          onClick={() => navigate("/mypage/mymedal/:medalId")}
+        />
+   </div>
   );
 };

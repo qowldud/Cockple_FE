@@ -13,7 +13,7 @@ interface MyPageMyExercisePageProps {
 export const MyPageMyExercisePage = ({ myActivityCount }: MyPageMyExercisePageProps) => {
   const [sortOption, setSortOption] = useState("최신순");
   const [selectedTab, setSelectedTab] = useState<"전체" | "참여 예정" | "참여 완료">("전체");
-  
+
   const sortActivities = (list: ContentCardLProps[], option: string) => {
     return [...list].sort((a, b) => {
       const dateA = new Date(a.date).getTime();
@@ -32,51 +32,50 @@ export const MyPageMyExercisePage = ({ myActivityCount }: MyPageMyExercisePagePr
     sortOption
   );
 
-
-
   return (
-    <>
-      <PageHeader title="내 운동" />
-
-      <div className="flex flex-col h-full w-full max-w-[23.4375rem]">
-        <div className="mb-5">
-            <div className="flex gap-4 px-4 relative h-10">
-                <div className="absolute bottom-0 left-0 right-0 h-[0.125rem] bg-[#F4F5F6]" />
-                {["전체", "참여 예정", "참여 완료"].map((tab) => (
-                  <button
-                    key={tab}
-                    onClick={() => setSelectedTab(tab as "전체" | "참여 예정" | "참여 완료")}
-                    className="flex flex-col items-center w-max relative"
-                  >
-                  <span className="header-h5 inline-block">{tab}</span>
-                  {selectedTab === tab && (
-                    <span
-                      className="absolute bottom-0 h-[0.125rem] bg-[#1ABB65] rounded-full transition-all duration-150"
-                      style={{ width: `${tab.length + 2}ch` }}
-                    />
-                  )}
-                  </button>
-                ))}
-            </div>
-          </div>
+    <div className="flex flex-col h-screen w-full max-w-[23.4375rem] bg-white mx-auto"> 
  
-        <div className="flex justify-end mb-3">
-          <MyExerciseSort selected={sortOption} onChange={setSortOption} />
-        </div>
+      <div className="sticky top-0 z-20"> 
+        <PageHeader title="내 운동" />
 
-        <div className="flex flex-col gap-4">
-        {filteredList.length > 0 ? (
-          filteredList.map((group, idx) => (
-            <div key={idx}>
-              <ContentCardL {...group} />
-            </div>
-          ))
-        ) : (
-          <MyExercise_None />
-        )}
-
+        <div className="mb-5 px-4">
+          <div className="flex gap-4 relative h-10">
+            <div className="absolute bottom-0 left-0 right-0 h-[0.125rem] bg-[#F4F5F6]" />
+            {["전체", "참여 예정", "참여 완료"].map((tab) => (
+              <button
+                key={tab}
+                onClick={() => setSelectedTab(tab as "전체" | "참여 예정" | "참여 완료")}
+                className="flex flex-col items-center w-max relative"
+              >
+                <span className="header-h5 inline-block">{tab}</span>
+                {selectedTab === tab && (
+                  <span
+                    className="absolute bottom-0 h-[0.125rem] bg-[#1ABB65] rounded-full transition-all duration-150"
+                    style={{ width: `${tab.length + 2}ch` }}
+                  />
+                )}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
-    </>
+
+      <div className="flex-1 overflow-y-auto px-4 pb-6">
+        {filteredList.length > 0 ? (
+          <>
+            <div className="flex justify-end mb-3">
+              <MyExerciseSort selected={sortOption} onChange={setSortOption} />
+            </div>
+            {filteredList.map((group, idx) => (
+              <ContentCardL key={idx} {...group} />
+            ))}
+          </>
+        ) : (
+          <div className="flex flex-col h-full items-center justify-center">
+            <MyExercise_None />
+          </div>
+        )}
+      </div>
+    </div>
   );
 };

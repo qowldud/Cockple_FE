@@ -25,6 +25,10 @@ export default defineConfig({
    }, optimizeDeps: {
     include: ["swiper", "swiper/react"]
    },
+     server: {
+    host: '0.0.0.0',
+    port: 5173
+  },
   test: {
     projects: [
       {

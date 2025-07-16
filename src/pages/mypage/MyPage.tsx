@@ -67,6 +67,7 @@ export const MyPage = ({
           silverCount={silverCount}
           bronzeCount={bronzeCount}
           disabled={disabled}
+          
         />
       </div>
 

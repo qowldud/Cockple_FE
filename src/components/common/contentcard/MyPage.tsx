@@ -1,5 +1,6 @@
 import { MyPage_Text } from "../../../components/common/contentcard/MyPage_Text";
 import { MyPage_Medal } from "../../../components/common/contentcard/MyPage_Medal";
+import { useNavigate } from "react-router-dom";
 
 // 메달의 여부에 따라 보이는 컴포넌트가 달라서 이 파일에서 처리함
 interface MyPageProps {
@@ -18,13 +19,15 @@ export const MyPage = ({
   disabled = false,
 }: MyPageProps) => {
   
-  // 메달이 없으면 MyPage_Text 
+  // 메달이 없으면 MyPage_Text
+  const navigate = useNavigate(); 
   if (myMedalTotal === 0) {
     return (
       <MyPage_Text
         textLabel="내 메달"
         // numberValue={0}
         disabled={disabled}
+        onClick={() => navigate("/myPage/mymedal")}
       />
     );
   }
