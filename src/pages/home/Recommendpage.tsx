@@ -2,11 +2,11 @@ import { useState } from "react";
 import { Exercise_M } from "../../components/common/contentcard/Exercise_M";
 import CheckBoxBtn from "../../components/common/DynamicBtn/CheckBoxBtn";
 import FilterBtn from "../../components/common/DynamicBtn/FilterBtn";
-import { SortButton } from "../../components/home/SortButton";
 import { PageHeader } from "../../components/common/system/header/PageHeader";
 import { groupExerciseData } from "../../components/home/mock/homeMock";
 import { SortBottomSheet } from "../../components/common/SortBottomSheet";
 import { useNavigate } from "react-router-dom";
+import Sort from "../../components/common/Sort";
 
 export const RecommendPage = () => {
   const navigate = useNavigate();
@@ -29,9 +29,9 @@ export const RecommendPage = () => {
             </FilterBtn>
             <div className="h-4 w-px bg-gray-200 mx-1"></div>
 
-            <SortButton
+            <Sort
               label={sortOption}
-              open={isSortOpen}
+              isOpen={isSortOpen}
               onClick={() => setIsSortOpen(!isSortOpen)}
             />
           </div>

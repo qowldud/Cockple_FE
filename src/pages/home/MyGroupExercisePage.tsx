@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { Exercise_M } from "../../components/common/contentcard/Exercise_M";
-import { SortButton } from "../../components/home/SortButton";
 import { PageHeader } from "../../components/common/system/header/PageHeader";
 import { groupExerciseData } from "../../components/home/mock/homeMock";
 import { SortBottomSheet } from "../../components/common/SortBottomSheet";
+import Sort from "../../components/common/Sort";
 
 export const MyGroupExercisePage = () => {
   const [isSortOpen, setIsSortOpen] = useState(false);
@@ -15,9 +15,9 @@ export const MyGroupExercisePage = () => {
       <div className="flex flex-col gap-3 my-2">
         <div className="h-17">{/* 달력 */}</div>
         <div className="flex justify-end w-full  h-7">
-          <SortButton
+          <Sort
             label={sortOption}
-            open={isSortOpen}
+            isOpen={isSortOpen}
             onClick={() => setIsSortOpen(!isSortOpen)}
           />
         </div>
