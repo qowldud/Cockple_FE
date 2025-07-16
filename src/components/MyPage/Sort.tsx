@@ -21,18 +21,18 @@ export const Sort = () => {
         onClick={() => setIsOpen(prev => !prev)}
         className="flex items-center gap-1 px-2"
       >
-        <p className="header-h5">{selected}</p>
+        <p className="body-rg-500 ">{selected}</p>
         <ArrowDown className="w-4 h-4" />
       </button>
 
       {/* 드롭다운 메뉴 */}
       {isOpen && (
-        <ul className=" body-lg-500  absolute z-10 top-full mt-2 right-0 w-40 bg-white rounded-xl py-2">
+        <ul className=" body-lg-400  absolute z-10 top-full mt-2 right-0 w-40 bg-white rounded-xl py-2">
           {sortOptions.map(option => (
             <li
               key={option}
               onClick={() => handleSelect(option)}
-              className="flex justify-between items-center px-4 py-2 body-lg-400 hover:bg-gray-100 cursor-pointer"
+              className="flex justify-between items-center px-4 py-2 body-lg-500 hover:bg-gray-100 cursor-pointer"
             >
               <span>{option}</span>
               {selected === option && <CheckIcon className="w-4 h-4" />}

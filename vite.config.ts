@@ -23,6 +23,9 @@ export default defineConfig({
     },
     extensions: [".js", ".ts", ".jsx", ".tsx"],
   },
+  optimizeDeps: {
+    include: ["swiper", "swiper/react"],
+  },
   server: {
     host: true,
   },

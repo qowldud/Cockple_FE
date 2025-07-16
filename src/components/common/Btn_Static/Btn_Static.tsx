@@ -5,8 +5,8 @@ import type { BtnKind, BtnSize, BtnStatus } from "./types";
 import { buttonPresets, sizePresets } from "./presets";
 
 interface Btn_StaticProps {
-  kind: BtnKind;
-  size: BtnSize;
+  kind?: BtnKind;
+  size?: BtnSize;
   label?: string;
   iconMap?: Partial<Record<BtnStatus, string>>;
   textColorMap?: Partial<Record<BtnStatus, string>>;
@@ -31,7 +31,7 @@ interface Btn_StaticProps {
 const Btn_Static = ({
   kind,
   size,
-  label = "Btn",
+  label,
   iconMap,
   textColorMap,
   initialStatus = "default",
@@ -58,8 +58,8 @@ const Btn_Static = ({
 
   const isDisabled = status === "disabled";
 
-  const preset = buttonPresets[kind];
-  const sizePreset = sizePresets[size];
+  const preset = kind ? buttonPresets[kind] : undefined;
+  const sizePreset = size ? sizePresets[size] : undefined;
 
   const currentIcon = iconMap?.[status];
   const currentTextColor = textColorMap?.[status];
@@ -78,13 +78,13 @@ const Btn_Static = ({
   const classes = [
     "flex items-center",
     justify,
-    width ?? sizePreset.width,
-    height ?? sizePreset.height,
-    bgColor ?? preset.bgColor[status],
-    textColor ?? currentTextColor ?? preset.textColor[status],
-    borderColor ?? preset.borderColor?.[status] ?? "",
-    rounded ?? sizePreset.rounded ?? "",
-    padding ?? sizePreset.padding ?? "",
+    width ?? sizePreset?.width,
+    height ?? sizePreset?.height,
+    bgColor ?? preset?.bgColor[status],
+    textColor ?? currentTextColor ?? preset?.textColor[status],
+    borderColor ?? preset?.borderColor?.[status] ?? "",
+    rounded ?? sizePreset?.rounded ?? "",
+    padding ?? sizePreset?.padding ?? "",
     gap ?? "",
     shadow ?? "",
     isDisabled ? "cursor-not-allowed" : "cursor-pointer",
@@ -101,10 +101,10 @@ const Btn_Static = ({
         <img
           src={currentIcon}
           alt="icon"
-          className={`${iconSize ?? sizePreset.iconSize ?? "w-5 h-5"} flex-shrink-0 aspect-square`}
+          className={`${iconSize ?? sizePreset?.iconSize ?? "w-5 h-5"} flex-shrink-0 aspect-square`}
         />
       )}
-      <span className={textSize ?? sizePreset.textSize}>{label}</span>
+      <span className={textSize ?? sizePreset?.textSize}>{label}</span>
     </button>
   );
 };

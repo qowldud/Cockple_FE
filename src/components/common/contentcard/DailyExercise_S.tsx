@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Clock from "../../../assets/icons/clock.svg?react";
 import Vector from "../../../assets/icons/Vector.svg?react";
-import RightAngle from "../../../assets/icons/RightAngle.svg?react";
+import RightAngle from "../../../assets/icons/arrow_right.svg?react";
 
 // props 타입 정의(임시)
 interface DailyExerciseSProps {

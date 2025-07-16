@@ -37,7 +37,7 @@ export const MyPageMyExercisePage = ({ myActivityCount }: MyPageMyExercisePagePr
               <span className="header-h5">{tab}</span>
               <div
                 className={`h-[2px] w-full mt-1 transition-all duration-150 ${
-                  selectedTab === tab ? "bg-green-600" : "bg-transparent"
+                  selectedTab === tab ? "bg-[#1ABB65]" : "bg-transparent"
                 }`}
               />
             </button>

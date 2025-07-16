@@ -11,7 +11,7 @@ interface MyPageProps {
 
 export const MyPage_Text = ({
   textLabel = "Text",
-  numberValue = 0,
+  numberValue,
   disabled = false,
 }: MyPageProps) => {
   const [isPressing, setIsPressing] = useState(false);
