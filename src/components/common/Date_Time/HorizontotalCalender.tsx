@@ -2,7 +2,15 @@ import { useEffect, useRef, useState } from "react";
 import DayNum from "./DayNum";
 import generateMonthDates from "./utils/generateMonthDates";
 
-export default function HorizontalCalendar() {
+type HorizontalCalendarProps = {
+  hasDotDates?: (number | string)[]; //일단 임시로 운동 예정을 배열로 받는다고 가정
+  //   onClick?: (date: number | string) => void;
+};
+
+export default function HorizontalCalendar({
+  hasDotDates = [],
+  //   onClick,
+}: HorizontalCalendarProps) {
   const today = new Date();
   const dates = generateMonthDates(today);
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -45,7 +53,7 @@ export default function HorizontalCalendar() {
               day={d.day}
               date={d.date}
               color={d.day === "일" ? "red" : "black"}
-              hasDot={Math.random() > 0.7}
+              hasDot={hasDotDates.includes(Number(d.date))}
               status={d.isToday ? "clicked" : "default"}
               className="w-full"
             />
