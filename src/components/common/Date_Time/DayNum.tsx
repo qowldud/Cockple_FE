@@ -74,7 +74,7 @@ export default function DayNum({
   return (
     <div
       className={clsx(
-        "flex flex-col items-center rounded-lg  body-rg-500  gap-2 pt-2 pb-[0.625rem] w-11  max-h-17 relative ",
+        "flex flex-col items-center rounded-lg  body-rg-500  gap-2 pt-2 pb-[0.625rem] min-w-11  max-h-17 relative ",
         appliedClass,
       )}
       onMouseDown={() => setIsPressing(true)}
@@ -86,7 +86,7 @@ export default function DayNum({
       onClick={onClick}
     >
       <p>{day}</p>
-      <div className="">
+      <div className="min-w-11 relative min-h-8">
         <p>{date}</p>
         {hasDot && (
           <img
