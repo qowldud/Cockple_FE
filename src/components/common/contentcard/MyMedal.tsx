@@ -1,6 +1,7 @@
 
 import { useState } from "react";
-import RightAngle from "../../../assets/icons/RightAngle.svg?react";
+import RightAngle from "../../../assets/icons/arrow_right.svg?react";
+
 
 interface MyMedalProps {
   title: string;
