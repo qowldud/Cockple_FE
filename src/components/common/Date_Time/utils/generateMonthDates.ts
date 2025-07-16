@@ -1,19 +1,32 @@
-import { subDays, addDays, eachDayOfInterval, format, isToday } from "date-fns";
+import {
+  startOfWeek,
+  endOfWeek,
+  addDays,
+  eachDayOfInterval,
+  format,
+  isToday,
+} from "date-fns";
 import { ko } from "date-fns/locale";
 
-function generateInfiniteDates(baseDate: Date, range = 90) {
-  const start = subDays(baseDate, range);
-  const end = addDays(baseDate, range);
+export function generateInfiniteDates(centerDate: Date, range = 90) {
+  const start = startOfWeek(addDays(centerDate, -range), { weekStartsOn: 1 }); // 월요일 기준
+  const end = endOfWeek(addDays(centerDate, range), { weekStartsOn: 1 });
 
   const allDates = eachDayOfInterval({ start, end });
 
-  return allDates.map(d => ({
-    dateObj: d,
-    day: format(d, "E", { locale: ko }), // '월', '화', ...
-    date: format(d, "d"), // '1', '2', ...
-    full: format(d, "yyyy-MM-dd"),
-    isToday: isToday(d),
-  }));
-}
+  // 주 단위로 나누기
+  const weeks: any[][] = [];
+  for (let i = 0; i < allDates.length; i += 7) {
+    const week = allDates.slice(i, i + 7).map(d => ({
+      dateObj: d,
+      day: format(d, "E", { locale: ko }), // '월', '화', ...
+      date: format(d, "d"), // '1', '2', ...
+      full: format(d, "yyyy-MM-dd"),
+      isToday: isToday(d),
+      dayNumber: d.getDay(), // 0~6 (일~토)
+    }));
+    weeks.push(week);
+  }
 
-export default generateInfiniteDates;
+  return weeks;
+}

@@ -80,12 +80,12 @@ export default function DayNum({
         appliedClass,
         className,
       )}
-      onMouseDown={() => setIsPressing(true)}
-      onMouseUp={() => {
+      onPointerDown={() => setIsPressing(true)}
+      onPointerUp={() => {
         setIsPressing(false);
         setIsClicked(prev => !prev);
       }}
-      onMouseLeave={() => setIsPressing(false)}
+      onPointerLeave={() => setIsPressing(false)}
       onClick={onClick}
     >
       <p>{day}</p>
