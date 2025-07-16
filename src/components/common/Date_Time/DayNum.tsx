@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import { useState } from "react";
 
-type ColorType = "black" | "red" | "blue";
+type ColorType = "black" | "red" | "blue" | "Nblack" | "Nred" | "Nblue";
 type StatusType = "default" | "pressing" | "clicked";
 
 type DayNumProps = {
@@ -14,7 +14,9 @@ type DayNumProps = {
   onClick?: () => void;
 };
 
-const statusMap = {
+const statusMap: Record<ColorType, Record<StatusType, string>> & {
+  disabled: string;
+} = {
   black: {
     default: "shadow-ds50-is50 bg-white-50 text-black",
     pressing: "shadow-ds50 bg-gy-100 text-black",
@@ -30,6 +32,22 @@ const statusMap = {
     pressing: "shadow-ds50 bg-gy-100 text-bl-500",
     clicked: "bg-white shadow-ds50 text-bl-500",
   },
+  // 쉐도우 없는
+  Nblack: {
+    default: "bg-white text-black",
+    pressing: "bg-gy-100 text-black",
+    clicked: "!bg-gr-100 text-black",
+  },
+  Nred: {
+    default: "bg-white text-rd-500",
+    pressing: "bg-gy-100 text-rd-500",
+    clicked: "bg-gr-100 text-rd-500",
+  },
+  Nblue: {
+    default: "bg-white text-bl-500",
+    pressing: "bg-gy-100 text-bl-500",
+    clicked: "bg-gr-100 text-bl-500",
+  },
   disabled: "bg-white-40 text-gy-400",
 };
 export default function DayNum({
@@ -42,8 +60,13 @@ export default function DayNum({
   onClick,
 }: DayNumProps) {
   const [isPressing, setIsPressing] = useState(false);
+  const [isClicked, setIsClicked] = useState(false);
 
-  const effectiveStatus = isPressing ? "pressing" : status;
+  const effectiveStatus: StatusType = isPressing
+    ? "pressing"
+    : isClicked
+      ? "clicked"
+      : "default";
 
   const appliedClass = disabled
     ? statusMap.disabled
@@ -55,7 +78,10 @@ export default function DayNum({
         appliedClass,
       )}
       onMouseDown={() => setIsPressing(true)}
-      onMouseUp={() => setIsPressing(false)}
+      onMouseUp={() => {
+        setIsPressing(false);
+        setIsClicked(prev => !prev);
+      }}
       onMouseLeave={() => setIsPressing(false)}
       onClick={onClick}
     >
