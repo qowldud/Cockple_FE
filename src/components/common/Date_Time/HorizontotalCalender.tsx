@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import DayNum from "./DayNum";
 import generateMonthDates from "./utils/generateMonthDates";
 
@@ -7,8 +7,19 @@ export default function HorizontalCalendar() {
   const dates = generateMonthDates(today);
   const scrollRef = useRef<HTMLDivElement>(null);
 
+  const [containerWidth, setContainerWidth] = useState(0);
+
   useEffect(() => {
-    // 오늘 날짜 index=> 스크롤 위치 조정
+    if (scrollRef.current) {
+      setContainerWidth(scrollRef.current.clientWidth);
+    }
+  }, []);
+
+  const gap = 4; // px (gap-1)
+  const totalGap = gap * 6;
+  const cardWidth = (containerWidth - totalGap) / 7;
+  useEffect(() => {
+    // 오늘 날짜 index=> 스크롤 위치 조정함
     const todayIndex = dates.findIndex(d => d.isToday);
     if (todayIndex >= 0 && scrollRef.current) {
       const target = scrollRef.current.children[todayIndex] as HTMLElement;
@@ -22,20 +33,21 @@ export default function HorizontalCalendar() {
   }, []);
 
   return (
-    <div
-      className="overflow-x-auto scrollbar-hide"
-      ref={scrollRef}
-      style={{ maxWidth: `calc(3rem * 7 + 0.5rem * 6 + 2rem)` }}
-    >
-      <div className="flex gap-2 ">
+    <div className="overflow-x-auto scrollbar-hide" ref={scrollRef}>
+      <div className="flex gap-1 ">
         {dates.map((d, idx) => (
-          <div key={idx} className="snap-center shrink-0">
+          <div
+            key={idx}
+            className="snap-center shrink-0"
+            style={{ width: `${cardWidth}px` }}
+          >
             <DayNum
               day={d.day}
               date={d.date}
               color={d.day === "일" ? "red" : "black"}
               hasDot={Math.random() > 0.7}
               status={d.isToday ? "clicked" : "default"}
+              className="w-full"
             />
           </div>
         ))}

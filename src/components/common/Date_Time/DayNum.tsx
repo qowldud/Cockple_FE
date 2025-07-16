@@ -12,6 +12,7 @@ type DayNumProps = {
   hasDot?: boolean; // 점
   disabled?: boolean;
   onClick?: () => void;
+  className?: string;
 };
 
 const statusMap: Record<ColorType, Record<StatusType, string>> & {
@@ -57,6 +58,7 @@ export default function DayNum({
   status = "default",
   hasDot = false,
   disabled = false,
+  className,
   onClick,
 }: DayNumProps) {
   const [isPressing, setIsPressing] = useState(false);
@@ -76,6 +78,7 @@ export default function DayNum({
       className={clsx(
         "flex flex-col items-center rounded-lg  body-rg-500  gap-2 pt-2 pb-[0.625rem] min-w-11  max-h-17 relative ",
         appliedClass,
+        className,
       )}
       onMouseDown={() => setIsPressing(true)}
       onMouseUp={() => {
