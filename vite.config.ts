@@ -22,7 +22,9 @@ export default defineConfig({
       "@": "/src",
     },
     extensions: [".js", ".ts", ".jsx", ".tsx"],
-  },
+   }, optimizeDeps: {
+    include: ["swiper", "swiper/react"]
+   },
   test: {
     projects: [
       {

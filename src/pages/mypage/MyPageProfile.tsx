@@ -2,10 +2,7 @@ import { MainHeader } from "../../components/common/system/header/MainHeader";
 import { MyPage_Text } from "../../components/common/contentcard/MyPage_Text";
 import { Profile } from "../../components/MyPage/Profile";
 import { MyPage as MyPageContentcard } from "../../components/common/contentcard/MyPage";
-
-import White_L_Thin from "../../components/common/Btn_Static/Text/White_L_Thin";
-import White_L from "../../components/common/Btn_Static/Text/White_L";
-import { useNavigate } from "react-router-dom"; 
+import Grad_GR400_L from "../../components/common/Btn_Static/Text/Grad_GR400_L";
 
 interface MyPageProps {
   name: string;
@@ -20,7 +17,7 @@ interface MyPageProps {
   bronzeCount?: number;
   disabled?: boolean;
 }
-export const MyPage = ({
+export const MyPageProfile = ({
   name,
   gender,
   level,
@@ -33,12 +30,9 @@ export const MyPage = ({
   bronzeCount = 0,
   disabled = false,
 }: MyPageProps) => {
-  
-  const navigate = useNavigate(); 
-
   return (
     <div className="flex flex-col pb-26 overflow-auto">
-      <div className="flex flex-col gap-[1.25rem]">
+      <div className="gap-[1.25rem]">
         <MainHeader hasNotification={true} />
         <Profile
           name={name}
@@ -49,31 +43,18 @@ export const MyPage = ({
         />
       </div>
 
-      <div className="mt-4">
-        <White_L_Thin 
-          label="정보 수정하기"
-          initialStatus="clicked" 
-          onClick={() => navigate("/myPage/edit")}/>
-
-      </div>
-
       <div className="my-8 flex flex-col gap-4">
-        <MyPage_Text textLabel="내 모임" numberValue={0} />
-        <MyPage_Text textLabel="내 운동" numberValue={0} />
+        <MyPage_Text textLabel="모임" numberValue={0} />
         <MyPageContentcard
           myMedalTotal={myMedalTotal}
           goldCount={goldCount}
           silverCount={silverCount}
           bronzeCount={bronzeCount}
-          disabled={disabled}
+          disabled={disabled} 
         />
       </div>
 
-      <div className="gap-[0.25rem]">
-        <White_L initialStatus="Clicked" label="공지사항" onClick={() => alert("공지사항 클릭")} />
-        <White_L initialStatus="Clicked" label="이용약관" onClick={() => alert("이용약관 클릭")} />
-        <White_L initialStatus="Clicked" label=" 설정" onClick={() => alert("설정 클릭")} />
-      </div>
+     <Grad_GR400_L label="개인 채팅 보내기"/>
     </div>
   );
 };

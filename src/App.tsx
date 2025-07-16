@@ -29,6 +29,9 @@ import {
   MyPageMyGroupPage,
   MyPageMyMedalPage,
   MyPageAddressSearchPage,
+  MyPageProfile,
+  MyPageProfileGroup,
+  MyPageProfileMedal,
 } from "./pages/mypage";
 import { RecommendPage } from "./pages/home/RecommendPage";
 import { GroupChatDetailPage } from "./pages/chat/GroupChatDetailPage";
@@ -98,6 +101,13 @@ const router = createBrowserRouter([
       { path: "/mypage/mymedal", element: <MyPageMyMedalPage /> },
       { path: "/mypage/mymedal/:medalId", element: <MyPageMedalDetailPage /> },
       { path: "/mypage/mymedal/add", element: <MyPageMedalAddPage /> },
+      
+      { path: "/mypage/profile", element: <MyPageProfile /> },
+      { path: "/mypage/profile/group", element: <MyPageProfileGroup /> },
+      { path: "/mypage/profile/medal", element: <MyPageProfileMedal /> },
+
+      
+      
       { path: "/recommend", element: <RecommendPage /> },
       { path: "/exercise-map", element: <ExerciseMapPage /> },
       // { path: "/chat/:chatId", element: <ChatDetailPage /> },

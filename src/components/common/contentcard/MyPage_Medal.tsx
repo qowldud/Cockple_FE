@@ -4,18 +4,18 @@ import Arrow_right from "../../../assets/icons/arrow_right.svg?react";
 // 내 메달만 볼 수 있는 컴포넌트로 수정했습니다.
 // props 타입 정의
 interface MyPageProps {
-  totalMedalsCount?: number; 
-  goldMedals?: number; 
-  silverMedals?: number; 
-  bronzeMedals?: number; 
+  myMedalTotal?: number;
+  goldCount?: number;
+  silverCount?: number;
+  bronzeCount?: number;
   disabled?: boolean; 
 }
 
 export const MyPage_Medal = ({
-  totalMedalsCount = 0,
-  goldMedals = 0,
-  silverMedals = 0,
-  bronzeMedals = 0,
+  myMedalTotal = 0,
+  goldCount = 0,
+  silverCount = 0,
+  bronzeCount = 0,
   disabled = false,
 }: MyPageProps) => {
   const [isPressing, setIsPressing] = useState(false);
@@ -34,7 +34,7 @@ export const MyPage_Medal = ({
 
         <div className="w-[13.5rem] h-[1.75rem] shadow-ds200-gr rounded-[0.5rem] mx-auto flex items-center justify-center"> 
           <p className="body-rg-500 text-center">
-            지금까지 {totalMedalsCount}개의 메달을 모았어요
+            지금까지 {myMedalTotal}개의 메달을 모았어요
           </p> 
         </div>
 
@@ -45,7 +45,7 @@ export const MyPage_Medal = ({
 
             <div className="flex flex-row items-center justify-center gap-[0.25rem]"> 
               <p className="body-rg-500 text-center">금메달</p>
-              <p className="body-rg-500 text-center">{goldMedals}</p>
+              <p className="body-rg-500 text-center">{goldCount}</p>
             </div>
           </div>
 
@@ -55,7 +55,7 @@ export const MyPage_Medal = ({
 
             <div className="flex flex-row items-center justify-center gap-[0.25rem]">
               <p className="body-rg-500 text-center">은메달</p>
-              <p className="body-rg-500 text-center">{silverMedals}</p> 
+              <p className="body-rg-500 text-center">{silverCount}</p> 
             </div>
           </div>
 
@@ -65,7 +65,7 @@ export const MyPage_Medal = ({
 
             <div className="flex flex-row items-center justify-center gap-[0.25rem]">
               <p className="body-rg-500 text-center">동메달</p>
-              <p className="body-rg-500 text-center">{bronzeMedals}</p> 
+              <p className="body-rg-500 text-center">{bronzeCount}</p> 
             </div>
           </div>
         </div>

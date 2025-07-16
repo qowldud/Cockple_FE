@@ -6,51 +6,15 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 
 import { PageHeader } from "../../components/common/system/header/PageHeader";
-import Grad_Mix_L from "../../components/common/Btn_Static/Text/Grad_Mix_L";
 
 import Kitty from "../../assets/images/Image Carousel.png";
 
-export const MyPageMedalDetailPage = () => {
+export const MyPageProfileMedalDetail = () => {
   const images = [Kitty, Kitty, Kitty];
 
   return (
-    <div className="w-full max-w-[23.4375rem] mx-auto flex flex-col bg-white gap-5 ">
+    <div className="w-full max-w-[23.4375rem] mx-auto flex flex-col bg-white gap-5 px-4">
       <PageHeader title="내 메달" />
-<div
-  className="relative mt-4 rounded-xl overflow-visible"
-  style={{
-    width: "100vw",
-    position: "relative",
-    left: "50%",
-    marginLeft: "-50vw",
-  }}
->
-  <Swiper
-    modules={[Pagination]}
-    pagination={{ clickable: true }}
-    slidesPerView={1}
-    spaceBetween={10}
-    className="rounded-xl"
-  >
-    {images.map((img, idx) => (
-      <SwiperSlide key={idx}>
-        <img
-          src={img}
-          alt={`메달 이미지 ${idx + 1}`}
-          className="w-full h-auto object-cover rounded-xl"
-        />
-      </SwiperSlide>
-    ))}
-  </Swiper>
-
-  {/* 오버레이 영역 */}
-  <div className="absolute -bottom-8 left-4 right-4 flex items-start justify-between gap-4 z-10">
-    <div className="overflow-hidden">
-      <img src={Kitty} alt="프로필" className="w-20 h-20 object-cover" />
-    </div>
-    <p className="body-rg-500 self-end">2000. 01. 01</p>
-  </div>
-</div>
 
       <div className="relative mt-4 rounded-xl overflow-visible">
         <Swiper
@@ -123,14 +87,7 @@ Consectetur lacinia aliquam urna magna eu faucibus lacus id consectetur.`}
         </div>
       </div>
 
-      {/* 수정하기 버튼 */}
-      <div className="mt-6 flex justify-between">
-        <Grad_Mix_L
-          type="delete"
-          label="수정하기"
-          onClick={() => alert("수정하기 클릭")}
-        />
-      </div>
+    
     </div>
   );
 };

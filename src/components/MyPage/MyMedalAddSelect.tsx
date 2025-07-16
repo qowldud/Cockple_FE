@@ -1,33 +1,36 @@
-//정렬 컴포넌트입니다.
 import { useState } from "react";
 import ArrowDown from "@/assets/icons/arrow_down.svg?react";
+import ArrowUP from "@/assets/icons/arrow_up.svg?react";
 import CheckIcon from "@/assets/icons/check.svg?react"; 
 
-const sortOptions = ["최신순", "오래된 순", "운동 많은 순"];
+const sortOptions = ["왕초심", "초심", "D조", "C조", "B조", "A조", "준자강", "자강"];
 
-export const Sort = () => {
+interface MyMedalAddSelectProps {
+  selected: string;
+  onSelect: (grade: string) => void;
+}
+
+export const MyMedalAddSelect = ({ selected, onSelect }: MyMedalAddSelectProps) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [selected, setSelected] = useState("최신순");
+  const sortOptions = ["왕초심", "초심", "D조", "C조", "B조", "A조", "준자강", "자강"];
 
   const handleSelect = (option: string) => {
-    setSelected(option);
+    onSelect(option);
     setIsOpen(false);
   };
 
   return (
     <div className="relative">
-      {/* 정렬 버튼 영역 */}
       <button
         onClick={() => setIsOpen(prev => !prev)}
-        className="flex items-center gap-1 px-2"
+        className="w-[165px] py-2 flex items-center border border-[#E4E7EA] rounded-xl gap-1 px-2"
       >
-        <p className="body-rg-500 ">{selected}</p>
-        <ArrowDown className="w-4 h-4" />
+        <p className="body-rg-500">{selected || "급수를 선택하세요"}</p>
+        {isOpen ? <ArrowUP className="w-4 h-4" /> : <ArrowDown className="w-4 h-4" />}
       </button>
 
-      {/* 드롭다운 메뉴 */}
       {isOpen && (
-        <ul className=" body-lg-400  absolute z-10 top-full mt-2 right-0 w-40 bg-white rounded-xl py-2">
+        <ul className="body-lg-400 absolute z-10 top-full mt-2 w-[165px] bg-white rounded-xl py-2">
           {sortOptions.map(option => (
             <li
               key={option}
