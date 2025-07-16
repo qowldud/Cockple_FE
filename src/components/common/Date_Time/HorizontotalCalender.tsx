@@ -41,7 +41,10 @@ export default function HorizontalCalendar({
   }, []);
 
   return (
-    <div className="overflow-x-auto scrollbar-hide" ref={scrollRef}>
+    <div
+      className="overflow-x-auto snap-x snap-mandatory scrollbar-hide"
+      ref={scrollRef}
+    >
       <div className="flex gap-1 ">
         {dates.map((d, idx) => (
           <div
