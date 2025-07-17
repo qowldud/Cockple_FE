@@ -25,6 +25,7 @@ export const LikedPage = () => {
   const sortOptions = sortOptionsByTab[activeTab];
 
   const [groupCards, setGroupCards] = useState(groupDummy);
+  const [exerciseCards, setExerciseCards] = useState(exerciseDummy);
 
   const handleSortClick = () => setIsSortOpen(prev => !prev);
   const handleSelectSort = (option: string) => {
@@ -34,11 +35,24 @@ export const LikedPage = () => {
 
   const handleToggleFavorite = (id: number) => {
     console.log("하트 토글", id);
-    setGroupCards(prev =>
-      prev.map(card =>
-        card.id === id ? { ...card, isFavorite: !card.isFavorite } : card,
-      ),
-    );
+    // setGroupCards(prev =>
+    //   prev.map(card =>
+    //     card.id === id ? { ...card, isFavorite: !card.isFavorite } : card,
+    //   ),
+    // );
+    if (activeTab === "group") {
+      setGroupCards(prev =>
+        prev.map(card =>
+          card.id === id ? { ...card, isFavorite: !card.isFavorite } : card,
+        ),
+      );
+    } else {
+      setExerciseCards(prev =>
+        prev.map(card =>
+          card.id === id ? { ...card, isFavorite: !card.isFavorite } : card,
+        ),
+      );
+    }
   };
 
   return (
