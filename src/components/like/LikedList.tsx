@@ -23,13 +23,17 @@ const LikedList = ({
               <Group_M
                 key={card.id}
                 {...card}
-                // onToggleFavorite={onToggleFavorite}
+                onToggleFavorite={onToggleFavorite}
               />
             </div>
           ))
         : exerciseCards.map(card => (
             <div key={card.id}>
-              <ContentCardL key={card.title} {...card} />
+              <ContentCardL
+                key={card.title}
+                {...card}
+                onToggleFavorite={onToggleFavorite}
+              />
             </div>
           ))}
     </div>

@@ -1,5 +1,6 @@
 export const exerciseDummy = [
   {
+    id: 1,
     isUserJoined: true,
     isGuestAllowedByOwner: true,
     title: "아침 헬스 모임",
@@ -11,8 +12,10 @@ export const exerciseDummy = [
     maleLevel: "중급 ~ 상급",
     currentPeople: 4,
     maxPeople: 10,
+    isFavorite: true,
   },
   {
+    id: 2,
     isUserJoined: false,
     isGuestAllowedByOwner: false,
     title: "저녁 요가 클래스",
@@ -24,8 +27,10 @@ export const exerciseDummy = [
     maleLevel: "누구나 참여 가능",
     currentPeople: 7,
     maxPeople: 12,
+    isFavorite: true,
   },
   {
+    id: 3,
     isUserJoined: true,
     isGuestAllowedByOwner: false,
     title: "주말 필라테스",
@@ -37,5 +42,6 @@ export const exerciseDummy = [
     maleLevel: "상급",
     currentPeople: 3,
     maxPeople: 8,
+    isFavorite: true,
   },
 ];
