@@ -1,5 +1,5 @@
 import { Swiper, SwiperSlide } from "swiper/react";
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import DayNum from "./DayNum";
 import { generateInfiniteDates } from "./utils/generateMonthDates";
 
@@ -7,7 +7,7 @@ import type { Swiper as SwiperClass } from "swiper";
 import type { SwiperRef } from "swiper/react";
 
 interface WeeklyCalendarProps {
-  selectedDate?: number | string;
+  selectedDate?: string | number;
   onClick?: (date: number | string) => void;
   exerciseDays?: string[]; //날짜 문자열 기반
   shadow?: boolean;
@@ -27,6 +27,7 @@ export default function WeeklyCalendar({
     return weeklyChunks.findIndex(week => week.some(d => d.isToday));
   }, [weeklyChunks]);
   const swiperRef = useRef<SwiperRef>(null);
+  const [selected, setSelected] = useState<string | null>(null);
 
   //슬라이스 이동
   useEffect(() => {
@@ -65,8 +66,11 @@ export default function WeeklyCalendar({
                       ? "Nblack"
                       : "black"
                 } // 일요일
-                status={selectedDate === d.full ? "clicked" : "default"}
-                onClick={() => onClick?.(d.full)}
+                status={selected === d.full ? "clicked" : "default"}
+                onClick={() => {
+                  setSelected(d.full);
+                  onClick?.(d.full);
+                }}
                 className="w-[calc((100%-24px)/7)]"
               />
             ))}
