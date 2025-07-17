@@ -16,6 +16,7 @@ import { Modal_Caution } from "../../components/MyPage/Modal_Caution";
 import { Modal_Caution_Name } from "../../components/MyPage/Modal_ Caution_Name";
 import White_L_Thin_Add from "../../components/MyPage/White_L_Thin_Add";
 import { useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 export const MyPageMedalAddPage = () => {
   const [photos, setPhotos] = useState<string[]>([]);
@@ -36,7 +37,12 @@ export const MyPageMedalAddPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalNameOpen, setIsModalNameOpen] = useState(false);
   const navigate = useNavigate();
-
+  const { medalId } = useParams();
+    useEffect(() => {
+    console.log("medalId:", medalId); // 확인용
+    // 나중에 서버 요청: fetch(`/api/v1/medals/${medalId}`)
+  }, [medalId]); 
+  
   const images = [
     "url1.jpg",
     "url2.jpg",
