@@ -3,8 +3,8 @@ import ArrowDown from "@/assets/icons/arrow_down.svg";
 import ArrowDownGray from "@/assets/icons/arrow_down_gray.svg";
 import ArrowUp from "@/assets/icons/arrow_up.svg";
 
-interface CustomSelectProps {
-  options: { label: string; value: string; enabled?: boolean }[];
+interface DropBoxProps {
+  options: { value: string; enabled?: boolean }[];
   value: string;
   onChange: (val: string) => void;
   placeholder?: string;
@@ -12,14 +12,14 @@ interface CustomSelectProps {
   disabled?: boolean;
 }
 
-export const CustomSelect = ({
+export const DropBox = ({
   options,
   value,
   onChange,
   placeholder = "선택",
   className = "",
   disabled,
-}: CustomSelectProps) => {
+}: DropBoxProps) => {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
@@ -53,23 +53,24 @@ export const CustomSelect = ({
       </button>
       {open && (
         <ul className="absolute z-10 mt-1 max-h-31 w-full overflow-auto rounded border-1 border-gy-200 border-soft bg-white">
-          {options.map(opt => (
-            <li
-              key={opt.value}
-              className={`px-3 py-2 text-sm cursor-pointer text-start ${
-                !opt.enabled
-                  ? "text-gray-400 cursor-not-allowed"
-                  : "hover:bg-gray-100"
-              } ${value === opt.value ? "bg-gray-100 font-semibold" : ""}`}
-              onClick={() => {
-                if (!opt.enabled) return;
-                onChange(opt.value);
-                setOpen(false);
-              }}
-            >
-              {opt.label}
-            </li>
-          ))}
+          {options.map(opt => {
+            const isEnabled = opt.enabled ?? true;
+            return (
+              <li
+                key={opt.value}
+                className={`px-3 py-2 text-sm cursor-pointer text-start ${
+                  !isEnabled ? "text-gray-400 cursor-not-allowed" : ""
+                } ${value === opt.value ? "bg-gray-100 font-semibold" : ""}`}
+                onClick={() => {
+                  if (!isEnabled) return;
+                  onChange(opt.value);
+                  setOpen(false);
+                }}
+              >
+                {opt.value}
+              </li>
+            );
+          })}
         </ul>
       )}
     </div>
