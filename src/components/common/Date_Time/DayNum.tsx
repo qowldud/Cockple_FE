@@ -72,7 +72,7 @@ export default function DayNum({
   return (
     <div
       className={clsx(
-        "flex flex-col items-center rounded-lg  body-rg-500  gap-2 pt-2 pb-[0.625rem] min-w-11  max-h-17 relative ",
+        "flex flex-col items-center rounded-lg  body-rg-500  gap-2 pt-2 pb-[0.625rem] w-11  max-h-17 relative ",
         appliedClass,
         className,
       )}
