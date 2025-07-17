@@ -36,6 +36,9 @@ import { PersonalChatDetailPage } from "./pages/chat/PersonalChatDetailPage";
 import OnboardingLayout from "./pages/onboarding/OnBoardingLayout";
 import { OnboardingAddressSearchPage } from "./pages/onboarding/OnboardingAddressSearchPage";
 import { OnboardingConfirmStartPage } from "./pages/onboarding/OnBoardingConfirmStartPage";
+import useSplashStore from "./zustand/useSplashStore";
+import SplashScreen from "./components/common/system/SplashScreen";
+import { useEffect } from "react";
 // import { OnboardingProfileInputPage } from "./pages/onboarding/OnBoardingProfileInputPage";
 
 const router = createBrowserRouter([
@@ -109,13 +112,20 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
+  const { isSplashShown, hasShownSplash, showSplash } = useSplashStore();
+  useEffect(() => {
+    // 스플래시 화면이 한 번도 표시되지 않은 경우에만 실행
+    if (!hasShownSplash) {
+      showSplash(); // 스플래시 화면 표시 및 상태 변경
+    }
+  }, [hasShownSplash, showSplash]);
   return (
     <div className="h-full w-full flex justify-center items-center">
       <main
         className="w-full min-h-screen max-w-[444px] px-4 bg-white"
         style={{ maxWidth: "444px" }}
       >
-        <RouterProvider router={router} />
+        {isSplashShown ? <SplashScreen /> : <RouterProvider router={router} />}
       </main>
     </div>
   );
