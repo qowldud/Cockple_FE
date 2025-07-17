@@ -11,7 +11,7 @@ export const ModalBar = ({ variant = "default", onClick }: ModalBarProps) => {
     <div
       className={clsx(
         "flex justify-end w-80 box-content",
-        variant ? "p-3" : "",
+        variant === "variant2" ? "p-3" : "",
       )}
     >
       <div className="p-1">
