@@ -39,6 +39,17 @@
   /* 그라디언트 */
   --color-gradient-ye-gr: linear-gradient(90deg, #fcd55c 0%, #1abb65 100%);
   --color-gradient-gy: linear-gradient(83deg, #d6dae0 9.02%, #a8aebd 90.81%);
+  --color-gradient-home-header:
+    linear-gradient(
+      180deg,
+      #49e792 -33.96%,
+      rgba(176, 211, 119, 0.35) 58.02%,
+      rgba(227, 219, 109, 0.23) 72.17%,
+      rgba(255, 224, 129, 0) 99.83%
+    ),
+    #fcfcff;
+
+  /* Drop Shadows */
   --color-gradient-white_100_0: linear-gradient(
     180deg,
     #fcfcff 10%,
@@ -65,7 +76,9 @@
         rgba(252, 252, 255, 0.8) 50%,
         rgba(252, 252, 255, 0) 100%
       );
-  } /* Drop Shadows */
+  }
+
+  /* Drop Shadows */
   --shadow-ds50: 0px 0px 12px 0px rgba(18, 18, 18, 0.04);
   --shadow-ds100: 0px 0px 4px 0px rgba(18, 18, 18, 0.12);
   --shadow-ds200: 0px 0px 16px 0px rgba(18, 18, 18, 0.16);
@@ -151,6 +164,14 @@
     letter-spacing: -0.025rem;
   }
 
+  .body-lg-700 {
+    font-family: var(--font-family-suit);
+    font-size: 1.125rem;
+    font-weight: 700;
+    line-height: 156%;
+    letter-spacing: -0.0225rem;
+  }
+
   .body-lg-500 {
     font-family: var(--font-family-suit);
     font-size: 1.125rem;
@@ -165,6 +186,14 @@
     font-weight: 400;
     line-height: 156%;
     letter-spacing: -0.0225rem;
+  }
+
+  .body-md-700 {
+    font-family: var(--font-family-suit);
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 150%;
+    letter-spacing: -0.02rem;
   }
 
   .body-md-500 {
@@ -335,20 +364,49 @@
   }
 }
 
+@layer utilities {
+  .scrollbar-hide {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    width: 0px;
+    background: transparent;
+  }
+  .gap-vertical-section-s {
+    gap: 1.25rem;
+  }
+  .gap-vertical-section {
+    gap: 2rem;
+  }
+}
+
 html {
   height: 100%;
   font-size: clamp(16px, 4vw, 18px);
   background-color: lightgray;
+  -ms-overflow-style: none; /* IE, Edge */
+  scrollbar-width: none; /* Firefox */
+}
+html::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
 }
 /* 전체 앱에 기본 폰트 적용 (선택사항) */
 body {
   height: 100%;
+  overscroll-behavior-y: none;
   font-family:
     "SUIT Variable",
     -apple-system,
     BlinkMacSystemFont,
     "Segoe UI",
     sans-serif;
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
 }
 .swiper-pagination-bullet {
   @apply bg-gy-500 size-2 rounded-full;
