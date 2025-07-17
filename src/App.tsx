@@ -106,13 +106,11 @@ const router = createBrowserRouter([
       { path: "/mypage/mymedal", element: <MyPageMyMedalPage /> },
       { path: "/mypage/mymedal/:medalId", element: <MyPageMedalDetailPage /> },
       { path: "/mypage/mymedal/add", element: <MyPageMedalAddPage /> },
-      
+
       { path: "/mypage/profile", element: <MyPageProfile /> },
       { path: "/mypage/profile/group", element: <MyPageProfileGroup /> },
       { path: "/mypage/profile/medal", element: <MyPageProfileMedal /> },
 
-      
-      
       { path: "/recommend", element: <RecommendPage /> },
       { path: "/mygroup-exercise", element: <MyGroupExercisePage /> },
       { path: "/recommend/filter", element: <ExerciseFilterPage /> },
@@ -136,7 +134,7 @@ function App() {
   return (
     <div className="w-full flex justify-center items-center">
       <main
-        className="w-full min-h-screen max-w-[444px] px-4 bg-white"
+        className="w-full min-h-screen max-w-[444px] px-4 pb-8 bg-white"
         style={{ maxWidth: "444px" }}
       >
         {isSplashShown ? <SplashScreen /> : <RouterProvider router={router} />}
