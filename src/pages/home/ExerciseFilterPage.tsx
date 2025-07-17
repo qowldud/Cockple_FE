@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { PageHeader } from "../../components/common/system/header/PageHeader";
-import { MultiSelectButtonGroup } from "../../components/home/MultiSelectButtonGroup";
 import {
   isFilterDirty,
   useExerciseFilterStore,
@@ -9,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { CautionModal } from "./CautionModal";
 import { Toggle } from "../../components/common/Toggle";
 import { DropBox } from "../../components/common/DropBox";
+import { MultiSelectButtonGroup } from "../../components/common/MultiSelectButtonGroup";
 
 const cities = [
   { value: "서울특별시", enabled: true },
