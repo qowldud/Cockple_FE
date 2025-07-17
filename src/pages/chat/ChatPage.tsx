@@ -93,7 +93,7 @@ export const ChatPage = () => {
   );
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col w-full h-full overflow-y-scroll [&::-webkit-scrollbar]:hidden">
       {/* 네비게이션 탭 */}
       <TabSelector
         options={tabOptions}

@@ -37,5 +37,3 @@ const Grad_GR400_L = ({
 };
 
 export default Grad_GR400_L;
-
-

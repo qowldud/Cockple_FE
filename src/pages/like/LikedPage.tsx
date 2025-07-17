@@ -7,7 +7,7 @@ import LikedList from "../../components/like/LikedList";
 
 import { groupDummy } from "../../components/like/groupDummy";
 import { exerciseDummy } from "../../components/like/exerciseDummy";
-import BottomSheetSort from "../../components/like/BottomSheetSort";
+import { SortBottomSheet } from "../../components/common/SortBottomSheet";
 
 const sortOptionsByTab = {
   group: ["최신순", "오래된 순", "운동 많은 순"],
@@ -25,6 +25,7 @@ export const LikedPage = () => {
   const sortOptions = sortOptionsByTab[activeTab];
 
   const [groupCards, setGroupCards] = useState(groupDummy);
+  const [exerciseCards, setExerciseCards] = useState(exerciseDummy);
 
   const handleSortClick = () => setIsSortOpen(prev => !prev);
   const handleSelectSort = (option: string) => {
@@ -34,11 +35,19 @@ export const LikedPage = () => {
 
   const handleToggleFavorite = (id: number) => {
     console.log("하트 토글", id);
-    setGroupCards(prev =>
-      prev.map(card =>
-        card.id === id ? { ...card, isFavorite: !card.isFavorite } : card,
-      ),
-    );
+    if (activeTab === "group") {
+      setGroupCards(prev =>
+        prev.map(card =>
+          card.id === id ? { ...card, isFavorite: !card.isFavorite } : card,
+        ),
+      );
+    } else {
+      setExerciseCards(prev =>
+        prev.map(card =>
+          card.id === id ? { ...card, isFavorite: !card.isFavorite } : card,
+        ),
+      );
+    }
   };
 
   return (
@@ -76,17 +85,14 @@ export const LikedPage = () => {
 
       {/* BottomSheet Sort */}
       {isSortOpen && (
-        <div className="fixed inset-0 bg-black-60 z-40">
-          <div
-            className="absolute inset-0"
-            onClick={() => setIsSortOpen(false)}
-          />
-          {/* 이 부분은 나중에 지영님이 PR 올리시면 머지 후 수정 */}
-          {/* <BottomSheetSort
-            options={sortOptions}
+        <div className="bg-black-60 z-40">
+          <SortBottomSheet
+            isOpen={isSortOpen}
+            onClose={() => setIsSortOpen(false)}
             selected={selectedSort}
             onSelect={handleSelectSort}
-          /> */}
+            options={sortOptions}
+          />
         </div>
       )}
     </div>
