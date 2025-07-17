@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import ArrowDown from "@/assets/icons/arrow_down.svg";
 import ArrowDownGray from "@/assets/icons/arrow_down_gray.svg";
 import ArrowUp from "@/assets/icons/arrow_up.svg";
+import clsx from "clsx";
 
 interface DropBoxProps {
   options: { value: string; enabled?: boolean }[];
@@ -58,9 +59,13 @@ export const DropBox = ({
             return (
               <li
                 key={opt.value}
-                className={`px-3 py-2 text-sm cursor-pointer text-start ${
-                  !isEnabled ? "text-gray-400 cursor-not-allowed" : ""
-                } ${value === opt.value ? "bg-gray-100 font-semibold" : ""}`}
+                className={clsx(
+                  "px-2 py-1.5 text-sm cursor-pointer text-start body-rg-400",
+                  !isEnabled
+                    ? "text-gy-400 cursor-not-allowed"
+                    : "active:bg-gy-100",
+                  value === opt.value ? "bg-gray-100 font-semibold" : "",
+                )}
                 onClick={() => {
                   if (!isEnabled) return;
                   onChange(opt.value);
