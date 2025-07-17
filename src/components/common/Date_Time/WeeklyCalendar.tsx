@@ -3,6 +3,9 @@ import { useEffect, useMemo, useRef } from "react";
 import DayNum from "./DayNum";
 import { generateInfiniteDates } from "./utils/generateMonthDates";
 
+import type { Swiper as SwiperClass } from "swiper";
+import type { SwiperRef } from "swiper/react";
+
 interface WeeklyCalendarProps {
   selectedDate?: number | string;
   onClick?: (date: number | string) => void;
@@ -19,16 +22,18 @@ export default function WeeklyCalendar({
   const range = 90;
 
   const weeklyChunks = useMemo(() => generateInfiniteDates(today, range), []);
+  //오늘 날짜 찾기
   const todayIndex = useMemo(() => {
     return weeklyChunks.findIndex(week => week.some(d => d.isToday));
   }, [weeklyChunks]);
-  const swiperRef = useRef<any>(null);
+  const swiperRef = useRef<SwiperRef>(null);
 
+  //슬라이스 이동
   useEffect(() => {
     if (swiperRef.current && todayIndex >= 0) {
-      swiperRef.current.slideTo(todayIndex, 0);
+      swiperRef.current.swiper.slideTo(todayIndex, 0);
     }
-  }, [todayIndex]);
+  }, [todayIndex, swiperRef.current?.swiper]);
 
   return (
     <Swiper
@@ -37,8 +42,11 @@ export default function WeeklyCalendar({
       slidesPerView={1}
       centeredSlides={false}
       className="w-full max-w-[444px]"
-      onSwiper={swiper => (swiperRef.current = swiper)}
+      onSwiper={(swiperInstance: SwiperClass) => {
+        swiperRef.current = { swiper: swiperInstance };
+      }}
     >
+      {/* 7일 배치 */}
       {weeklyChunks.map((week, weekIdx) => (
         <SwiperSlide key={weekIdx}>
           <div className="flex gap-1 justify-between">
