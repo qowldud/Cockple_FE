@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import ChattingComponent from "./ChattingComponent";
+import ChattingComponent from "../common/chat/ChattingComponent";
 import Clear_M from "../common/Btn_Static/Icon_Btn/Clear_M";
 import FileSendModal from "./FileSendModal";
 import ImagePreviewModal from "./ImagePreviewModal";

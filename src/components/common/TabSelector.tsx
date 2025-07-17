@@ -22,16 +22,19 @@ const TabSelector = <T extends string>({
   onChange,
 }: TabSelectorProps<T>) => {
   return (
-    <div className="flex mb-4 text-black items-center gap-x-3 border-b-2 border-gray-100">
-      {options.map(option => (
-        <TabBtn
-          key={option.value}
-          children={option.label}
-          onClick={() => onChange(option.value as T)}
-          disabled={false}
-          isSelected={selected === option.value}
-        />
-      ))}
+    <div className="flex flex-col mb-4">
+      <div className="flex text-black items-center gap-x-3">
+        {options.map(option => (
+          <TabBtn
+            key={option.value}
+            children={option.label}
+            onClick={() => onChange(option.value as T)}
+            disabled={false}
+            isSelected={selected === option.value}
+          />
+        ))}
+      </div>
+      <div className="h-[2px] bg-gray-100 relative -mt-[2px] z-0" />
     </div>
   );
 };
