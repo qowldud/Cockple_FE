@@ -36,10 +36,12 @@ import {
 import { RecommendPage } from "./pages/home/RecommendPage";
 import { GroupChatDetailPage } from "./pages/chat/GroupChatDetailPage";
 import { PersonalChatDetailPage } from "./pages/chat/PersonalChatDetailPage";
+import { MyGroupExercisePage } from "./pages/home/MyGroupExercisePage";
 import OnboardingLayout from "./pages/onboarding/OnBoardingLayout";
 import { OnboardingAddressSearchPage } from "./pages/onboarding/OnboardingAddressSearchPage";
 import { OnboardingConfirmStartPage } from "./pages/onboarding/OnBoardingConfirmStartPage";
 // import { OnboardingProfileInputPage } from "./pages/onboarding/OnBoardingProfileInputPage";
+import { ExerciseFilterPage } from "./pages/home/ExerciseFilterPage";
 
 const router = createBrowserRouter([
   {
@@ -109,6 +111,8 @@ const router = createBrowserRouter([
       
       
       { path: "/recommend", element: <RecommendPage /> },
+      { path: "/mygroup-exercise", element: <MyGroupExercisePage /> },
+      { path: "/recommend/filter", element: <ExerciseFilterPage /> },
       { path: "/exercise-map", element: <ExerciseMapPage /> },
       // { path: "/chat/:chatId", element: <ChatDetailPage /> },
       { path: "/chat/group/:chatId", element: <GroupChatDetailPage /> },
@@ -120,7 +124,7 @@ const router = createBrowserRouter([
 
 function App() {
   return (
-    <div className="h-full w-full flex justify-center items-center">
+    <div className="w-full flex justify-center items-center">
       <main
         className="w-full min-h-screen max-w-[444px] px-4 bg-white"
         style={{ maxWidth: "444px" }}
