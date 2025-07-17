@@ -41,13 +41,9 @@ export default function MonthNum({
   onClick,
 }: DayNumProps) {
   const [isPressing, setIsPressing] = useState(false);
-  const [isClicked, setIsClicked] = useState(false);
+  // const [isClicked, setIsClicked] = useState(false);
 
-  const effectiveStatus: StatusType = isPressing
-    ? "pressing"
-    : isClicked
-      ? "clicked"
-      : "default";
+  const effectiveStatus: StatusType = isPressing ? "pressing" : status;
 
   const appliedClass = disabled
     ? statusMap.disabled
@@ -62,7 +58,7 @@ export default function MonthNum({
       onPointerDown={() => setIsPressing(true)}
       onPointerUp={() => {
         setIsPressing(false);
-        setIsClicked(prev => !prev);
+        // setIsClicked(prev => !prev);
       }}
       onPointerLeave={() => setIsPressing(false)}
       onClick={onClick}

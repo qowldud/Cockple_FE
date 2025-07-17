@@ -12,18 +12,19 @@ import {
 import { useState } from "react";
 import MonthNum from "./MonthNum";
 
-export default function MonthCalendar() {
+interface MonthlyCalendarProps {
+  selectedDate?: number | string;
+  onClick?: (date: number | string) => void;
+  exerciseDays?: string[]; //날짜 문자열 기반
+}
+
+export default function MonthlyCalendar({
+  exerciseDays = [],
+  onClick,
+}: MonthlyCalendarProps) {
   const [currentDate, setCurrentDate] = useState(new Date());
-
+  const [selected, setSelected] = useState<string | null>(null);
   const weekDays = ["월", "화", "수", "목", "금", "토", "일"];
-
-  const exerciseDates = [
-    "2025-07-01",
-    "2025-07-04",
-    "2025-07-11",
-    "2025-07-18",
-    "2025-07-25",
-  ];
 
   const allDates = eachDayOfInterval({
     start: startOfWeek(startOfMonth(currentDate), { weekStartsOn: 1 }),
@@ -72,7 +73,7 @@ export default function MonthCalendar() {
               const full = format(date, "yyyy-MM-dd");
               const isCurrent = isSameMonth(date, currentDate);
               const isSunday = date.getDay() === 0;
-              const hasDot = exerciseDates.includes(full);
+              const hasDot = exerciseDays.includes(full);
 
               return (
                 <MonthNum
@@ -82,6 +83,11 @@ export default function MonthCalendar() {
                   disabled={!isCurrent}
                   hasDot={hasDot}
                   date={day}
+                  status={selected === full ? "clicked" : "default"}
+                  onClick={() => {
+                    setSelected(full);
+                    onClick?.(full);
+                  }}
                 />
               );
             })}
