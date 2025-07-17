@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 interface PickerProps {
   options: string[];
@@ -11,60 +11,84 @@ export default function Picker({
   selectedValue,
   onChange,
 }: PickerProps) {
-  const containerRef = useRef(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const isScrollingProgrammatically = useRef(false);
+  const itemHeight = 40; // 각 아이템의 높이 (px)
+
+  const [containerHeight, setContainerHeight] = useState(208); // 초기값은 h-52 (Tailwind 기준)
+  const paddingHeight = (containerHeight - itemHeight) / 2; // 중앙 정렬을 위한 패딩 계산
+
+  // 컨테이너 높이 실시간 측정 (반응형 대응)
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const resizeObserver = new ResizeObserver(entries => {
+      for (let entry of entries) {
+        const newHeight = entry.contentRect.height;
+        if (newHeight !== containerHeight) {
+          setContainerHeight(newHeight);
+        }
+      }
+    });
+
+    resizeObserver.observe(container);
+
+    return () => {
+      resizeObserver.disconnect();
+    };
+  }, [containerHeight]);
+
+  // 선택된 항목이 중앙에 오도록 스크롤 위치 설정
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const selectedIndex = options.findIndex(option => option === selectedValue);
+    if (selectedIndex === -1) return;
+
+    isScrollingProgrammatically.current = true;
+    container.scrollTop = selectedIndex * itemHeight;
+
+    setTimeout(() => {
+      isScrollingProgrammatically.current = false;
+    }, 100);
+  }, [selectedValue, options]);
 
   const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
-    const container = e.currentTarget;
-    const index = Math.round(container.scrollTop / 40);
-    onChange(options[index] || "00");
+    if (isScrollingProgrammatically.current) return;
+
+    const scrollTop = e.currentTarget.scrollTop;
+    const index = Math.round(scrollTop / itemHeight);
+
+    if (index >= 0 && index < options.length) {
+      onChange(options[index]);
+    }
   };
-  //   const itemHeight = 40;s
-
-  //   const handleScroll = () => {
-  //     // const container = containerRef.current;
-  //     const container = containerRef.current;
-
-  //     if (!container) return;
-
-  //     // const itemHeight = 40;
-  //     const containerHeight = container.clientHeight;
-  //     const offset = (containerHeight - itemHeight) / 2;
-
-  //     const scrollIndex = Math.round((container.scrollTop - offset) / itemHeight);
-  //     onChange(options[scrollIndex] || "00");
-  //   };
-
-  //   useEffect(() => {
-  //     const container = containerRef.current;
-  //     if (!container) return;
-
-  //     const index = options.findIndex(option => option === selectedValue);
-  //     if (index === -1) return;
-
-  //     const containerHeight = container.clientHeight;
-  //     const offset = (containerHeight - itemHeight) / 2;
-
-  //     container.scrollTop = index * itemHeight + offset;
-  //   }, [selectedValue, options]);
 
   return (
     <div
       ref={containerRef}
       onScroll={handleScroll}
-      className="w-full h-52 overflow-y-scroll scrollbar-hide snap-y snap-mandatory rounded-lg text-center overscroll-contain "
+      className="w-full h-52 overflow-y-scroll scrollbar-hide snap-y snap-mandatory rounded-lg text-center overscroll-contain"
     >
-      <div className="h-20 flex-shrink-0" />
+      {/* 위 패딩 */}
+      <div style={{ height: `${paddingHeight}px` }} className="flex-shrink-0" />
+
       {options.map(option => (
         <div
           key={option}
-          className={`h-10 flex items-center justify-center snap-center ${
+          className={`flex items-center justify-center snap-center transition-colors duration-200 ${
             option === selectedValue ? "text-black " : "text-gray-300"
           }`}
+          style={{ height: `${itemHeight}px` }}
         >
           {option}
         </div>
       ))}
-      <div className="h-20 flex-shrink-0" />
+
+      {/* 밑 패딩 */}
+      <div style={{ height: `${paddingHeight}px` }} className="flex-shrink-0" />
     </div>
   );
 }

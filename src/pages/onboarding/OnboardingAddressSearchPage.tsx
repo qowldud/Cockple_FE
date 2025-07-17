@@ -32,15 +32,15 @@ export const OnboardingAddressSearchPage = () => {
 
           <div className="text-left flex items-center justify-center pb-2 border-b border-gy-200">
             <LocationList
-              mainAddress="더에이치퍼스티어아이파크"
-              subAddress="서울특별시"
+              isMainAddr="더에이치퍼스티어아이파크"
+              streetAddr="서울특별시"
               onClick={() => setIsRegister(true)}
             />
           </div>
           <div className="text-left flex items-center justify-center py-2 border-b border-gy-200">
             <LocationList
-              mainAddress="더에이치퍼스티어아이파크"
-              subAddress="서울특별시"
+              isMainAddr="더에이치퍼스티어아이파크"
+              streetAddr="서울특별시"
             />
           </div>
         </div>

@@ -219,6 +219,13 @@
     line-height: 144%;
     letter-spacing: -0.0175rem;
   }
+  .body-rg-600 {
+    font-family: var(--font-family-suit);
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 144%;
+    letter-spacing: -0.0175rem;
+  }
 
   .body-rg-400 {
     font-family: var(--font-family-suit);
