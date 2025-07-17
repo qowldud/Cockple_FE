@@ -22,12 +22,12 @@ export default defineConfig({
       "@": "/src",
     },
     extensions: [".js", ".ts", ".jsx", ".tsx"],
-   }, optimizeDeps: {
-    include: ["swiper", "swiper/react"]
-   },
-     server: {
-    host: '0.0.0.0',
-    port: 5173
+  },
+  optimizeDeps: {
+    include: ["swiper", "swiper/react"],
+  },
+  server: {
+    host: true,
   },
   test: {
     projects: [
