@@ -65,7 +65,7 @@ export default function WeeklyCalendar({
                       ? "Nblack"
                       : "black"
                 } // 일요일
-                status={selectedDate === d.date ? "clicked" : "default"}
+                status={selectedDate === d.full ? "clicked" : "default"}
                 onClick={() => onClick?.(d.full)}
                 className="w-[calc((100%-24px)/7)]"
               />
