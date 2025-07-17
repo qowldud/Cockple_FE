@@ -31,7 +31,7 @@ const statusMap: Record<ColorType, Record<StatusType, string>> & {
   },
   disabled: "bg-white-40 text-gy-400",
 };
-export default function MonthNums({
+export default function MonthNum({
   date = "00",
   color = "black",
   status = "default",
@@ -55,7 +55,7 @@ export default function MonthNums({
   return (
     <div
       className={clsx(
-        "flex flex-col items-center rounded-lg  body-rg-500  gap-2 pt-2 pb-[0.625rem] min-w-11  size-11 relative ",
+        "flex flex-col items-center rounded-xl  body-rg-500 py-2 min-w-11  size-11 relative ",
         appliedClass,
         className,
       )}
@@ -67,13 +67,13 @@ export default function MonthNums({
       onPointerLeave={() => setIsPressing(false)}
       onClick={onClick}
     >
-      <div className="min-w-11 relative min-h-8">
-        <p>{date}</p>
+      <div className="min-w-11 relative min-h-8 flex flex-col items-center justify-center">
+        <p className="pb-[2px]">{date}</p>
         {hasDot && (
           <img
             src="/src/assets/icons/cicle_s_fill.svg"
             alt=""
-            className="size-3 absolute bottom-0.5 left-4"
+            className="size-3 absolute pl-[2px]  -bottom-0.5 left-1/2 -translate-x-1/2"
           />
         )}
       </div>

@@ -6,24 +6,28 @@ import {
   eachDayOfInterval,
   format,
   isSameMonth,
+  addMonths,
+  subMonths,
 } from "date-fns";
-import MonthNums from "./MonthNums";
+import { useState } from "react";
+import MonthNum from "./MonthNum";
 
-export default function MonthCalendar2() {
-  const current = new Date();
+export default function MonthCalendar() {
+  const [currentDate, setCurrentDate] = useState(new Date());
+
   const weekDays = ["월", "화", "수", "목", "금", "토", "일"];
 
   const exerciseDates = [
-    "2000-05-01",
-    "2000-05-04",
-    "2000-05-11",
-    "2000-05-18",
-    "2000-05-25",
+    "2025-07-01",
+    "2025-07-04",
+    "2025-07-11",
+    "2025-07-18",
+    "2025-07-25",
   ];
 
   const allDates = eachDayOfInterval({
-    start: startOfWeek(startOfMonth(current), { weekStartsOn: 1 }),
-    end: endOfWeek(endOfMonth(current), { weekStartsOn: 1 }),
+    start: startOfWeek(startOfMonth(currentDate), { weekStartsOn: 1 }),
+    end: endOfWeek(endOfMonth(currentDate), { weekStartsOn: 1 }),
   });
 
   const weeks = [];
@@ -35,12 +39,18 @@ export default function MonthCalendar2() {
     <div className="w-86 px-4 flex-col items-center gap-4">
       {/* 상단 네비게이션 */}
       <div className="flex justify-between items-center w-full">
-        <img src="/src/assets/icons/arrow_left.svg" alt="" className="size-4" />
-        <p className="body-rg-600">{format(current, "yyyy.MM")}</p>
+        <img
+          src="/src/assets/icons/arrow_left.svg"
+          alt=""
+          className="size-4 cursor-pointer"
+          onClick={() => setCurrentDate(pre => subMonths(pre, 1))}
+        />
+        <p className="body-rg-600">{format(currentDate, "yyyy.MM")}</p>
         <img
           src="/src/assets/icons/arrow_right.svg"
           alt=""
-          className="size-4"
+          className="size-4 cursor-pointer"
+          onClick={() => setCurrentDate(pre => addMonths(pre, 1))}
         />
       </div>
 
@@ -54,22 +64,22 @@ export default function MonthCalendar2() {
       </div>
 
       {/* 날짜 */}
-      <div className="flex flex-col gap-1 mt-2">
+      <div className="flex flex-col mt-2">
         {weeks.map((week, wIdx) => (
           <div key={wIdx} className="flex justify-between">
             {week.map((date, dIdx) => {
               const day = format(date, "d");
               const full = format(date, "yyyy-MM-dd");
-              const isCurrent = isSameMonth(date, current);
+              const isCurrent = isSameMonth(date, currentDate);
               const isSunday = date.getDay() === 0;
               const hasDot = exerciseDates.includes(full);
 
               return (
-                <MonthNums
+                <MonthNum
                   key={dIdx}
                   day={day}
                   color={isSunday ? "red" : "black"}
-                  // dimmed={!isCurrent}
+                  disabled={!isCurrent}
                   hasDot={hasDot}
                   date={day}
                 />
