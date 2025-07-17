@@ -123,8 +123,7 @@ export const MyPageMyMedalPage = ({
           </>
         )}
       </div>
-{/* 컴퓨터와 핸드폰을 비교했을 때 pt의 값에 따라 다르게 보여요... 이걸 어떻게 해결할지...모르겠어요ㅜㅜ */}
-    <div className="flex flex-col gap-4 flex-grow overflow-y-auto pt-10 md:pt-4">
+    <div className="flex flex-col gap-4 flex-grow overflow-y-auto ">
         {filteredList.length > 0 ? (
           filteredList.map((item, idx) => (
             <MyMedal

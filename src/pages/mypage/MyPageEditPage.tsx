@@ -209,7 +209,7 @@ export const MyPageEditPage = ({
   
   return (
     <>
-    <div className="pt-[10rem]">
+    <div>
     <PageHeader
       title="정보 수정하기"
       onBackClick={onBackClick} 
@@ -403,7 +403,7 @@ export const MyPageEditPage = ({
           ))}
       </div>
     </div>
-    <div className="mt-8">
+    <div className="mt-8 mb-8">
 
       <Btn_Static
         kind="GR400"

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { PageHeader } from "../../components/common/system/header/PageHeader";
 import Grad_GR400_L from "../../components/common/Btn_Static/Text/Grad_GR400_L";
-import { ImageBox } from "../../components/MyPage/ImageBox";
+import { ImageBox } from "../../components/common/ImageBox";
 import { Select } from "../../components/MyPage/Select";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -159,7 +159,7 @@ export const MyPageMedalAddPage = () => {
         className="hidden"
       />
 
-      <div ref={containerRef} className="mt-15 flex gap-2 overflow-x-auto no-scrollbar">
+      <div ref={containerRef} className="flex gap-2 overflow-x-auto no-scrollbar">
         <button
           onClick={handlePhotoClick}
           className="w-24 h-24 flex-shrink-0 border rounded-xl border-[#E4E7EA] flex items-center justify-center body-rg-500 bg-white"
