@@ -1,25 +1,36 @@
-import { useState } from "react";
-import PropTypes from "prop-types";
-import Picker from "./Picker";
+import { forwardRef, useImperativeHandle, useState } from "react";
+import RenderPickerGroup from "./RenderPickerGroup";
 
-DateAndTimePicker.propTypes = {
-  onDueChange: PropTypes.func.isRequired,
-};
+interface DateAndTimePickerProps {
+  showTime?: boolean;
+}
 
-export default function DateAndTimePicker({ onDueChange }) {
+const DateAndTimePicker = forwardRef(function DateAndTimePicker(
+  props: DateAndTimePickerProps,
+  ref,
+) {
+  const { showTime = false } = props;
+
   const [selectedYear, setSelectedYear] = useState("2025");
   const [selectedMonth, setSelectedMonth] = useState("01");
   const [selectedDay, setSelectedDay] = useState("01");
-  //   const [selectedHour, setSelectedHour] = useState("12");
-  //   const [selectedMinute, setSelectedMinute] = useState("00");
-  const [confirmedDue, setConfirmedDue] = useState("");
+  const [selectedHours, setSelectedHours] = useState("01");
+  const [selectedMinutes, setSelectedMinutes] = useState("01");
+  const [selectedPeriods, setSelectedPeriods] = useState("am");
 
-  const handleConfirm = () => {
-    const dueString = `${selectedYear}년 ${selectedMonth}월 ${selectedDay}일`;
-    setConfirmedDue(dueString); // 선택된 일시로 업데이트
-    // New.jsx 로 전달
-    onDueChange(`${selectedYear}.${selectedMonth}.${selectedDay}`);
+  const getDueString = () => {
+    if (showTime) {
+      return `${selectedHours}시 ${selectedMinutes}분 ${selectedPeriods}`; //이 부분은 임시로 작성한 것이라..추후 사용되는 부분에 따라서 추가 수정해야할 거 같습니다
+    } else {
+      return `${selectedYear}.${selectedMonth}.${selectedDay}`;
+    }
   };
+
+  // 부모가 ref로 접근할 수 있게 해줌
+  useImperativeHandle(ref, () => ({
+    getDueString,
+  }));
+
   const currentYear = new Date().getFullYear();
   const years = Array.from({ length: 75 }, (_, i) =>
     (currentYear - i).toString(),
@@ -31,48 +42,65 @@ export default function DateAndTimePicker({ onDueChange }) {
     String(i + 1).padStart(2, "0"),
   );
 
+  const hours = Array.from({ length: 12 }, (_, i) =>
+    String(i + 1).padStart(2, "0"),
+  );
+  // console.log(hours);
+
+  const minutes = Array.from({ length: 60 }, (_, i) =>
+    String(i + 1).padStart(2, "0"),
+  );
+
+  const periods = ["am", "pm"];
+
   return (
     <>
       <div className=" flex w-80 bg-white  mx-auto border border-gray-300 shadow-ds400 rounded-3xl relative ">
-        <div className="w-1/3 z-2">
-          <Picker
-            options={years}
-            selectedValue={selectedYear}
-            onChange={setSelectedYear}
-          />
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
+          <div
+            className="bg-gy-100 h-10 rounded-lg"
+            style={{ width: "calc(100% - 2rem)" }}
+          ></div>
         </div>
-        <div className="w-1/3 z-2">
-          <Picker
-            options={months}
-            selectedValue={selectedMonth}
-            onChange={setSelectedMonth}
-          />
-        </div>
-        <div className="flex w-1/3 z-2">
-          <Picker
-            options={days}
-            selectedValue={selectedDay}
-            onChange={setSelectedDay}
-          />
-        </div>
-        <div className="flex items-center justify-center">
-          <div className="w-75 bg-gy-100 z-0 px-[0.625rem] absolute top-1/2  left-1/2 translate-x-[-50%] translate-y-[-50%] h-10 rounded-lg"></div>
-        </div>
+
+        {showTime
+          ? RenderPickerGroup([
+              {
+                options: hours,
+                selected: selectedHours,
+                setSelected: setSelectedHours,
+              },
+              {
+                options: minutes,
+                selected: selectedMinutes,
+                setSelected: setSelectedMinutes,
+              },
+              {
+                options: periods,
+                selected: selectedPeriods,
+                setSelected: setSelectedPeriods,
+              },
+            ])
+          : RenderPickerGroup([
+              {
+                options: years,
+                selected: selectedYear,
+                setSelected: setSelectedYear,
+              },
+              {
+                options: months,
+                selected: selectedMonth,
+                setSelected: setSelectedMonth,
+              },
+              {
+                options: days,
+                selected: selectedDay,
+                setSelected: setSelectedDay,
+              },
+            ])}
       </div>
-
-      {confirmedDue && (
-        <div className="font-pretendard font-bold text-xl text-center">
-          {confirmedDue}
-        </div>
-      )}
-
-      <button
-        type="button"
-        onClick={handleConfirm}
-        className="p-2 bg-gray-200 font-pretendard text-card-price text-lg text-gray-800 rounded-lg"
-      >
-        결정
-      </button>
     </>
   );
-}
+});
+
+export default DateAndTimePicker;
