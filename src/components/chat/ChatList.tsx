@@ -58,6 +58,7 @@ const ChatList = ({
                   state: { tab: "personal", chatName: chat.userName },
                 })
               }
+              className="border-b border-gy-200 pb-1"
             >
               <PersonalChat {...chat} />
             </div>

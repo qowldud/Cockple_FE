@@ -1,23 +1,27 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import ArrowRight from "../../../assets/icons/Arrow_right.svg?react";
 
 interface LocationListProps {
-  mainAddress: string;
-  subAddress: string;
+  id: number;
+  isMainAddr: string;
+  streetAddr: string;
   showOnMapText?: string; 
   disabled?: boolean; 
   initialClicked?: boolean; 
-  onClick?: (clicked: boolean) => void; 
+  onClick?: (id: number, clicked: boolean) => void; 
 }
 
 export const LocationList = ({
-  mainAddress,
-  subAddress,
+  id,
+  isMainAddr,
+  streetAddr,
   showOnMapText = "지도에서 보기", 
   disabled = false,
   initialClicked = false,
   onClick,
 }: LocationListProps) => {
+  const navigate = useNavigate(); 
   const [isPressing, setIsPressing] = useState(false);
   const [isClicked, setIsClicked] = useState(initialClicked); 
 
@@ -31,11 +35,20 @@ export const LocationList = ({
   const handlePressEnd = () => {
     setIsPressing(false);
   };
-  const handleClick = () => {
+
+  const handleCardClick = () => {
     if (!disabled) {
       const newClickedState = !isClicked;
       setIsClicked(newClickedState);
-      onClick?.(newClickedState); 
+      onClick?.(id, newClickedState); 
+    }
+  };
+
+  const handleViewOnMapClick = (e: React.MouseEvent) => {
+    e.stopPropagation(); 
+    if (!disabled) {
+      navigate("/mypage/edit/location/address");
+      console.log(`지도에서 보기 클릭: ${isMainAddr}, ${streetAddr}`);
     }
   };
 
@@ -47,13 +60,12 @@ export const LocationList = ({
   let cursorStyle = "cursor-pointer"; 
 
   if (disabled) {
-    // disabled 상태일 때의 스타일
     borderClass = "border border-[#E4E7EA]"; 
     bgClass = "bg-white"; 
     textColor = "text-[#C0C4CD]"; 
     cursorStyle = "cursor-not-allowed pointer-events-none"; 
   } else {
-    if (isPressing || isClicked) {
+    if (isClicked) {
       borderClass = "border border-[#1ABB65]"; 
     } else {
       borderClass = "border border-transparent"; 
@@ -73,19 +85,22 @@ export const LocationList = ({
       onMouseLeave={handlePressEnd}
       onTouchStart={handlePressStart}
       onTouchEnd={handlePressEnd}
-      onClick={handleClick}
+      onClick={handleCardClick} 
       className={`${baseClasses} ${borderClass} ${bgClass} ${cursorStyle}`}
     >
      <div className="flex flex-col items-start w-full overflow-hidden">
-        <p className={`body-md-500 truncate w-full ${textColor}`} title={mainAddress}>
-          {mainAddress}
+        <p className={`body-md-500 truncate w-full ${textColor}`} title={isMainAddr}>
+          {isMainAddr}
         </p> 
-        <p className={`body-rg-500 truncate w-full ${textColor}`} title={subAddress}>
-          {subAddress}
+        <p className={`body-rg-500 truncate w-full ${textColor}`} title={streetAddr}>
+          {streetAddr}
         </p>
       </div>
 
-      <div className="flex justify-end w-full">
+      <div
+        className="flex justify-end w-full cursor-pointer"
+        onClick={handleViewOnMapClick} 
+      >
         <div className="w-[6.6875rem] h-[1.75rem] flex items-center gap-[0.625rem] overflow-hidden">
           <p
             className={`body-rg-400 truncate ${textColor} w-full`}

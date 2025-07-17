@@ -2,8 +2,8 @@ import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 
 const SplashStore = set => ({
-  isSplashShown: false, // 스플래쉬가 보여지고 있는가
-  hasShownSplash: false, // 스플래쉬를 보여줬는가
+  isSplashShown: false,
+  hasShownSplash: false,
 
   showSplash: () => {
     set({ isSplashShown: true, hasShownSplash: true });

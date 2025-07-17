@@ -13,7 +13,7 @@ interface RD500MProps {
 
 const RD500_M = ({
   initialStatus = "default",
-  label = "Btn",
+  label,
   onClick,
 }: RD500MProps) => {
   return (

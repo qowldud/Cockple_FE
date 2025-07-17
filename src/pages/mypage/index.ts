@@ -9,3 +9,7 @@ export { MyPageMyMedalPage } from "./MyPageMyMedalPage";
 export { MyPageMedalAddPage } from "./MyPageMedalAddPage";
 
 export { MyPageAddressSearchPage } from "./MyPageAddressSearchPage";
+
+export { MyPageProfileGroup } from "./MyPageProfileGroup";
+export { MyPageProfileMedal } from "./MyPageProfileMedal";
+export { MyPageProfile } from "./MyPageProfile";
