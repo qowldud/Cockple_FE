@@ -39,7 +39,7 @@ export const OnboardingInfoPage = () => {
         <PageHeader title="회원 정보 입력" />
         <ProgressBar width="4" />
 
-        <div className="text-left flex flex-col  gap-8 w-full pb-27">
+        <section className="text-left flex flex-col  gap-8 w-full pb-26 mb-[4px]">
           <p className="header-h4 pt-8">기본 정보를 입력해주세요</p>
 
           {/* 첫번째 */}
@@ -117,11 +117,11 @@ export const OnboardingInfoPage = () => {
               </div>
             )}
           </div>
-        </div>
+        </section>
 
         {/* 버튼 */}
         <div
-          className="flex items-center justify-center"
+          className="flex items-center justify-center "
           onClick={() => navigate("/onboarding/level")}
         >
           <Btn_Static label="다음" kind="GR400" size="L" />

@@ -23,9 +23,9 @@ export const LoginPage = () => {
   ];
 
   return (
-    <div className="flex flex-col justify-between  w-full min-h-screen ">
+    <div className="flex flex-col  w-full  ">
       {/* 스와이퍼 */}
-      <div className="flex-1 h-full">
+      <div className="">
         <Swiper
           modules={[Pagination]}
           spaceBetween={50}
@@ -47,7 +47,7 @@ export const LoginPage = () => {
         </Swiper>
       </div>
 
-      <div className="mb-6">
+      <div className="mb-6 mt-17">
         <button className="bg-[#FEE500] w-full rounded-lg py-3 px-4 relative">
           카카오 로그인
           <img

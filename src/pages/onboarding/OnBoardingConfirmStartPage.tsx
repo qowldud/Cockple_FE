@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
-import Grad_GR400_L from "../../components/common/Btn_Static/Text/Grad_GR400_L";
 import { PageHeader } from "../../components/common/system/header/PageHeader";
+import Btn_Static from "../../components/common/Btn_Static/Btn_Static";
 
 export const OnboardingConfirmStartPage = () => {
   const navigate = useNavigate();
@@ -8,7 +8,7 @@ export const OnboardingConfirmStartPage = () => {
   return (
     <div className="w-full min-h-screen flex flex-col">
       <PageHeader title="가입 완료" />
-      <section className="flex items-center flex-col  grow gap-15">
+      <section className="flex items-center flex-col  gap-15 pb-24">
         <div className="flex flex-col gap-2  items-stretch text-left w-full">
           <p className="header-h4 pt-9">입상 기록이 나를 더 잘 보여줄거에요!</p>
           <div className="body-md-500">
@@ -63,7 +63,7 @@ export const OnboardingConfirmStartPage = () => {
         className="flex items-center justify-center header-h4 "
         onClick={() => navigate("/")}
       >
-        <Grad_GR400_L label="시작하기" />
+        <Btn_Static label="시작하기" kind="GR400" size="L" />
       </div>
     </div>
   );

@@ -6,7 +6,7 @@ export const OnboardingPage = () => {
   return (
     <>
       <div className=" w-full flex flex-col ">
-        <div className="flex items-center flex-col gap-25 pb-32">
+        <section className="flex items-center flex-col gap-25 pb-32">
           <div className="flex flex-col gap-2  items-stretch text-left w-full">
             <p className="header-h4 pt-23 ">환영합니다!</p>
             <div className="body-md-500">
@@ -22,7 +22,7 @@ export const OnboardingPage = () => {
             />
             <p className="header-h4">닉네임</p>
           </div>
-        </div>
+        </section>
         <div
           className="flex items-center justify-center header-h4 "
           onClick={() => navigate("info")}

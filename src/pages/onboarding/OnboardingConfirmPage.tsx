@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
-import Grad_GR400_L from "../../components/common/Btn_Static/Text/Grad_GR400_L";
 import TagBtn from "../../components/common/DynamicBtn/TagBtn";
+import Btn_Static from "../../components/common/Btn_Static/Btn_Static";
 
 export const OnboardingConfirmPage = () => {
   const navigate = useNavigate();
@@ -11,8 +11,8 @@ export const OnboardingConfirmPage = () => {
     "운영진이 게임을 짜드려요",
   ];
   return (
-    <div className="w-full min-h-screen flex flex-col">
-      <section className="flex items-center flex-col gap-10 grow">
+    <div className="w-full  flex flex-col">
+      <section className="flex items-center flex-col gap-10 pb-13">
         <div className="flex flex-col gap-2  items-stretch text-left w-full">
           <p className="header-h4 pt-23">가입이 완료되었어요!</p>
           <div className="body-md-500">
@@ -37,7 +37,7 @@ export const OnboardingConfirmPage = () => {
         className="flex items-center justify-center header-h4 "
         onClick={() => navigate("start")}
       >
-        <Grad_GR400_L label="다음" />
+        <Btn_Static label="다음" kind="GR400" size="L" />
       </div>
     </div>
   );
