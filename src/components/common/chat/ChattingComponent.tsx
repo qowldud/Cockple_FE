@@ -9,6 +9,7 @@ interface Props extends ChattingComponentProps {
 
 const ChattingComponent = ({
   nickname,
+  profile,
   chatting,
   time,
   isMe,
@@ -95,6 +96,13 @@ const ChattingComponent = ({
         </div>
       ) : (
         <div id="you" className="flex items-start gap-3 self-stretch">
+          <div className="px-2 items-center gap-[0.625rem]">
+            <img
+              src={profile}
+              alt="profile"
+              className="w-10 h-10 aspect-square rounded-[2.75rem]"
+            />
+          </div>
           <div className="flex flex-col items-start gap-1">
             <p id="nickname" className="body-rg-500">
               {chatNick}

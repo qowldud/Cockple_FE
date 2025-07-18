@@ -11,4 +11,4 @@ export interface Chatting {
 }
 
 // ChattingComponent에서 사용하는 props (id, profile 제외)
-export type ChattingComponentProps = Omit<Chatting, "id" | "profile">;
+export type ChattingComponentProps = Omit<Chatting, "id">;
