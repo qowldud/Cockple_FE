@@ -20,7 +20,7 @@ export const OnboardingProfilePage = () => {
       <PageHeader title="회원 정보 입력" />
       <ProgressBar width={setProfile ? "96" : "72"} />
 
-      <section className=" flex flex-col gap-[6.25rem] text-left  pt-8 pb-34 mb-[3px]">
+      <section className=" flex flex-col gap-[6.25rem] text-left  pt-8 pb-34 mb-[3px] ">
         <div>
           <div className="flex gap-2 flex-col">
             <p className="header-h4">프로필을 등록해주세요</p>

@@ -18,7 +18,7 @@ export const OnboardingLevelPage = () => {
       <PageHeader title="회원 정보 입력" />
       <ProgressBar width="24" />
 
-      <section className="flex gap-8 text-left flex-col pt-8 pb-66 mb-[3px]">
+      <section className="flex gap-8 text-left flex-col pt-8 pb-67 ">
         <div className="flex flex-col gap-2">
           <p className="header-h4 text-left">전국 급수를 입력해주세요.</p>
           <div className="body-md-500 ">
@@ -30,7 +30,9 @@ export const OnboardingLevelPage = () => {
         <div className="flex">
           <div className="flex gap-2 flex-col">
             <div className="flex">
-              <p className={`ml-1 ${disabled ? "text-gy-500" : "text-block"}`}>
+              <p
+                className={`ml-1 header-h5 ${disabled ? "text-gy-500" : "text-block"}`}
+              >
                 전국 급수{" "}
               </p>
               <img src="/src/assets/icons/cicle_s_red.svg" alt="" />

@@ -12,7 +12,7 @@ export const OnboardingConfirmPage = () => {
   ];
   return (
     <div className="w-full  flex flex-col">
-      <section className="flex items-center flex-col gap-10 pb-13">
+      <section className="flex items-center flex-col gap-10 ">
         <div className="flex flex-col gap-2  items-stretch text-left w-full">
           <p className="header-h4 pt-23">가입이 완료되었어요!</p>
           <div className="body-md-500">
@@ -34,7 +34,7 @@ export const OnboardingConfirmPage = () => {
         </div>
       </section>
       <div
-        className="flex items-center justify-center header-h4 "
+        className="flex items-center justify-center header-h4 pt-12 mt-[2px] "
         onClick={() => navigate("start")}
       >
         <Btn_Static label="다음" kind="GR400" size="L" />

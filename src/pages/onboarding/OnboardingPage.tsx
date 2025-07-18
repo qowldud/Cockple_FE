@@ -5,8 +5,8 @@ export const OnboardingPage = () => {
   const navigate = useNavigate();
   return (
     <>
-      <div className=" w-full flex flex-col ">
-        <section className="flex items-center flex-col gap-25 pb-32">
+      <div className=" w-full flex flex-col justify-center">
+        <section className="flex items-center flex-col gap-25 ">
           <div className="flex flex-col gap-2  items-stretch text-left w-full">
             <p className="header-h4 pt-23 ">환영합니다!</p>
             <div className="body-md-500">
@@ -24,7 +24,7 @@ export const OnboardingPage = () => {
           </div>
         </section>
         <div
-          className="flex items-center justify-center header-h4 "
+          className="flex items-center justify-center header-h4 pt-32 mt-[1px] shrink-0 "
           onClick={() => navigate("info")}
         >
           <Btn_Static label="회원 정보 입력" kind="GR400" size="L" />

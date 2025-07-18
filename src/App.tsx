@@ -63,7 +63,7 @@ const router = createBrowserRouter([
       { path: "info", element: <OnboardingInfoPage /> },
       { path: "level", element: <OnboardingLevelPage /> },
       { path: "address", element: <OnboardingAddressPage /> },
-      { path: "address/search", element: <OnboardingAddressSearchPage /> },
+      // { path: "address/search", element: <OnboardingAddressSearchPage /> },
       { path: "profile", element: <OnboardingProfilePage /> },
       // { path: "profile/input", element: <OnboardingProfileInputPage /> },
       { path: "confirm", element: <OnboardingConfirmPage /> },
@@ -106,13 +106,11 @@ const router = createBrowserRouter([
       { path: "/mypage/mymedal", element: <MyPageMyMedalPage /> },
       { path: "/mypage/mymedal/:medalId", element: <MyPageMedalDetailPage /> },
       { path: "/mypage/mymedal/add", element: <MyPageMedalAddPage /> },
-      
+
       { path: "/mypage/profile", element: <MyPageProfile /> },
       { path: "/mypage/profile/group", element: <MyPageProfileGroup /> },
       { path: "/mypage/profile/medal", element: <MyPageProfileMedal /> },
 
-      
-      
       { path: "/recommend", element: <RecommendPage /> },
       { path: "/mygroup-exercise", element: <MyGroupExercisePage /> },
       { path: "/recommend/filter", element: <ExerciseFilterPage /> },
