@@ -1,14 +1,14 @@
 import { useNavigate } from "react-router-dom";
-import Grad_GR400_L from "../../components/common/Btn_Static/Text/Grad_GR400_L";
+import Btn_Static from "../../components/common/Btn_Static/Btn_Static";
 
 export const OnboardingPage = () => {
   const navigate = useNavigate();
   return (
     <>
-      <div className=" w-full min-h-screen flex flex-col">
-        <div className="flex items-center flex-col gap-25 grow">
+      <div className=" w-full flex flex-col ">
+        <div className="flex items-center flex-col gap-25 pb-32">
           <div className="flex flex-col gap-2  items-stretch text-left w-full">
-            <p className="header-h4 pt-23">환영합니다!</p>
+            <p className="header-h4 pt-23 ">환영합니다!</p>
             <div className="body-md-500">
               <p>카카오계정으로 가입되었어요</p>
               <p>회원 정보를 입력하고 콕플을 즐겨볼까요?</p>
@@ -20,14 +20,14 @@ export const OnboardingPage = () => {
               alt="프로필 이미지"
               className="size-25 mb-5"
             />
-            <p className="header-h4 mb-20">닉네임</p>
+            <p className="header-h4">닉네임</p>
           </div>
         </div>
         <div
           className="flex items-center justify-center header-h4 "
           onClick={() => navigate("info")}
         >
-          <Grad_GR400_L label="회원 정보 입력" />
+          <Btn_Static label="회원 정보 입력" kind="GR400" size="L" />
         </div>
       </div>
     </>

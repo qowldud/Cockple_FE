@@ -4,8 +4,8 @@ import TextBox from "../../components/common/Text_Box/TextBox";
 import { useRef, useState } from "react";
 import DateAndTimePicker from "../../components/common/Date_Time/DateAndPicker";
 import { useNavigate } from "react-router-dom";
-import Grad_GR400_L from "../../components/common/Btn_Static/Text/Grad_GR400_L";
 import { ProgressBar } from "../../components/common/ProgressBar";
+import Btn_Static from "../../components/common/Btn_Static/Btn_Static";
 
 export const OnboardingInfoPage = () => {
   const {
@@ -39,7 +39,7 @@ export const OnboardingInfoPage = () => {
         <PageHeader title="회원 정보 입력" />
         <ProgressBar width="4" />
 
-        <div className="text-left flex flex-col  gap-8 w-full flex-1">
+        <div className="text-left flex flex-col  gap-8 w-full pb-27">
           <p className="header-h4 pt-8">기본 정보를 입력해주세요</p>
 
           {/* 첫번째 */}
@@ -124,7 +124,7 @@ export const OnboardingInfoPage = () => {
           className="flex items-center justify-center"
           onClick={() => navigate("/onboarding/level")}
         >
-          <Grad_GR400_L label="다음" />
+          <Btn_Static label="다음" kind="GR400" size="L" />
         </div>
       </div>
     </>
