@@ -6,6 +6,7 @@ import SearchInput from "../../components/chat/SearchInput";
 import ChatList from "../../components/chat/ChatList";
 import { disassembleHangul } from "../../utils/disassembleHangul";
 import TabSelector from "../../components/common/TabSelector";
+import { MainHeader } from "../../components/common/system/header/MainHeader";
 
 export const ChatPage = () => {
   const navigate = useNavigate();
@@ -93,31 +94,34 @@ export const ChatPage = () => {
   );
 
   return (
-    <div className="flex flex-col w-full h-full overflow-y-scroll [&::-webkit-scrollbar]:hidden">
-      {/* 네비게이션 탭 */}
-      <TabSelector
-        options={tabOptions}
-        selected={activeTab}
-        onChange={setActiveTab}
-      />
-
-      <section className="flex flex-col w-full max-w-[23.4375rem] justify-center items-center gap-y-[1.25rem]">
-        {/* 검색창 */}
-        <SearchInput
-          value={searchTerm}
-          onChange={e => setSearchTerm(e.target.value)}
+    <div className="flex flex-col w-full h-full overflow-y-scroll [&::-webkit-scrollbar]:hidden pt-14">
+      <MainHeader />
+      <div>
+        {/* 네비게이션 탭 */}
+        <TabSelector
+          options={tabOptions}
+          selected={activeTab}
+          onChange={setActiveTab}
         />
 
-        {/* 채팅 리스트 또는 결과 없음 */}
-        <ChatList
-          tab={activeTab}
-          groupChats={filteredGroupChats}
-          personalChats={filteredPersonalChats}
-          isValidSearch={isValidSearch}
-          searchTerm={searchTerm}
-          navigate={navigate}
-        />
-      </section>
+        <section className="flex flex-col w-full max-w-[23.4375rem] justify-center items-center gap-y-[1.25rem]">
+          {/* 검색창 */}
+          <SearchInput
+            value={searchTerm}
+            onChange={e => setSearchTerm(e.target.value)}
+          />
+
+          {/* 채팅 리스트 또는 결과 없음 */}
+          <ChatList
+            tab={activeTab}
+            groupChats={filteredGroupChats}
+            personalChats={filteredPersonalChats}
+            isValidSearch={isValidSearch}
+            searchTerm={searchTerm}
+            navigate={navigate}
+          />
+        </section>
+      </div>
     </div>
   );
 };

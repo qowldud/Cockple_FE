@@ -8,6 +8,7 @@ import LikedList from "../../components/like/LikedList";
 import { groupDummy } from "../../components/like/groupDummy";
 import { exerciseDummy } from "../../components/like/exerciseDummy";
 import { SortBottomSheet } from "../../components/common/SortBottomSheet";
+import { MainHeader } from "../../components/common/system/header/MainHeader";
 
 const sortOptionsByTab = {
   group: ["최신순", "오래된 순", "운동 많은 순"],
@@ -51,7 +52,8 @@ export const LikedPage = () => {
   };
 
   return (
-    <div className="flex flex-col w-full h-full overflow-y-scroll [&::-webkit-scrollbar]:hidden">
+    <div className="flex flex-col w-full h-full overflow-y-scroll [&::-webkit-scrollbar]:hidden pt-14">
+      <MainHeader />
       {/* 탭 선택 */}
       <TabSelector
         selected={activeTab}

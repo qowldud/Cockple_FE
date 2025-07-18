@@ -96,7 +96,7 @@ const ChattingComponent = ({
         </div>
       ) : (
         <div id="you" className="flex items-start gap-3 self-stretch">
-          <div className="px-2 items-center gap-[0.625rem]">
+          <div className="py-2 items-center justify-center gap-[0.625rem]">
             <img
               src={profile}
               alt="profile"
