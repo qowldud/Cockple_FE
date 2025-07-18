@@ -14,7 +14,7 @@ export const OnboardingLevelPage = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="w-full min-h-screen flex flex-col">
+    <div className="w-full flex flex-col">
       <PageHeader title="회원 정보 입력" />
       <ProgressBar width="24" />
 

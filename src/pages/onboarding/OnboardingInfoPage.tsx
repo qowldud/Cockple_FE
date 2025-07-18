@@ -35,7 +35,7 @@ export const OnboardingInfoPage = () => {
 
   return (
     <>
-      <div className="min-h-screen flex flex-col">
+      <div className="flex flex-col">
         <PageHeader title="회원 정보 입력" />
         <ProgressBar width="4" />
 
