@@ -15,6 +15,7 @@ import ArrowLeft from "../../assets/icons/arrow_left.svg";
 import Camera from "../../assets/icons/camera.svg";
 import Imogi from "../../assets/icons/emoji_smile.svg";
 import Chat from "../../assets/icons/chat.svg";
+import BottomChatInput from "../common/chat/BottomChatInput";
 
 interface ChatDetailTemplateProps {
   chatId: string;
@@ -171,7 +172,7 @@ export const ChatDetailTemplate = ({
       </div>
 
       {/* 입력창 */}
-      <div className="flex px-4 pt-2 pb-8 items-center justify-center gap-2 bg-white shadow-ds50">
+      {/* <div className="flex px-4 pt-2 pb-8 items-center justify-center gap-2 bg-white shadow-ds50">
         <Clear_M
           iconMap={{
             disabled: Camera,
@@ -222,7 +223,21 @@ export const ChatDetailTemplate = ({
           }}
           onClick={handleSendMessage}
         />
-      </div>
+      </div> */}
+      <BottomChatInput
+        input={input}
+        isComposing={isComposing}
+        onInputChange={setInput}
+        onKeyDown={handleKeyDown}
+        onCompositionStart={() => setIsComposing(true)}
+        onCompositionEnd={e => {
+          setIsComposing(false);
+          setInput(e.currentTarget.value);
+        }}
+        onSendMessage={handleSendMessage}
+        onImageUpload={handleImageUpload}
+        fileInputRef={fileInputRef}
+      />
 
       {pendingImage && (
         <FileSendModal
