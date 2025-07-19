@@ -149,8 +149,8 @@ function App() {
   return (
     <div className="w-full flex justify-center items-center">
       <main
-        className="w-full min-h-screen max-w-[444px] px-4 pb-8 bg-white"
-        style={{ maxWidth: "444px" }}
+        className="w-full max-w-[444px] px-4 pb-8 bg-white"
+        style={{ maxWidth: "444px", minHeight: "100dvh" }}
       >
         {isSplashShown ? <SplashScreen /> : <RouterProvider router={router} />}
       </main>

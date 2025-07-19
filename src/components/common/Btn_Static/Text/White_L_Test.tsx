@@ -8,11 +8,13 @@ type BtnStatus = "disabled" | "default" | "pressing" | "clicked";
 interface WhiteLTestProps {
   initialStatus?: BtnStatus;
   label?: string;
+  icon?: string;
 }
 
 const White_L_Test = ({
   initialStatus = "default",
   label = "Btn",
+  icon,
 }: WhiteLTestProps) => {
   const [status, setStatus] = useState<BtnStatus>(initialStatus);
 
@@ -63,7 +65,7 @@ const White_L_Test = ({
         className={`flex w-[5rem] h-[5rem] justify-center items-center gap-[0.625rem] border-hard ${getIconBoxBg()}`}
       >
         <img
-          src={getIcon()}
+          src={icon ?? getIcon()}
           alt="작성"
           className="w-[1.125rem] h-[1.125rem] flex-shrink-0 aspect-square"
         />

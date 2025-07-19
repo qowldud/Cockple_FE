@@ -10,6 +10,7 @@ import {
 } from "../../components/home/mock/homeMock";
 import { Group_M } from "../../components/common/contentcard/Group_M";
 import { Empty } from "../../components/group/main/Empty";
+import AddIcon from "@/assets/icons/add.svg";
 
 export const GroupPage = () => {
   const data: IFMyGroupData[] = groupExerciseData;
@@ -36,7 +37,7 @@ export const GroupPage = () => {
           <div className="flex gap-1 overflow-x-scroll scrollbar-hide">
             {data && data.length > 0 ? (
               <>
-                <White_L_Test label="모임 만들기" />
+                <White_L_Test label="모임 만들기" icon={AddIcon} />
                 {data &&
                   data.map(item => (
                     <Group_S
