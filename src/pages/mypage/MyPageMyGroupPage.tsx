@@ -73,7 +73,7 @@ export const MyPageMyGroupPage = () => {
       <div className="sticky top-0 z-20 bg-white">
         <PageHeader title="내 모임" />
       </div>
-      <div className="flex-1 flex flex-col p-4">
+      <div className="flex-1 flex flex-col">
         {hasGroups && (
           <div className="mb-8">
             <div className="flex justify-between items-start">
@@ -99,7 +99,7 @@ export const MyPageMyGroupPage = () => {
             filteredGroups.map(group => (
               <div key={group.id}>
                 <Group_M {...group} onToggleFavorite={handleToggleFavorite} />
-              <div className="border-t-[#E4E7EA] border-t-[0.5px] mx-1" />
+              <div className="border-t-[#E4E7EA] border-t-[0.0625rem] mx-1" />
               </div>
             ))
           ) : (

@@ -20,7 +20,7 @@ export const ImageBox = ({
     return (
       <div
         className={classNames(
-          "w-26 h-[7.5rem] bg-white py-6 px-3 rounded-xl shadow-ds100 border border-transparent opacity-50 pointer-events-none cursor-not-allowed"
+          "w-27 h-[7.5rem] bg-white py-6 px-3 rounded-xl shadow-ds100 border border-transparent opacity-50 pointer-events-none cursor-not-allowed"
         )}
       >
         <div className="w-[5.5rem] h-[5.5rem] flex items-center justify-center rounded-md bg-[#E4E7EA]">
@@ -42,7 +42,7 @@ export const ImageBox = ({
   return (
     <div
       className={classNames(
-        "w-26 h-[7.5rem] py-4 px-2 rounded-xl shadow-ds100 border transition-colors duration-150 cursor-pointer select-none",
+        "w-27 h-[7.5rem] py-4 px-2 rounded-xl shadow-ds100 border transition-colors duration-150 cursor-pointer select-none",
         {
           "bg-[#F4F5F6]": isPressing,
           "bg-white": !isPressing,

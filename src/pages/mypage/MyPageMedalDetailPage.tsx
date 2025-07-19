@@ -2,11 +2,8 @@ import { useState, useEffect } from "react";
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination } from 'swiper/modules';  
 import { useNavigate } from "react-router-dom";
-import ReactDOM from "react-dom/client";
-import { BrowserRouter } from "react-router-dom";
 import 'swiper/css';
 import 'swiper/css/pagination';
-import { useParams } from "react-router-dom";
 import { PageHeader } from "../../components/common/system/header/PageHeader";
 import Grad_Mix_L from "../../components/common/Btn_Static/Text/Grad_Mix_L";
 import { Modal_Delete } from "../../components/MyPage/Modal_ Delete";
@@ -143,7 +140,14 @@ export const MyPageMedalDetailPage = ({
           <Grad_Mix_L
             type="delete"
             label="수정하기"
-            onClick={() => navigate(`/mypage/mymedal/add`)}
+            onClick={() => 
+            navigate("/mypage/mymedal/add", {
+              state: {
+                mode: "edit",
+                medalData: { title, date, participationType, record, photo, videoUrl }
+              }
+            })
+          }
             onImageClick={() => setIsDeleteModalOpen(true)}
           />
         </div>

@@ -35,7 +35,7 @@ const meta: Meta<typeof MyPageMyMedalPage> = {
 
 export default meta;
 
-// 🌟 일반적인 메달 목록 (입상/미입상 섞여 있음)
+//임사값
 export const Default: StoryObj<typeof MyPageMyMedalPage> = {
   args: {
     name: '김메달',

@@ -2,56 +2,100 @@ import React, { useState, useEffect, useRef } from "react";
 import { PageHeader } from "../../components/common/system/header/PageHeader";
 import Grad_GR400_L from "../../components/common/Btn_Static/Text/Grad_GR400_L";
 import { ImageBox } from "../../components/common/ImageBox";
-import { Select } from "../../components/MyPage/Select";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
+import DateAndTimePicker from "../../components/common/Date_Time/DateAndPicker";
 import Camera from "../../assets/icons/camera.svg?react";
 import VectorRed from "../../assets/icons/Vector_red.svg?react";
-import CheckCircled from "../../assets/icons/check_circled.svg?react";
-import CheckCircledFilled from "../../assets/icons/check_circled_filled.svg?react";
 import Kitty from "../../assets/images/Image Carousel.png";
 import Dismiss_Gy800 from "../../assets/icons/dismiss_gy800.svg?react";
-import Dismiss from "../../assets/icons/dismiss.svg?react";
-import { Modal_Caution } from "../../components/MyPage/Modal_Caution";
+import { Modal_Add_Caution } from "../../components/MyPage/Modal_Add_Caution";
 import { Modal_Caution_Name } from "../../components/MyPage/Modal_ Caution_Name";
-import White_L_Thin_Add from "../../components/MyPage/White_L_Thin_Add";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
+import { CheckBox_Long_noButton } from "../../components/MyPage/CheckBox_Long_noButton";
+import { MyMedalCheckBox } from "../../components/MyPage/MyMedalCheckBox";
+import { useForm } from "react-hook-form";
 
 export const MyPageMedalAddPage = () => {
+  const {
+    data,
+    register,
+    handleSubmit,
+    setValue,
+    formState: { errors },
+  } = useForm();
+// export const MyPageMedalAddPage = () => {
   const [photos, setPhotos] = useState<string[]>([]);
   const [selectedForm, setSelectedForm] = useState<string | null>(null);
+  
   const [selectedGrade, setSelectedGrade] = useState<string>(""); // 급수 선택 상태
   const [tournamentName, setTournamentName] = useState(""); // 대화명 상태
   const containerRef = useRef<HTMLDivElement>(null);
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const [videoLinks, setVideoLinks] = useState<string[]>([""]); // 최소 1개 영상
   const formOptions = ["혼복", "여복", "남복", "단식"];
-  const [selectedDate, setSelectedDate] = useState<Date | null>();
-  const [isRecordPrivate, setIsRecordPrivate] = useState(false);
-  const [isVideoPrivate, setIsVideoPrivate] = useState(false);
   const [recordText, setRecordText] = useState("");
-  const [isRecordFocused, setIsRecordFocused] = useState(false);
-  const [focusedVideoIndex, setFocusedVideoIndex] = useState<number | null>(null);
-  const isSaveEnabled = tournamentName.trim() !== "" && selectedGrade !== "" && selectedForm !== null;
+  const [selectedDate, setSelectedDate] = useState("");
+  const pickerRef = useRef(null);
+  const isSaveEnabled = tournamentName.trim() !== "" && selectedDate !== "" && selectedForm !== null;
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalNameOpen, setIsModalNameOpen] = useState(false);
+
+  const level = ["왕초심", "초심", "D조", "C조", "B조", "A조", "준자강", "자강"];
+  const [open, setOpen] = useState(false);
+  const [selectedLevel, setSelectedLevel] = useState("");
+  const [disabled, setDisabled] = useState(false);
+
   const navigate = useNavigate();
   const { medalId } = useParams();
     useEffect(() => {
     console.log("medalId:", medalId); // 확인용
     // 나중에 서버 요청: fetch(`/api/v1/medals/${medalId}`)
   }, [medalId]); 
-  
+  const location = useLocation();
+  const isEditMode = location.state?.mode === "edit";
+  const medalData = location.state?.medalData;
+
+  useEffect(() => {
+    register("tournamentName", {
+      required: "대회명은 필수 입력입니다",
+      maxLength: {
+        value: 60,
+        message: "최대 60글자만 가능합니다",
+      },
+      onChange: (e) => setTournamentName(e.target.value)
+    });
+  }, [register]);
+
+  useEffect(() => {
+  if (isEditMode && medalData) {
+    setTournamentName(medalData.title);
+    setSelectedDate(new Date(medalData.date));
+    setSelectedForm(medalData.participationType);
+    setRecordText(medalData.record);
+    setVideoLinks(medalData.videoUrl);
+    // photo도 base64인지 URL인지에 따라 처리 필요
+  }
+}, []);
+
   const images = [
     "url1.jpg",
     "url2.jpg",
     "url3.jpg",
   ];
 
-  const handleDateChange = (date: Date | null) => {
-    setSelectedDate(date);
+
+
+  const handleCloseOverlay = () => {
+    if (pickerRef.current) {
+      const date = pickerRef.current.getDueString(); // 선택된 값
+      setSelectedDate(date); //  input에 넣기
+      setValue("birthday", date, { shouldValidate: true }); //set Value를 통해 useForm에 전달
+    }
+    setOpenModal(false); // 닫기
   };
+
+  const [openModal, setOpenModal] = useState(false);
 
  const handleRemovePhoto = (index: number) => {
     const newPhotos = [...photos];
@@ -87,14 +131,6 @@ export const MyPageMedalAddPage = () => {
     }
   };
 
-  const allowedPattern = /^[a-zA-Z가-힣\s]*$/;
-
-  const handleRecordChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const value = e.target.value;
-    if (allowedPattern.test(value) && value.length <= 100) {
-      setRecordText(value);
-    }
-  };
   const isDataChanged = () => {
     return (
       tournamentName.trim() !== "" ||
@@ -130,14 +166,14 @@ export const MyPageMedalAddPage = () => {
     setIsModalOpen(false);
     setIsModalNameOpen(false);
   };
-
+  console.log(tournamentName,selectedDate,selectedForm);
   return (
      <div className="max-w-[23.4375rem] mx-auto bg-white h-screen flex flex-col">
       <div className="flex-shrink-0 sticky top-0 z-20 bg-white "> 
         <PageHeader title="대회 기록 추가하기" onBackClick={onBackClick} />
           {isModalOpen && (
             <div className="fixed inset-0 flex justify-center items-center z-50">
-              <Modal_Caution onConfirm={handleConfirmLeave} onCancel={handleCancelLeave} />
+              <Modal_Add_Caution onConfirm={handleConfirmLeave} onCancel={handleCancelLeave} />
             </div>
           )}
           {isModalNameOpen && (
@@ -149,7 +185,6 @@ export const MyPageMedalAddPage = () => {
       
       <div className="flex-grow min-h-0 overflow-y-auto">
       <div className="flex flex-col gap-8"> 
-        {/* 여기 mt-15 다르게 보임 */}
       <>
       <input
         ref={fileInputRef}
@@ -190,43 +225,33 @@ export const MyPageMedalAddPage = () => {
       </div>
     </>
 
-      {/* 대회명 입력 */}
-      {/* <div>
-        <label className="flex items-center text-left header-h5 mb-1">
-          대화명
-          <VectorRed className="ml-1 w-2 h-2" />
-        </label>
-        <textarea
-          id="tournamentName"
-          className="auto-resizing-css w-full border rounded-xl p-2  body-md-500 border-[#E4E7EA] focus:outline-none resize-none "
-          value={tournamentName}
-          onChange={(e) => setTournamentName(e.target.value)}
-          maxLength={60}
-
-        />
-      </div> */}
-    
     {/* 대회명 입력 */}
       <div>
         <label className="flex items-center text-left header-h5 mb-1">
           대회명
           <VectorRed className="ml-1 w-2 h-2" />
         </label>
-        <textarea
-          id="Name"
-          className="auto-resizing-css w-full border rounded-xl body-md-500 border-[#E4E7EA] focus:outline-none resize-none leading-normal" 
-          value={tournamentName}
-          onChange={(e) => setTournamentName(e.target.value)}
-          maxLength={60}
-        />
+        <div className="relative">
+          <input
+            type="text"
+            className="w-full rounded-xl border-gy-200 border py-[0.625rem] px-3 focus:outline-none focus:border-active"
+            {...register("tournamentName", {
+              required: "대회명은 필수 입력입니다",
+              maxLength: {
+                value: 60,
+                message: "최대 60글자만 가능합니다",
+              },
+              onChange: (e) => setTournamentName(e.target.value)
+            })}
+          />
+        </div>
       </div>
 
-      
-
+    
       {/* 수상 */}
       <div>
         <label className="flex items-center text-left header-h5 mb-1">수상</label>
-        <div className="flex gap-4">
+        <div className="flex gap-2">
               {images.map((src, i) => (
                 <ImageBox
                   key={i}
@@ -241,19 +266,37 @@ export const MyPageMedalAddPage = () => {
 
       {/* 날짜 */}
       <div>
-        <label className="flex items-center text-left header-h5 mb-1">날짜</label>
-        <DatePicker
-          selected={selectedDate}
-          onChange={handleDateChange}
-          wrapperClassName="w-full"
-          dateFormat="yyyy-MM-dd"
-          className="w-full border rounded-xl p-2 pr-14 body-md-500 border-[#E4E7EA] focus:outline-none"
-          // 키보드 입력방지
-          onKeyDown={(e) => e.preventDefault()}
-          onChangeRaw={(e) => e.preventDefault()}
-          onPaste={(e) => e.preventDefault()}
-          style={{ margin: 0 }}
-        />
+          <div className="text-left flex flex-col gap-2">
+            <div className="flex px-1 gap-[2px] items-center">
+              <p className="header-h5">날짜</p>
+              <img src="/src/assets/icons/cicle_s_red.svg" alt="icon-cicle" />
+            </div>
+
+            <input
+              type="text"
+              className="w-full rounded-xl border-gy-200 border py-[0.625rem] px-3 focus:outline-none focus:border-active "
+              onClick={() => setOpenModal(true)}
+              value={selectedDate}
+            />
+
+            {openModal && (
+              <div
+                id="date-picker-overlay"
+                className="fixed inset-0 bg-black/50 z-40 flex items-center justify-center"
+                onClick={e => {
+                  if (e.target.id === "date-picker-overlay") {
+                    handleCloseOverlay();
+                  }
+                }}
+              >
+                <div
+                  onClick={e => e.stopPropagation()} 
+                >
+                  <DateAndTimePicker ref={pickerRef} />
+                </div>
+              </div>
+            )}
+          </div>
       </div>
 
       {/* 참여 형태 */}
@@ -283,127 +326,66 @@ export const MyPageMedalAddPage = () => {
       <div>
         <label className="flex items-center text-left header-h5 mb-1">
           급수
-          <VectorRed className="ml-1 w-2 h-2" />
         </label>
-        <Select onSelect={(grade: string) => setSelectedGrade(grade)}
-          selected={selectedGrade}/>
+        <div className="flex items-center gap-4">
+          <div className="relative w-40">
+            <button
+              className="border px-3 py-[0.625rem] flex justify-between gap-2 rounded-xl border-gy-200 w-40 h-11 cursor-pointer"
+              onClick={() => !disabled && setOpen(!open)}
+            >
+              <span className={disabled ? "text-gy-500" : "text-black"}>
+                {selectedLevel}
+              </span>
+              <img
+                src="/src/assets/icons/arrow_down.svg"
+                alt="Dropdown arrow"
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 size-4"
+              />
+            </button>
+
+            {open && !disabled && (
+              <div className="absolute mt-1 z-10 w-40">
+                <ul className="border rounded-xl border-gy-200 bg-white shadow text-left">
+                  {level.map((item, idx) => (
+                    <li
+                      key={idx}
+                      onClick={() => {
+                        setSelectedLevel(item);
+                        setOpen(false);
+                      }}
+                      className="cursor-pointer w-full px-3 py-[0.625rem] hover:bg-gy-100 rounded-xl"
+                    >
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
+        </div>
       </div>
 
       {/* 대회 기록 */}
       <div>
         <div className="flex justify-between items-start">
-          <label className="flex items-center text-left header-h5 mb-1">대회 기록</label>
-          <div className="flex items-center gap-2">
-            <button onClick={() => setIsRecordPrivate(!isRecordPrivate)}>
-              {isRecordPrivate ? (
-                <CheckCircledFilled className="w-4 h-4 text-[#1ABB65]" />
-              ) : (
-                <CheckCircled className="w-4 h-4" />
-              )}
-            </button>
-            <label className="body-rg-500">비공개</label>
-          </div>
+          <CheckBox_Long_noButton title="대회 기록" maxLength={100}/>
         </div>
-
-        <textarea
-          id="record"
-          value={recordText}
-          onFocus={() => setIsRecordFocused(true)}
-          onBlur={() => setIsRecordFocused(false)}
-          onChange={handleRecordChange}
-          className={`auto-resizing-css w-full border rounded-xl body-md-500 resize-none min-h-[3rem] p-2
-            ${isRecordFocused ? "border-[#87C95E]" : "border-[#E4E7EA]"}
-            focus:outline-none`}
-          maxLength={100}
-        />
       </div>
 
       {/* 영상 링크 */}
-      <div>
-        <div className="flex justify-between items-start">
-          <label className="flex items-center text-left header-h5 mb-1">영상 링크</label>
-          <div className="flex items-center gap-2">
-            <button onClick={() => setIsVideoPrivate(!isVideoPrivate)}>
-              {isVideoPrivate ? (
-                <CheckCircledFilled className="w-4 h-4" />
-              ) : (
-                <CheckCircled className="w-4 h-4" />
-              )}
-            </button>
-            <label className="body-rg-500">비공개</label>
-          </div>
-        </div>
+      <MyMedalCheckBox title="영상 링크" />
 
-        <div className="flex flex-col gap-2">
-          {videoLinks.map((link, idx) => (
-            <div key={idx} className="relative w-full">
-              {focusedVideoIndex !== idx && (
-                <div
-                  className={`
-                    absolute inset-0 z-0 pointer-events-none px-3 py-2 
-                    text-gray-900 body-md-500 truncate whitespace-nowrap overflow-hidden
-                    border rounded-xl  focus:outline-none
-                    ${focusedVideoIndex === idx ? "border-[#87C95E]" : "border-[#E4E7EA]"}
-                  `}
-                >
-                  {link}
-                </div>
-              )}
-              <input
-                type="url"
-                value={link}
-                onFocus={() => setFocusedVideoIndex(idx)}
-                onBlur={() => setFocusedVideoIndex(null)}
-                onChange={(e) => {
-                  const updated = [...videoLinks];
-                  updated[idx] = e.target.value;
-                  setVideoLinks(updated);
-                }}
-                className={`
-                  w-full border rounded-xl pr-10 py-2 px-3 body-md-500 
-                  bg-transparent relative z-10 focus:outline-none
-                  ${focusedVideoIndex === idx ? "border-[#1ABB65]" : "border-[#E4E7EA]"}
-                `}
-              />
 
-              <button
-                type="button"
-                onClick={() => {
-                  const updated = [...videoLinks];
-                  if (videoLinks.length === 1) {
-                    updated[0] = "";
-                  } else {
-                    updated.splice(idx, 1);
-                  }
-                  setVideoLinks(updated);
-                }}
-                className="absolute top-2 right-2 w-5 h-5 p-1 z-20"
-              >
-                <Dismiss className="w-full h-full mt-1" />
-              </button>
-            </div>
-          ))}
-        </div>
-
-        {videoLinks.length > 0 && videoLinks[videoLinks.length - 1].trim() !== "" && (
-          <div className="mt-2">
-            <White_L_Thin_Add
-              label="추가하기"
-              onClick={() => setVideoLinks([...videoLinks, ""])}
-            />
-          </div>
-        )}
-      </div>
-
-        {/* 저장 버튼  오류 발생 */}
-          <Grad_GR400_L
-            label="저장하기"
-            initialStatus={isSaveEnabled ? "default" : "disabled"}
-            onClick={() => {
-              if (!isSaveEnabled) return;
-              console.log("대회 기록 저장 완료");
-            }}
-          />
+      {/* 저장 버튼  오류 발생 */}
+         <Grad_GR400_L
+          label="저장하기"
+          initialStatus={isSaveEnabled ? "default" : "disabled"}
+          disabled={!isSaveEnabled}
+          onClick={() => {
+            if (!isSaveEnabled) return;
+            console.log("대회 기록 저장 완료");
+          }}
+        />
         </div>
       </div>
     </div>

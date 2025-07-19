@@ -93,8 +93,10 @@ const navigate = useNavigate();
           <div className="flex items-start gap-2">
             <Vector className="w-5 h-5 mt-4" />
             <div className="flex flex-col">
-              <p className="body-rg-600 truncate">{placeName}</p>
-              <p className="body-rg-500 truncate">{placeAddress}</p>
+              <p className="body-rg-500 truncate text-left" style={{ textIndent: '0', paddingLeft: '0', marginLeft: '0' }}>
+                {placeName?.trim()}
+              </p>              
+              <p className="body-rg-500 truncate">{placeAddress?.trim()}</p>
             </div>
           </div>
         </div>
@@ -121,7 +123,7 @@ const navigate = useNavigate();
               {...member}
               onClick={() => navigate("/mypage/profile")}
             />
-            <div className="border border-[#E4E7EA] m-1" />
+              <div className="border-t-[#E4E7EA] border-t-[0.0625rem] mx-1" />
           </div>
         ))}
 
@@ -145,7 +147,7 @@ const navigate = useNavigate();
         {waitingMembers.map((member, idx) => (
           <div key={`waiting-${idx}`}>
             <Member {...member} />
-            <div className="border border-[#E4E7EA] m-1" />
+              <div className="border-t-[#E4E7EA] border-t-[0.0625rem] mx-1" />
           </div>
         ))}
       </div>

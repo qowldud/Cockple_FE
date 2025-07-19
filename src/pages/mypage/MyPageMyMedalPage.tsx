@@ -132,7 +132,7 @@ export const MyPageMyMedalPage = ({
                 date={item.date}
                 medalImageSrc={item.medalImageSrc}
               />
-              <div className="border-t-[#E4E7EA] border-t-[0.5px] mx-1" />
+              <div className="border-t-[#E4E7EA] border-t-[0.0625rem] mx-1" />
             </React.Fragment>
           ))
         ) : (

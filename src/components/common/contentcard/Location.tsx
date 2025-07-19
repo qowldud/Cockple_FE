@@ -14,6 +14,7 @@ interface LocationProps {
   onDelete?: () => void;
 }
 
+
 export const Location = ({
   isMainAddr,
   streetAddr,

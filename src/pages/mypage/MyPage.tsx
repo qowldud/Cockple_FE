@@ -28,11 +28,16 @@ interface MyPageProps {
 
 
 export const MyPage = ({
-  name,
-  gender,
-  level,
-  birth,
-  profileImage,
+  // name,
+  // gender,
+  // level,
+  // birth,
+  // profileImage,
+  name = "김태연",
+  gender = "female",
+  level = "중급",
+  birth = "1990-04-18",
+  profileImage ,
 
   myMedalTotal = 0,
   goldCount = 0,
@@ -67,7 +72,6 @@ export const MyPage = ({
   { id: 3, groupName: "축구모임 C", groupImage: "", location: "대전", femaleLevel: "고급", maleLevel: "고급", nextActivitDate: "2025-07-21", upcomingCount: 7, isMine: true },
   ];
   //운동 더미 데이터
-  // 운동 더미 데이터
 const dummyEx: ContentCardLProps[] = [
   {
     id: 1,
@@ -144,7 +148,7 @@ const [exercises, setExercises] = useState<ContentCardLProps[]>(dummyEx);
       </div>
 
       <div className="my-8 flex flex-col gap-4">
-        <MyPage_Text
+      <MyPage_Text
         textLabel="내 모임"
         numberValue={groups.length}
         onClick={() => navigate("/mypage/mygroup", { state: { groups } })}

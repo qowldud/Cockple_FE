@@ -1,7 +1,6 @@
 import { useState, useEffect,useRef, useCallback  } from "react";
 import { useNavigate } from "react-router-dom";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
+import DateAndTimePicker from "../../components/common/Date_Time/DateAndPicker";
 import { format } from "date-fns";
 import { PageHeader } from "../../components/common/system/header/PageHeader";
 import Btn_Static from "../../components/common/Btn_Static/Btn_Static";
@@ -16,6 +15,9 @@ import Search from "../../assets/icons/search.svg?react";
 import { Select } from "../../components/MyPage/Select";
 import  { Location } from "../../components/common/contentcard/Location";
 import { Modal_Caution } from "../../components/MyPage/Modal_Caution";
+import TextBox from "../../components/common/Text_Box/TextBox";
+import CheckBoxBtn from "../../components/common/DynamicBtn/CheckBoxBtn";
+import { useForm } from "react-hook-form";
 
 interface LocationType {
   id: number;
@@ -25,13 +27,17 @@ interface LocationType {
 }
 
 interface MyPageEditProps {
-  profileUrl?: File; 
+  profileUrl?: File;
   name?: string;
   gender?: "female" | "male";
   birth?: string;
   rank?: string;
   hasNoRank?: boolean;
-  locations?: LocationType[]; 
+  locations?: LocationType[];
+  location?: string;
+  isMainAddr?: string;
+  streetAddr?: string;
+  keywords?: string[];
 }
 
 export const MyPageEditPage = ({
@@ -41,28 +47,66 @@ export const MyPageEditPage = ({
   birth: initialBirthProp,
   rank: initialRankProp,
   hasNoRank: initialHasNoRankProp,
-  locations: initialLocationsProp = [], 
-  location, 
-  isMainAddr,   
-  streetAddr,
+  locations: initialLocationsProp = [],
+  location,
+  isMainAddr="ㅇㅇㅇㅇㅇㅇㅇㅇㅇ",
+  streetAddr="ㅈ돋ㅁㅎㄱ",
+  // isMainAddr,
+  // streetAddr,
+  keywords = ["ㅇ", "ㅇㅎㅁㅈㅎㄷ", "ㅇㅎㅈ", "ㅎㅁㄶ조", "ㅇ", "ㅇㅎㅁㅈㅎㄷ", "ㅇㅎㅈ"],
 }: MyPageEditProps) => {
   const navigate = useNavigate();
+
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    formState: { errors },
+  } = useForm();
+  const [openModal, setOpenModal] = useState(false); //생년월일 모달
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [name, setName] = useState(initialNameProp ?? "");
+  //키워드
+  const [selectedKeywords, setSelectedKeywords] = useState<string[]>([]);
+  const [selected, setSelected] = useState(false);
+
+  const level = ["왕초심", "초심", "D조", "C조", "B조", "A조", "준자강", "자강"];
+  const [open, setOpen] = useState(false);
+  const [selectedLevel, setSelectedLevel] = useState("");
+  const [disabled, setDisabled] = useState(false);
+
   //급수없음 버튼
   const [selectedRank, setSelectedRank] = useState(initialRankProp ?? "");
   const [hasNoRank, setHasNoRank] = useState(initialHasNoRankProp ?? false);
-  const [selectedDate, setSelectedDate] = useState<Date | null>(
-      initialBirthProp ? new Date(initialBirthProp) : null
-  );
-  //Location
-  const [locations, setLocations] = useState<LocationType[]>([]);
-  const [selectedId, setSelectedId] = useState<number>(1);
+  
+  //Location 임시값////////////////////////////////////////////////////////////////
+  const [locations, setLocations] = useState([
+    { id: 1, isMainAddr: "서울특별시 강남구 역삼동", streetAddr: "테헤란로 152" },
+    { id: 2, isMainAddr: "서울특별시 서초구 서초동", streetAddr: "강남대로 373" },
+    { id: 3, isMainAddr: "서울특별시 마포구 상암동", streetAddr: "월드컵북로 396" }
+  ]);
+  const [selectedId, setSelectedId] = useState(1);
   const [editMode, setEditMode] = useState(false);
+
+  const handleDelete = (id) => {
+    setLocations(prev => prev.filter(loc => loc.id !== id));
+  };
+  //Location 임시값////////////////////////////////////////////////////////////////
+
+  
+  //Location
+  // const [locations, setLocations] = useState<LocationType[]>([]);
+  // const [selectedId, setSelectedId] = useState<number>(1);
+  // const [editMode, setEditMode] = useState(false);
+  
   // 사진
   const [profileImage, setProfileImage] = useState<string | undefined>(undefined);
   const fileInputRef = useRef<HTMLInputElement>(null);
   
+  const [selectedDate, setSelectedDate] = useState("");
+  const pickerRef = useRef(null);
+  const [isModalNameOpen, setIsModalNameOpen] = useState(false);
+
   const initialDataRef = useRef({
     name: initialNameProp ?? "",
     rank: initialRankProp ?? "",
@@ -72,7 +116,7 @@ export const MyPageEditPage = ({
     locations: initialLocationsProp,
   });
 
-    useEffect(() => {
+  useEffect(() => {
     let initialProfileImageUrl: string | undefined = undefined;
 
     if (initialProfileFileProp instanceof File) {
@@ -92,18 +136,13 @@ export const MyPageEditPage = ({
 
   const isDataChanged = useCallback(() => {
     const initialData = initialDataRef.current;
-
     // 이름 비교
     if (name !== initialData.name) return true;
-
     // 급수 비교
     if (hasNoRank !== initialData.hasNoRank) return true; // 급수 없음 상태 변경
     if (!hasNoRank && selectedRank !== initialData.rank) return true; // 급수 선택값 변경 (급수 없음이 아닐 때만)
 
-    // 생년월일 비교
-    const currentBirthStr = selectedDate ? format(selectedDate, "yyyy-MM-dd") : "";
-    if (currentBirthStr !== initialData.birth) return true;
-    if (profileImage !== initialData.profileImage) return true;
+    if (profileImage !== initialData.profileImage) return true; //이미지
     // 위치 정보 비교
     const currentLocationsIds = locations.map(loc => loc.id).sort().join(',');
     const initialLocationsIds = initialData.locations.map(loc => loc.id).sort().join(',');
@@ -129,19 +168,6 @@ export const MyPageEditPage = ({
     navigate("/myPage"); 
   };
 
-  // const onBackClick = () => {
-  //   if (isDataChanged()) {
-  //     // 변경사항이 있을 경우 사용자에게 경고 (confirm 창)
-  //     const confirmDiscard = window.confirm(
-  //       "변경사항이 있습니다. 저장하지 않고 돌아가시겠습니까?"
-  //     );
-  //     if (confirmDiscard) {
-  //       navigate("/myPage"); 
-  //     }
-  //   } else {
-  //     navigate("/myPage");
-  //   }
-  // };
   const onBackClick = () => {
     if (isDataChanged()) {
       setIsModalOpen(true);
@@ -170,14 +196,10 @@ export const MyPageEditPage = ({
     setName(input);
   };
 
-  const handleDateChange = (date: Date | null) => {
-    setSelectedDate(date);
-  };
-
   // Location 기능 부분
-  const handleDelete = (id: number) => {
-    setLocations((prev) => prev.filter((loc) => loc.id !== id));
-  };
+  // const handleDelete = (id: number) => {
+  //   setLocations((prev) => prev.filter((loc) => loc.id !== id));
+  // };
 
   const toggleEditMode = () => {
     if (editMode) {
@@ -206,6 +228,15 @@ export const MyPageEditPage = ({
       reader.readAsDataURL(file);
     }
   };
+  //생년월일
+  const handleCloseOverlay = () => {
+      if (pickerRef.current) {
+        const date = pickerRef.current.getDueString(); // 선택된 값
+        setSelectedDate(date);
+        setValue("birthday", date, { shouldValidate: true }); 
+      }
+      setOpenModal(false); 
+    };
   
   return (
     <>
@@ -245,7 +276,7 @@ export const MyPageEditPage = ({
         />
       </div>
 
-      {/* 이름 */}
+      {/* 이름 */ }
       <div className="mb-8">
         <label className="flex items-center text-left header-h5 mb-1">
           이름
@@ -257,7 +288,7 @@ export const MyPageEditPage = ({
             value={name}
             maxLength={17}
             onChange={handleNameChange}
-            className="w-full border rounded-xl	p-2 pr-14 body-md-500 border-[#E4E7EA] focus:outline-none"
+            className="w-full rounded-xl border-gy-200 border py-[0.625rem] px-3 focus:outline-none focus:border-active "
           />
           <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[#C0C4CD] body-rg-500">
             ({name?.length ?? 0} / 17)
@@ -283,54 +314,107 @@ export const MyPageEditPage = ({
         </div>
       </div>
 
-      {/* 생년월일 */}
+      {/* 생년월일 -> 값을 받아오게 해야하는뎁*/} 
       <div className="mb-8 flex flex-col items-start">
-        <label className="flex items-center text-left header-h5 mb-1">
-          생년월일
-          <VectorRed className="ml-1 w-2 h-2" />
-        </label>
-        <DatePicker
-          selected={selectedDate}
-          onChange={handleDateChange}
-          wrapperClassName="w-full"
-          dateFormat="yyyy-MM-dd"
-          className="w-full border rounded-xl p-2 pr-14 body-md-500 border-[#E4E7EA] focus:outline-none"
-          // 키보드 입력방지
-          onKeyDown={(e) => e.preventDefault()}
-          onChangeRaw={(e) => e.preventDefault()}
-          onPaste={(e) => e.preventDefault()}
-          style={{ margin: 0 }}
-        />
-      </div>
+        <div>
+          <div className="text-left flex flex-col gap-2">
+            <div className="flex px-1 gap-[2px] items-center">
+              <p className="header-h5">생년월일</p>
+              <VectorRed className="ml-1 w-2 h-2" />
+            </div>
 
+            <input
+              type="text"
+              className="w-full rounded-xl border-gy-200 border py-[0.625rem] px-3 focus:outline-none focus:border-active "
+              onClick={() => setOpenModal(true)}
+              value={selectedDate}
+            />
 
-
-      {/* 전국 급수 */}
-      <div className="mb-8">
-        <label className="flex items-center text-left header-h5 mb-1">
-          전국 급수
-          <VectorRed className="ml-1 w-2 h-2" />
-        </label>
-        <div className="flex items-center gap-4">
-        <Select
-          selected={selectedRank}
-          onSelect={(grade) => setSelectedRank(grade)}
-        />
-      {/* 급수 없음 토글 */}
-          <button
-            type="button"
-            onClick={() => setHasNoRank((prev) => !prev)}
-            className="flex items-center gap-1"
-          >
-            {hasNoRank ? (
-              <CheckCircledFilled className="w-4 h-4 text-[#FF4D4F]" />
-            ) : (
-              <CheckCircled className="w-4 h-4 text-gray-400" />
+            {openModal && (
+              <div
+                id="date-picker-overlay"
+                className="fixed inset-0 bg-black/50 z-40 flex items-center justify-center"
+                onClick={e => {
+                  if (e.target.id === "date-picker-overlay") {
+                    handleCloseOverlay();
+                  }
+                }}
+              >
+                <div
+                  onClick={e => e.stopPropagation()} 
+                >
+                  <DateAndTimePicker ref={pickerRef} />
+                </div>
+              </div>
             )}
-            급수 없음
-          </button>
+          </div>
         </div>
       </div>
+
+      {/* 전국 급수 */}
+    <div className="mb-8">
+      <label className="flex items-center text-left header-h5 mb-1">
+        전국 급수
+        <VectorRed className="ml-1 w-2 h-2" />
+      </label>
+      <div className="flex items-center gap-4">
+        <div className="relative w-40">
+          <button
+            className="border px-3 py-[0.625rem] flex justify-between gap-2 rounded-xl border-gy-200 w-40 h-11 cursor-pointer"
+            onClick={() => !disabled && setOpen(!open)}
+          >
+            <span className={disabled ? "text-gy-500" : "text-black"}>
+              {selectedLevel || "급수를 선택하세요"}
+            </span>
+            <img
+              src="/src/assets/icons/arrow_down.svg"
+              alt="Dropdown arrow"
+              className="absolute right-3 top-1/2 transform -translate-y-1/2 size-4"
+            />
+          </button>
+
+          {open && !disabled && (
+            <div className="absolute mt-1 z-10 w-40">
+              <ul className="border rounded-xl border-gy-200 bg-white shadow text-left">
+                {level.map((item, idx) => (
+                  <li
+                    key={idx}
+                    onClick={() => {
+                      setSelectedLevel(item);
+                      setOpen(false);
+                    }}
+                    className="cursor-pointer w-full px-3 py-[0.625rem] hover:bg-gy-100 rounded-xl"
+                  >
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </div>
+
+        {/* 급수 없음 토글 */}
+        <button
+          type="button"
+          onClick={() => {
+            const newDisabled = !disabled;
+            setDisabled(newDisabled);
+            if (newDisabled) {
+              setOpen(false);
+              setSelectedLevel(""); // 급수 선택 해제
+            }
+          }}
+          className="flex items-center gap-1"
+        >
+          {disabled ? (
+            <CheckCircledFilled className="w-4 h-4 text-[#FF4D4F]" />
+          ) : (
+            <CheckCircled className="w-4 h-4 text-gray-400" />
+          )}
+          급수 없음
+        </button>
+      </div>
+    </div>
 
 
       {/* 위치 */}
@@ -367,54 +451,78 @@ export const MyPageEditPage = ({
         onClick={() => navigate("/myPage/edit/location/address")}
       />
 
-      
-    {/* 등록된 위치 */}
-    <div className="mt-8">
-      <div className="flex justify-between items-center mb-1">
-        <label className="text-left header-h5">등록된 위치</label>
-        <div className="flex items-center">
-          <button
-            className="rounded-lg bg-[#F4F5F6] body-rg-500 px-4 py-2"
-            onClick={toggleEditMode}
-          >
-            {editMode ? "저장" : "수정"}
-          </button>
+      {/* 등록된 위치 */}
+      <div className="mt-8">
+        <div className="flex justify-between items-center mb-1">
+          <label className="text-left header-h5">등록된 위치</label>
+          <div className="flex items-center">
+            <button
+              className="rounded-lg bg-[#F4F5F6] body-rg-500 px-4 py-2"
+              onClick={toggleEditMode}
+            >
+              {editMode ? "저장" : "수정"}
+            </button>
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-2 text-start">
+          {locations
+            .sort((a, b) => (a.id === selectedId ? -1 : b.id === selectedId ? 1 : 0))
+            .map((loc, index) => (
+              <div className="relative" key={loc.id}>
+                <Location
+                  isMainAddr={loc.isMainAddr }
+                  streetAddr={loc.streetAddr}
+                  initialClicked={loc.id === selectedId}
+                  // disabled={false}
+                  disabled={editMode && index === 0}
+                  editMode={editMode}
+                  onClick={(clicked) => {
+                    if (!editMode) setSelectedId(loc.id);
+                  }}
+                  onDelete={() => handleDelete(loc.id)}
+                />
+              </div>
+            ))}
         </div>
       </div>
 
-      <div className="flex flex-col gap-2 text-start">
-        {locations
-          .sort((a, b) => (a.id === selectedId ? -1 : b.id === selectedId ? 1 : 0))
-          .map((loc, index) => (
-            <div className="relative" key={loc.id}>
-              <Location
-                isMainAddr={loc.isMainAddr}
-                streetAddr={loc.streetAddr}
-                initialClicked={loc.id === selectedId}
-                // disabled={false}
-                disabled={editMode && index === 0}
-                editMode={editMode}
-                onClick={(clicked) => {
-                  if (!editMode) setSelectedId(loc.id);
+    {/* 키워드 */}
+      <div className="mt-8">
+        <label className="flex items-center text-left header-h5 mb-1">키워드</label>
+        <div className="flex flex-wrap gap-2">
+          {keywords.map((keyword) => {
+            const isSelected = selectedKeywords.includes(keyword);
+            return (
+              <TextBox
+                key={keyword}
+                isSelected={isSelected}
+                onClick={() => {
+                  setSelectedKeywords((prev) =>
+                    isSelected
+                      ? prev.filter((k) => k !== keyword)
+                      : [...prev, keyword]
+                  );
                 }}
-                onDelete={() => handleDelete(loc.id)}
-              />
-            </div>
-          ))}
+              >
+                {keyword}
+              </TextBox>
+            );
+          })}
+        </div>
+      </div>
+
+      <div className="mt-8 mb-8">
+        <Btn_Static
+          kind="GR400"
+          size="L"
+          label="수정 완료"
+          shadow="shadow-ds100"
+          onClick={onCompleteClick} 
+        />
+
       </div>
     </div>
-    <div className="mt-8 mb-8">
-
-      <Btn_Static
-        kind="GR400"
-        size="L"
-        label="수정 완료"
-        shadow="shadow-ds100"
-        onClick={onCompleteClick} 
-      />
-
-    </div>
-  </div>
   </>
   );
 };
