@@ -37,6 +37,9 @@ export const OnboardingInfoPage = () => {
   const [openModal, setOpenModal] = useState(false);
 
   const nameValue = watch("name") || "";
+  const birthdayValue = watch("birthday") || "";
+  const isFormValid =
+    nameValue.length > 0 && selected !== null && birthdayValue.length > 0;
 
   return (
     <>
@@ -111,7 +114,12 @@ export const OnboardingInfoPage = () => {
           className="flex items-center justify-center pt-21 mt-[3px] shrink-0 "
           onClick={() => navigate("/onboarding/level")}
         >
-          <Btn_Static label="다음" kind="GR400" size="L" />
+          <Btn_Static
+            label="다음"
+            kind="GR400"
+            size="L"
+            initialStatus={!isFormValid ? "disabled" : "default"}
+          />
         </div>
       </div>
     </>
