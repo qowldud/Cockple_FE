@@ -72,12 +72,14 @@ export const GroupPage = () => {
               recommendDate.map(item => (
                 <Group_M
                   id={item.id}
-                  title={item.title}
+                  groupName={item.groupName}
                   location={item.location}
                   femaleLevel={item.femaleLevel}
                   maleLevel={item.maleLevel}
-                  summary={item.summary}
-                  imageSrc={item.imageSrc}
+                  nextActivitDate={item.nextActivitDate}
+                  groupImage={item.groupImage}
+                  upcomingCount={item.upcomingCount}
+                  isMine={true}
                 />
               ))}
           </div>
