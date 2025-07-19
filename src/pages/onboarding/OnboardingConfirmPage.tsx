@@ -12,7 +12,7 @@ export const OnboardingConfirmPage = () => {
     "운영진이 게임을 짜드려요",
   ];
   return (
-    <div className="w-full  flex flex-col">
+    <div className="w-full  flex flex-col -mb-8">
       <section className="flex items-center flex-col gap-10 ">
         <IntroText
           title="가입이 완료되었어요!"

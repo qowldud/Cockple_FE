@@ -6,7 +6,7 @@ export const OnboardingPage = () => {
   const navigate = useNavigate();
   return (
     <>
-      <div className=" w-full flex flex-col justify-center">
+      <div className=" w-full flex flex-col justify-center -mb-8">
         <section className="flex items-center flex-col gap-25 ">
           <IntroText
             title="환영합니다!"

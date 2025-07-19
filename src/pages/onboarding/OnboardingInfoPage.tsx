@@ -43,7 +43,7 @@ export const OnboardingInfoPage = () => {
 
   return (
     <>
-      <div className="flex flex-col">
+      <div className="flex flex-col -mb-8">
         <PageHeader title="회원 정보 입력" />
         <ProgressBar width="4" />
 

@@ -1,7 +1,7 @@
 export default function SplashScreen() {
   return (
     <div
-      className=" w-full flex items-center justify-center bg-white animate-fade-out"
+      className=" w-full flex items-center justify-center bg-white animate-fade-out -mb-8"
       style={{ height: "100dvh" }}
     >
       <img

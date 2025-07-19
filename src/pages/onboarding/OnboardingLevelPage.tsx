@@ -20,7 +20,7 @@ export const OnboardingLevelPage = () => {
   const levelValue = watch("level") || "";
   const isNextEnabled = levelValue === "disabled" || level.includes(levelValue);
   return (
-    <div className="w-full flex flex-col">
+    <div className="w-full flex flex-col -mb-8">
       <PageHeader title="회원 정보 입력" />
       <ProgressBar width="24" />
 
