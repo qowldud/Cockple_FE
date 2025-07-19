@@ -1,12 +1,14 @@
+import type { InputHTMLAttributes } from "react";
 import type { FieldValues, UseFormRegister } from "react-hook-form";
 
-interface InputFieldProps {
+interface InputFieldProps extends InputHTMLAttributes<HTMLInputElement> {
   labelName?: string;
   placeholder?: string;
   errorMsg?: string | undefined;
   className?: string;
   InputLength?: number | null;
   InputMaxLength?: number | null;
+  onClick?: () => void;
   register?: UseFormRegister<FieldValues>;
 }
 

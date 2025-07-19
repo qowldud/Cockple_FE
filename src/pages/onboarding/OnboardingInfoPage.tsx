@@ -6,16 +6,19 @@ import DateAndTimePicker from "../../components/common/Date_Time/DateAndPicker";
 import { useNavigate } from "react-router-dom";
 import { ProgressBar } from "../../components/common/ProgressBar";
 import Btn_Static from "../../components/common/Btn_Static/Btn_Static";
+import InputField from "../../components/common/Search_Filed/InputField";
 
 export const OnboardingInfoPage = () => {
+  const navigate = useNavigate();
   const {
     data,
     register,
     handleSubmit,
     setValue,
+    watch,
+    getValues,
     formState: { errors },
   } = useForm();
-  const navigate = useNavigate();
 
   const [selected, isSelected] = useState<"boy" | "girl" | null>(null);
 
@@ -33,40 +36,30 @@ export const OnboardingInfoPage = () => {
 
   const [openModal, setOpenModal] = useState(false);
 
+  const nameValue = watch("name") || "";
+
   return (
     <>
       <div className="flex flex-col">
         <PageHeader title="회원 정보 입력" />
         <ProgressBar width="4" />
 
-        <section className="text-left flex flex-col  gap-8 w-full ">
-          <p className="header-h4 pt-8">기본 정보를 입력해주세요</p>
+        <section className="text-left flex flex-col  gap-3 w-full ">
+          <p className="header-h4 pt-8 pb-5">기본 정보를 입력해주세요</p>
 
-          {/* 첫번째 */}
-          <div className="text-left flex flex-col gap-2">
-            <div className="flex px-1 gap-[2px] items-center">
-              <p className="header-h5">이름</p>
-              <img src="/src/assets/icons/cicle_s_red.svg" alt="icon-cicle" />
-            </div>
-            <div className="relative">
-              <input
-                type="text"
-                className="w-full rounded-xl border-gy-200 border py-[0.625rem] px-3 focus:outline-none focus:border-active "
-                {...register("name", {
-                  required: "이름은 필수 입력입니다",
-                  maxLength: {
-                    value: 17,
-                    message: "최대 17글자만 가능합니다",
-                  },
-                })}
-              />
-              <p className="absolute right-2 top-3 body-rg-500 text-gy-400">
-                ( 0 / 17 )
-              </p>
-            </div>
-          </div>
+          <InputField
+            labelName="이름"
+            {...register("name", {
+              maxLength: {
+                value: 2,
+                message: "",
+              },
+            })}
+            InputLength={nameValue.length}
+          />
+
           {/* 두번째 */}
-          <div className="text-left flex flex-col gap-2">
+          <div className="text-left flex flex-col gap-2 pb-5">
             <div className="flex px-1 gap-[2px] items-center">
               <p className="header-h5">성별</p>
               <img src="/src/assets/icons/cicle_s_red.svg" alt="icon-cicle" />
@@ -85,38 +78,32 @@ export const OnboardingInfoPage = () => {
             </div>
           </div>
           {/* 세번째 */}
-          <div className="text-left flex flex-col gap-2">
-            <div className="flex px-1 gap-[2px] items-center">
-              <p className="header-h5">생년월일</p>
-              <img src="/src/assets/icons/cicle_s_red.svg" alt="icon-cicle" />
-            </div>
 
-            <input
-              type="text"
-              className="w-full rounded-xl border-gy-200 border py-[0.625rem] px-3 focus:outline-none focus:border-active "
-              onClick={() => setOpenModal(true)}
-              value={selectedDate}
-            />
+          <InputField
+            labelName="생년월일"
+            onClick={() => setOpenModal(true)}
+            readOnly
+            value={selectedDate}
+          />
 
-            {openModal && (
+          {openModal && (
+            <div
+              id="date-picker-overlay"
+              className="fixed inset-0 bg-black/50 z-40 flex items-center justify-center"
+              onClick={e => {
+                if (e.target.id === "date-picker-overlay") {
+                  handleCloseOverlay();
+                }
+              }}
+            >
               <div
-                id="date-picker-overlay"
-                className="fixed inset-0 bg-black/50 z-40 flex items-center justify-center"
-                onClick={e => {
-                  if (e.target.id === "date-picker-overlay") {
-                    handleCloseOverlay();
-                  }
-                }}
+                onClick={e => e.stopPropagation()} // 내부 클릭 시 닫히지 않도록 방지
               >
-                <div
-                  onClick={e => e.stopPropagation()} // 내부 클릭 시 닫히지 않도록 방지
-                >
-                  <DateAndTimePicker ref={pickerRef} />
-                  {/* <DateAndTimePicker ref={pickerRef} showTime={true} /> */}
-                </div>
+                <DateAndTimePicker ref={pickerRef} />
+                {/* <DateAndTimePicker ref={pickerRef} showTime={true} /> */}
               </div>
-            )}
-          </div>
+            </div>
+          )}
         </section>
 
         {/* 버튼 */}
