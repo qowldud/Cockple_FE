@@ -28,7 +28,7 @@ const BottomChatInput = ({
   fileInputRef,
 }: BottomChatInputProps) => {
   return (
-    <div className="flex px-4 pt-2 pb-8 items-center justify-center gap-2 bg-white shadow-ds50">
+    <div className="flex px-4 pt-2 pb-2 items-center justify-center gap-2 bg-white shadow-ds50">
       {/* 이미지 업로드 */}
       <Clear_M
         iconMap={{
@@ -56,7 +56,7 @@ const BottomChatInput = ({
           onKeyDown={onKeyDown}
           onCompositionStart={onCompositionStart}
           onCompositionEnd={onCompositionEnd}
-          className="outline-0"
+          className="outline-0 w-full"
         />
         <Clear_M
           iconMap={{
