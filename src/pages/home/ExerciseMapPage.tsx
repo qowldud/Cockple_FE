@@ -16,7 +16,7 @@ export const ExerciseMapPage = () => {
           <img
             src={ArrowIcon}
             alt="arrow"
-            className="w-4 h-4"
+            className="size-4"
             onClick={() => setCalendar(true)}
           />
         </div>

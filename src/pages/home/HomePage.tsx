@@ -8,6 +8,7 @@ import { RecommendedWorkoutSection } from "../../components/home/RecommendedWork
 import { FloatingButton } from "../../components/common/system/FloatingButton";
 import MapIcon from "@/assets/icons/map_white.svg";
 import { useNavigate } from "react-router-dom";
+import WeeklyCalendar from "../../components/common/Date_Time/WeeklyCalendar";
 
 export type DailyExerciseItem = {
   id: number;
@@ -88,7 +89,9 @@ export const HomePage = () => {
           </div>
 
           {/* 달력 */}
-          <div className="w-full h-17"></div>
+          <div className="w-full h-17">
+            <WeeklyCalendar />
+          </div>
 
           {/* 해당 날짜 운동 */}
           <WorkoutDayEntry exerciseData={exerciseData ?? null} />
