@@ -33,7 +33,7 @@ import {
   MyPageProfileGroup,
   MyPageProfileMedal,
 } from "./pages/mypage";
-import { RecommendPage } from "./pages/home/RecommendPage";
+import { RecommendPage } from "./pages/home/Recommendpage";
 import { GroupChatDetailPage } from "./pages/chat/GroupChatDetailPage";
 import { PersonalChatDetailPage } from "./pages/chat/PersonalChatDetailPage";
 import { MyGroupExercisePage } from "./pages/home/MyGroupExercisePage";
@@ -50,6 +50,7 @@ import { GroupHomePage } from "./pages/group/GroupHomePage";
 import { GroupChatPage } from "./pages/group/GroupChatPage";
 import { GroupCalendarPage } from "./pages/group/GroupCalendarPage";
 import { GroupMemberPage } from "./pages/group/GroupMemberPage";
+import { GroupRecommendPage } from "./pages/group/GroupRecommendPage";
 
 const router = createBrowserRouter([
   {
@@ -124,6 +125,7 @@ const router = createBrowserRouter([
       { path: "/chat/group/:chatId", element: <GroupChatDetailPage /> },
       { path: "/chat/personal/:chatId", element: <PersonalChatDetailPage /> },
       { path: "/alert", element: <AlertPage /> },
+      { path: "/group/recommend", element: <GroupRecommendPage /> },
       {
         path: "/group/:groupId",
         element: <GroupLayout />,
