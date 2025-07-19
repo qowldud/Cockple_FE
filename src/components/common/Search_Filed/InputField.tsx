@@ -5,7 +5,8 @@ interface InputFieldProps {
   placeholder?: string;
   errorMsg?: string | undefined;
   className?: string;
-  InputLength?: number;
+  InputLength?: number | null;
+  InputMaxLength?: number | null;
   register?: UseFormRegister<FieldValues>;
 }
 
@@ -16,6 +17,7 @@ export default function InputField({
   className = "",
   register,
   InputLength,
+  InputMaxLength = 17,
   ...props
 }: InputFieldProps) {
   return (
@@ -32,9 +34,11 @@ export default function InputField({
           {...props}
           placeholder={placeholder}
         />
-        <p className="absolute right-2 top-3 body-rg-500 text-gy-400">
-          ({InputLength} / 17 )
-        </p>
+        {typeof InputLength === "number" && (
+          <p className="absolute right-2 top-3 body-rg-500 text-gy-400">
+            ({InputLength} / {InputMaxLength} )
+          </p>
+        )}
       </div>
       {errorMsg && (
         <p className="absolute bottom-0 body-sm-500 ml-2 text-rd-500">
