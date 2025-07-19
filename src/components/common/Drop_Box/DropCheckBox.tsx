@@ -49,9 +49,9 @@ export default function DropCheckBox({
       </div>
 
       <div className="flex items-center gap-3">
-        <div className="relative inline-block w-40">
+        <div className="relative inline-block w-40 ">
           <button
-            className="border px-3 py-[0.625rem] flex justify-between gap-2 rounded-xl border-gy-200 w-40  h-11  cursor-pointer"
+            className="border px-3 py-[0.625rem] flex justify-between gap-2 rounded-xl border-gy-200 w-40  h-11  cursor-pointer active:bg-gy-100"
             onClick={toggleDropdown}
           >
             <span className={disabled ? "text-gy-500" : "text-black"}>
