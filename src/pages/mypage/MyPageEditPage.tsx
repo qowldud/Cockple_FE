@@ -15,6 +15,7 @@ import CheckCircledFilled from "../../assets/icons/check_circled_filled.svg?reac
 import Search from "../../assets/icons/search.svg?react";
 import { Select } from "../../components/MyPage/Select";
 import  { Location } from "../../components/common/contentcard/Location";
+import { Modal_Caution } from "../../components/MyPage/Modal_Caution";
 
 interface LocationType {
   id: number;
@@ -46,6 +47,7 @@ export const MyPageEditPage = ({
   streetAddr,
 }: MyPageEditProps) => {
   const navigate = useNavigate();
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [name, setName] = useState(initialNameProp ?? "");
   //급수없음 버튼
   const [selectedRank, setSelectedRank] = useState(initialRankProp ?? "");
@@ -127,18 +129,33 @@ export const MyPageEditPage = ({
     navigate("/myPage"); 
   };
 
+  // const onBackClick = () => {
+  //   if (isDataChanged()) {
+  //     // 변경사항이 있을 경우 사용자에게 경고 (confirm 창)
+  //     const confirmDiscard = window.confirm(
+  //       "변경사항이 있습니다. 저장하지 않고 돌아가시겠습니까?"
+  //     );
+  //     if (confirmDiscard) {
+  //       navigate("/myPage"); 
+  //     }
+  //   } else {
+  //     navigate("/myPage");
+  //   }
+  // };
   const onBackClick = () => {
     if (isDataChanged()) {
-      // 변경사항이 있을 경우 사용자에게 경고 (confirm 창)
-      const confirmDiscard = window.confirm(
-        "변경사항이 있습니다. 저장하지 않고 돌아가시겠습니까?"
-      );
-      if (confirmDiscard) {
-        navigate("/myPage"); 
-      }
+      setIsModalOpen(true);
     } else {
       navigate("/myPage");
     }
+  };
+  const handleConfirmLeave = () => {
+    setIsModalOpen(false);
+    navigate("/myPage");
+  };
+
+  const handleCancelLeave = () => {
+    setIsModalOpen(false);
   };
 
   // 이름 기능부분
@@ -192,10 +209,17 @@ export const MyPageEditPage = ({
   
   return (
     <>
+    <div>
     <PageHeader
       title="정보 수정하기"
       onBackClick={onBackClick} 
     />
+    {isModalOpen && (
+      <div className="fixed inset-0 flex justify-center items-center z-50">
+        <Modal_Caution onConfirm={handleConfirmLeave} onCancel={handleCancelLeave} />
+      </div>
+    )}
+    </div>
 
     <div className="flex flex-col">
 
@@ -379,7 +403,7 @@ export const MyPageEditPage = ({
           ))}
       </div>
     </div>
-    <div className="mt-8">
+    <div className="mt-8 mb-8">
 
       <Btn_Static
         kind="GR400"

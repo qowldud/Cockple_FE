@@ -6,29 +6,33 @@ import RD500_S_Icon from "../Btn_Static/Icon_Btn/RD500_S_Icon";
 
 interface GroupMProps {
   id: number;
-  title: string;
+  groupName: string;
+  groupImage: string;
   location: string;
   femaleLevel: string;
   maleLevel: string;
-  summary: string;
-  imageSrc: string;
-  isFavorite?: boolean;
+  nextActivitDate: string;
+  upcomingCount: number;
+  like?: boolean;
+  isMine: boolean;
   onToggleFavorite?: (id: number) => void;
 }
 
 export const Group_M = ({
   id,
-  title,
+  groupName,
+  groupImage,
   location,
   femaleLevel,
   maleLevel,
-  summary,
-  imageSrc,
-  isFavorite = false,
+  nextActivitDate,
+  upcomingCount,
+  like = false,
+  isMine,
   onToggleFavorite,
 }: GroupMProps) => {
   const [isPressing, setIsPressing] = useState(false);
-  const [favorite, setFavorite] = useState(isFavorite);
+  const [favorite, setFavorite] = useState(like);
 
   const handleToggleFavorite = () => {
     const newFavorite = !favorite;
@@ -50,22 +54,19 @@ export const Group_M = ({
       {/* 이미지 영역 */}
       <div className="relative">
         <img
-          src={imageSrc}
-          alt={title}
+          src={groupImage}
+          alt={groupName}
           className="w-[5.5rem] h-[5.5rem] rounded-[0.5rem] object-cover"
         />
         <div className="w-[1.625rem] h-[1.625rem] absolute bottom-[0.25rem] right-[0.25rem]">
-          <RD500_S_Icon
-            isActive={favorite}
-            onClick={() => handleToggleFavorite?.(id)}
-          />
+          <RD500_S_Icon isActive={favorite} onClick={handleToggleFavorite} />
         </div>
       </div>
 
-      {/* 글/정보 영역 */}
+      {/* 정보 영역 */}
       <div className="w-[14.1875rem] h-[5.5rem] flex flex-col gap-[0.5rem] items-start text-black overflow-hidden">
-        <p className="body-rg-500 truncate w-full" title={title}>
-          {title}
+        <p className="body-rg-500 truncate w-full" title={groupName}>
+          {groupName}
         </p>
 
         <div className="body-sm-400 flex flex-col gap-[0.375rem] w-full">
@@ -77,7 +78,7 @@ export const Group_M = ({
             </span>
           </div>
 
-          {/* 성별 레벨 */}
+          {/* 레벨 */}
           <div className="flex gap-[0.625rem] w-full">
             <div className="flex items-center gap-[0.25rem] max-w-[6rem] overflow-hidden">
               <Female className="w-[0.875rem] h-[0.875rem] shrink-0" />
@@ -93,9 +94,12 @@ export const Group_M = ({
             </div>
           </div>
 
-          {/* 요약 */}
-          <p className="truncate w-full" title={summary}>
-            {summary}
+          {/* 다음 일정 */}
+          <p
+            className="truncate w-full"
+            title={`${nextActivitDate} 운동 • 운동 ${upcomingCount}개 잔여 예정`}
+          >
+            {nextActivitDate} 운동 • 운동 {upcomingCount}개 잔여 예정
           </p>
         </div>
       </div>
