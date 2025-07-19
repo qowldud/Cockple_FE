@@ -1,97 +1,10 @@
-// import { PageHeader } from "../../components/common/system/header/PageHeader";
-// import Vector from "../../assets/icons/Vector.svg?react";
-// import Caution from "../../assets/icons/Caution.svg?react";
-// import Female from "../../assets/icons/female.svg?react";
-// import Male from "../../assets/icons/male.svg?react";
-// import { Member } from "../../components/common/contentcard/Member";
-
-// export const MyPageExerciseDetailPage = () => {
-//   return (
-//     <>
-//       <PageHeader title="내 운동 상세" />
-//       <div className="p-4 flex flex-col gap-8">
-
-//         {/* 장소 정보 */}
-//         <div className="border border-[#1ABB65] rounded-xl flex flex-col gap-3 p-4 w-full">
-//           {/* 아이콘 + 명찰 */}
-//           <div className="flex items-center gap-2">
-//             <Caution className="w-5 h-5" />
-//             <p className="body-rg-500 truncate">명찰을 위한 신분증</p>
-//           </div>
-//           {/* 아이콘 + 장소 정보 */}
-//           <div className="flex items-start gap-2">
-//             <Vector className="w-5 h-5 mt-4" />
-//             <div className="flex flex-col">
-//               <p className="body-rg-600 truncate pr-21">산성 배드민턴장</p>
-//               <p className="body-rg-500 truncate">수정로456번길 19 산성배드민턴장</p>
-//             </div>
-//           </div>
-//         </div>
-
-//         {/* 참여 인원 */}
-//         <div className="flex flex-col gap-2">
-//           <div className="flex items-center justify-between">
-//             <div className="flex items-center gap-2">
-//               <label className="text-left header-h5">참여 인원</label>
-//               <p className="header-h5">5 / 5</p>
-//             </div>
-//             <div className="flex items-center gap-2">
-//               <Female className="w-4 h-4" />
-//               <p className="body-rg-500">3</p>
-//               <Male className="w-4 h-4" />
-//               <p className="body-rg-500">2</p>
-//             </div>
-//           </div>
-//         </div>
-        
-//         <div>
-//         <Member
-//           status="Participating"
-//           name="홍길동"
-//           gender="male"
-//           group="A조"
-//         />
-//         <div className="border border-[#E4E7EA] m-1" />
-//         </div>
-
-//         {/* 대기 인원 */}
-//         <div className="flex flex-col gap-2">
-//           <div className="flex items-center justify-between">
-//             <div className="flex items-center gap-2">
-//               <label className="text-left header-h5">대기 인원</label>
-//               <p className="header-h5">2</p>
-//             </div>
-//             <div className="flex items-center gap-2">
-//               <Female className="w-4 h-4" />
-//               <p className="body-rg-500">3</p>
-//               <Male className="w-4 h-4" />
-//               <p className="body-rg-500">2</p>
-//             </div>
-//           </div>
-//         </div>
-//         <Member
-//           status="waiting"
-//           name="홍길동"
-//           gender="male"
-//           group="A조"
-//         />
-//         <div className="border border-[#E4E7EA] m-1" />
-
-
-
-//       </div>
-//     </>
-//   );
-// };
-
-
 import { PageHeader } from "../../components/common/system/header/PageHeader";
 import Vector from "../../assets/icons/Vector.svg?react";
 import Caution from "../../assets/icons/Caution.svg?react";
 import Female from "../../assets/icons/female.svg?react";
 import Male from "../../assets/icons/male.svg?react";
 import { Member } from "../../components/common/contentcard/Member";
-
+import { useNavigate } from "react-router-dom";
 import type { MemberProps } from "../../components/common/contentcard/Member";
 
 interface MyPageExerciseDetailPageProps {
@@ -131,22 +44,22 @@ export const MyPageExerciseDetailPage = (props: MyPageExerciseDetailPageProps) =
     participantsCount = 5,
     participantGenderCount = { male: 2, female: 3 },
     participantMembers = [
-      { status: "Participating", name: "홍길동", gender: "male", group: "A조" },
+      { status: "Participating", name: "홍길동", gender: "male", level: "A조" },
     ],
     waitingCount = 2,
     waitingGenderCount = { male: 1, female: 1 },
     waitingMembers = [
-      { status: "waiting", name: "박지민", gender: "female", group: "B조" },
+      { status: "waiting", name: "박지민", gender: "female", level: "B조" },
     ],
     inviteMembers = [
-      { status: "invite", name: "이수진", gender: "female", group: "C조" },
+      { status: "invite", name: "이수진", gender: "female", level: "C조" },
     ],
     requestMembers = [
       {
         status: "request",
         name: "최민수",
         gender: "male",
-        group: "혼합",
+        level: "혼합",
         birth: "98.06.15",
         onAccept: () => console.log("수락"),
         onReject: () => console.log("거절"),
@@ -157,7 +70,7 @@ export const MyPageExerciseDetailPage = (props: MyPageExerciseDetailPageProps) =
         status: "approved",
         name: "한예슬",
         gender: "female",
-        group: "혼합",
+        level: "혼합",
         birth: "00.11.11",
       },
     ],
@@ -165,10 +78,11 @@ export const MyPageExerciseDetailPage = (props: MyPageExerciseDetailPageProps) =
 
 // }: MyPageExerciseDetailPageProps) => {
 
+const navigate = useNavigate();
   return (
     <>
       <PageHeader title="내 운동 상세" />
-      <div className="p-4 flex flex-col gap-8">
+      <div className="flex flex-col gap-8">
 
         {/* 장소 정보 */}
         <div className="border border-[#1ABB65] rounded-xl flex flex-col gap-3 p-4 w-full">
@@ -203,10 +117,14 @@ export const MyPageExerciseDetailPage = (props: MyPageExerciseDetailPageProps) =
 
         {participantMembers.map((member, idx) => (
           <div key={`participant-${idx}`}>
-            <Member {...member} />
+            <Member
+              {...member}
+              onClick={() => navigate("/mypage/profile")}
+            />
             <div className="border border-[#E4E7EA] m-1" />
           </div>
         ))}
+
 
         {/* 대기 인원 */}
         <div className="flex flex-col gap-2">

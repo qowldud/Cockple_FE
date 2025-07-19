@@ -46,7 +46,7 @@ export const ImageBox = ({
         {
           "bg-[#F4F5F6]": isPressing,
           "bg-white": !isPressing,
-          "border-2 border-[#0B9A4E]": isSelected,
+          "border-1 border-[#0B9A4E]": isSelected,
           "border-transparent": !isSelected,
         }
       )}

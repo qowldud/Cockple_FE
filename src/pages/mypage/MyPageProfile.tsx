@@ -1,9 +1,10 @@
-import { MainHeader } from "../../components/common/system/header/MainHeader";
 import { MyPage_Text } from "../../components/common/contentcard/MyPage_Text";
 import { Profile } from "../../components/MyPage/Profile";
 import { MyPage as MyPageContentcard } from "../../components/common/contentcard/MyPage";
 import Grad_GR400_L from "../../components/common/Btn_Static/Text/Grad_GR400_L";
-
+import { PageHeader } from "../../components/common/system/header/PageHeader";
+import { useNavigate } from "react-router-dom"; 
+import { MyPage_Profile_Medal } from "../../components/common/contentcard/MyPage_Profile_Medal";
 interface MyPageProps {
   name: string;
   gender: "female" | "male";
@@ -30,10 +31,13 @@ export const MyPageProfile = ({
   bronzeCount = 0,
   disabled = false,
 }: MyPageProps) => {
+
+  const navigate = useNavigate(); 
+
   return (
     <div className="flex flex-col pb-26 overflow-auto">
       <div className="gap-[1.25rem]">
-        <MainHeader hasNotification={true} />
+        <PageHeader title="프로필" />
         <Profile
           name={name}
           gender={gender}
@@ -44,17 +48,18 @@ export const MyPageProfile = ({
       </div>
 
       <div className="my-8 flex flex-col gap-4">
-        <MyPage_Text textLabel="모임" numberValue={0} />
-        <MyPageContentcard
+        <MyPage_Text textLabel="내 모임" numberValue={0} onClick={() => navigate("/mypage/profile/group")} />
+        <MyPage_Profile_Medal
           myMedalTotal={myMedalTotal}
           goldCount={goldCount}
           silverCount={silverCount}
           bronzeCount={bronzeCount}
           disabled={disabled} 
+          onClick={() => navigate("/mypage/profile/medal")} 
         />
       </div>
-
-     <Grad_GR400_L label="개인 채팅 보내기"/>
+        
+     <Grad_GR400_L label="개인 채팅 보내기" onClick={() => navigate("/chat/group/:chatId")} />
     </div>
   );
 };

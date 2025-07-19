@@ -1,25 +1,28 @@
-//내 모임이 없을 경우에 나오는 컴포넌트입니다.
+import { useNavigate } from "react-router-dom";
 import Logo from "../../assets/icons/Logo_Typo.svg?react";
-import Btn_Static from "../../components/common/Btn_Static/Btn_Static";
+import GR400_M from "../../components/common/Btn_Static/Text/GR400_M";
 
 export const MyGroupNone = () => {
+  const navigate = useNavigate();
+
   return (
-    <div className="w-full h-[352px] flex flex-col items-center justify-center mt-10">
-       {/* 임티인데 아직 안 나와서 로고로... */}
-      <Logo className="w-44 h-44 mt-[32px]" />
-      <div className="flex flex-col items-center ">
-        <p className="header-h5">참여중인 모임이 없어요!</p>
-      </div>
+  <div className="flex items-center justify-center w-full grow px-4 py-8">
 
-      
+     {/* <div className="flex items-center justify-center w-full h-[calc(100vh-8rem)] px-4"> */}
+      <div className="flex flex-col items-center gap-8">
+        {/* 텍스트 */}
+        <div className="flex flex-col gap-[0.5rem] text-center">
+          <p className="header-h5">참여중인 모임이 없어요!</p>
+          <p className="header-h5">모임을 찾아 배드민턴을 즐겨볼까요?</p>
+        </div>
 
-      <div className="mt-[32px]">
-        <Btn_Static
-          kind="GR600"
-          size="S"
-          bgColor="bg-[#0B9A4E]"
-          textColor="text-white"
+        {/* 로고 */}
+        <Logo className="w-44 h-44" />
+
+        {/* 버튼 */}
+        <GR400_M
           label="모임 둘러보기"
+          onClick={() => navigate("/group")}
         />
       </div>
     </div>

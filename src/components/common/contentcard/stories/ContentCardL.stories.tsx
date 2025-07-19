@@ -14,13 +14,12 @@ const meta = {
     isCompleted: { control: 'boolean', description: '참여 완료인 경우에 버튼X' },
     title: { control: 'text', description: '운동 제목' },
     date: { control: 'text', description: '날짜 (예: 2024.07.08)' },
-    day: { control: 'text', description: '요일 (예: 월)' },
     location: { control: 'text', description: '장소' },
     time: { control: 'text', description: '시간 (예: 08:00 am ~ 10:00 am)' },
     femaleLevel: { control: 'text', description: '여성 레벨 정보' },
     maleLevel: { control: 'text', description: '남성 레벨 정보' },
-    currentPeople: { control: 'number', description: '현재 참여 인원' },
-    maxPeople: { control: 'number', description: '최대 참여 인원' },
+    currentCount: { control: 'number', description: '현재 참여 인원' },
+    totalCount: { control: 'number', description: '최대 참여 인원' },
   },
 } satisfies Meta<typeof ContentCardL>;
 
@@ -35,13 +34,12 @@ export const Default: Story = {
     isCompleted: false,
     title: "민턴콕콕 정기모임",
     date: "2024.07.08",
-    day: "월",
     location: "산성 실내 배드민턴장",
     time: "08:00 am ~ 10:00 am",
     femaleLevel: "전국 초심~준자강",
     maleLevel: "전국 준자강 이상",
-    currentPeople: 8,
-    maxPeople: 10,
+    currentCount: 8,
+    totalCount: 10,
   },
 };
 
@@ -53,8 +51,8 @@ export const NotJoined: Story = {
     isGuestAllowedByOwner: true, 
     isCompleted: false,
     title: "새로운 배드민턴 모임",
-    currentPeople: 5,
-    maxPeople: 12,
+    currentCount: 5,
+    totalCount: 12,
   },
 };
 
@@ -66,8 +64,8 @@ export const JoinedNoGuestAllowed: Story = {
     isGuestAllowedByOwner: false,
     isCompleted: false,
     title: "클럽 내부 친선전",
-    currentPeople: 10,
-    maxPeople: 10,
+    currentCount: 10,
+    totalCount: 10,
   },
 };
 
@@ -76,8 +74,8 @@ export const FullCapacity: Story = {
   args: {
     ...Default.args,
     title: "마감된 모임",
-    currentPeople: 10,
-    maxPeople: 10,
+    currentCount: 10,
+    totalCount: 10,
   },
 };
 
@@ -106,12 +104,11 @@ export const Completed: Story = {
     isCompleted: true,
     title: "민턴콕콕 정기모임",
     date: "2024.07.08",
-    day: "월",
     location: "산성 실내 배드민턴장",
     time: "08:00 am ~ 10:00 am",
     femaleLevel: "전국 초심~준자강",
     maleLevel: "전국 준자강 이상",
-    currentPeople: 8,
-    maxPeople: 10,
+    currentCount: 8,
+    totalCount: 10,
   },
 };

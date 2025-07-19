@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { PageHeader } from "../../components/common/system/header/PageHeader";
 import { Sort } from "../../components/MyPage/Sort";
+
 import { Group_M } from "../../components/common/contentcard/Group_M";
 import { MyGroupNone } from "../../components/MyPage/MyGroupNone";
 
@@ -9,13 +10,16 @@ import CheckCircledFilled from "../../assets/icons/check_circled_filled.svg?reac
 
 interface GroupMProps {
   id: number;
-  title: string;
+  groupName: string;
+  groupImage: string;
   location: string;
   femaleLevel: string;
   maleLevel: string;
-  summary: string;
-  imageSrc: string;
-  isFavorite?: boolean;
+  nextActivitDate: string;
+  upcomingCount: number;
+  like?: boolean;
+  isMine: boolean;
+  onToggleFavorite?: (id: number) => void;
 }
 
 interface MyPageMyGroupPageProps {
@@ -24,50 +28,71 @@ interface MyPageMyGroupPageProps {
 
 export const MyPageMyGroupPage = ({ groups }: MyPageMyGroupPageProps) => {
   const [isChecked, setIsChecked] = useState(false);
-
+  const [sortOption, setSortOption] = useState("최신순");
   const [favoriteGroups, setFavoriteGroups] = useState<GroupMProps[]>(groups || []);
 
   const handleToggleFavorite = (id: number) => {
     setFavoriteGroups(prev =>
       prev.map(group =>
-        group.id === id
-          ? { ...group, isFavorite: !group.isFavorite }
-          : group,
-      ),
+        group.id === id ? { ...group, like: !group.like } : group,
+      )
     );
   };
+// 정렬 기능 -> 나중에 서버랑 연동
+  const sortGroups = (groups: GroupMProps[]) => {
+    switch (sortOption) {
+      case "최신순":
+        return [...groups].sort((a, b) => b.id - a.id);
+      case "오래된 순":
+        return [...groups].sort((a, b) => a.id - b.id);
+      case "운동 많은 순":
+        return [...groups].sort((a, b) => b.upcomingCount - a.upcomingCount);
+      default:
+        return groups;
+    }
+  };
+  const filteredGroups = isChecked
+    ? sortGroups(favoriteGroups.filter(group => group.isMine))  
+    : sortGroups(favoriteGroups);                              
+
+  // const filteredGroups = isChecked
+  //   ? favoriteGroups.filter(group => group.isMine)
+  //   : favoriteGroups;
+
+  const hasGroups = filteredGroups.length > 0;
 
   return (
-    <>
-      <PageHeader title="내 모임" />
-
-      <div className="flex flex-col h-full w-full max-w-[23.4375rem] p-4">
-        <div className="mb-8">
-          <div className="flex justify-between items-start">
-            <div className="flex items-center gap-2">
-              <button onClick={() => setIsChecked(!isChecked)}>
-                {isChecked ? (
-                  <CheckCircledFilled className="w-4 h-4" />
-                ) : (
-                  <CheckCircled className="w-4 h-4" />
-                )}
-              </button>
-              <label className="body-rg-500">내가 만든 모임</label>
-            </div>
-            <div className=" flex items-center gap-2">
-              <Sort />
+    
+    <div className="flex flex-col h-screen w-full max-w-[23.4375rem]">
+      <div className="sticky top-0 z-20 bg-white">
+        <PageHeader title="내 모임" />
+      </div>
+      <div className="flex-1 flex flex-col p-4">
+        {hasGroups && (
+          <div className="mb-8">
+            <div className="flex justify-between items-start">
+              <div className="flex items-center gap-2">
+                <button onClick={() => setIsChecked(!isChecked)}>
+                  {isChecked ? (
+                    <CheckCircledFilled className="w-4 h-4" />
+                  ) : (
+                    <CheckCircled className="w-4 h-4" />
+                  )}
+                </button>
+                <label className="body-rg-500">내가 만든 모임</label>
+              </div>
+              <div className="flex items-center gap-2">
+                <Sort selected={sortOption} onChange={setSortOption} />
+              </div>
             </div>
           </div>
-        </div>
+        )}
 
-        <div className="flex flex-col gap-4">
-          {favoriteGroups.length > 0 ? (
-            favoriteGroups.map(group => (
+        <div className="flex-1 flex flex-col gap-4">
+          {hasGroups ? (
+            filteredGroups.map(group => (
               <div key={group.id}>
-                <Group_M
-                  {...group}
-                  onToggleFavorite={handleToggleFavorite}
-                />
+                <Group_M {...group} onToggleFavorite={handleToggleFavorite} />
                 <div className="border border-[#E4E7EA] mx-1 mt-2" />
               </div>
             ))
@@ -76,6 +101,6 @@ export const MyPageMyGroupPage = ({ groups }: MyPageMyGroupPageProps) => {
           )}
         </div>
       </div>
-    </>
+    </div>
   );
 };
