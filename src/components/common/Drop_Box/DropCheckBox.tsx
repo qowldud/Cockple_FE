@@ -3,27 +3,29 @@ import CheckBoxBtn from "../DynamicBtn/CheckBoxBtn";
 
 interface DropBoxCheckBoxProps {
   title: string;
-  //   description?: string;
   options: string[];
   defaultValue?: string;
   disabledText?: string;
   checkLabel: string;
+  value?: string | null;
+  onChange?: (value: string | null) => void;
 }
 
 export default function DropCheckBox({
   title,
-  //   description = "",
   options,
   //   defaultValue = "option",
   //   disabledText = "",
   checkLabel = "Text",
+  value,
+  onChange,
 }: DropBoxCheckBoxProps) {
   const [open, setOpen] = useState(false);
-  const [selectedLevel, setSelectedLevel] = useState("");
-  const [disabled, setDisabled] = useState(false);
+
+  const disabled = value === "disabled";
 
   const handleOptionClick = (option: string) => {
-    setSelectedLevel(option);
+    onChange?.(option);
     setOpen(false);
   };
   const toggleDropdown = () => {
@@ -31,12 +33,14 @@ export default function DropCheckBox({
   };
 
   const handleDisableToggle = () => {
-    const newDisabled = !disabled;
-    setDisabled(newDisabled);
-    if (!newDisabled) {
-      setOpen(false);
+    if (disabled) {
+      onChange?.("");
+    } else {
+      onChange?.("disabled");
     }
   };
+  console.log(open);
+
   return (
     <div className="flex gap-2 flex-col">
       <div className="flex">
@@ -55,7 +59,7 @@ export default function DropCheckBox({
             onClick={toggleDropdown}
           >
             <span className={disabled ? "text-gy-500" : "text-black"}>
-              {selectedLevel}
+              {value && value !== "disabled" ? value : ""}
             </span>
             <img
               src={

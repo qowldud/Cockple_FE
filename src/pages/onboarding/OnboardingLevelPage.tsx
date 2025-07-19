@@ -4,12 +4,21 @@ import { ProgressBar } from "../../components/common/ProgressBar";
 import Btn_Static from "../../components/common/Btn_Static/Btn_Static";
 import DropCheckBox from "../../components/common/Drop_Box/DropCheckBox";
 import IntroText from "./components/IntroText";
+import { useForm } from "react-hook-form";
 
 export const OnboardingLevelPage = () => {
   const level = ["초심", "C조", "D조"];
 
   const navigate = useNavigate();
+  const {
+    register,
+    setValue,
+    watch,
+    formState: { errors },
+  } = useForm();
 
+  const levelValue = watch("level") || "";
+  const isNextEnabled = levelValue === "disabled" || level.includes(levelValue);
   return (
     <div className="w-full flex flex-col">
       <PageHeader title="회원 정보 입력" />
@@ -27,13 +36,22 @@ export const OnboardingLevelPage = () => {
           title="전국 급수"
           options={level}
           checkLabel="급수 없음"
+          value={levelValue}
+          onChange={val =>
+            setValue("level", val ?? "", { shouldValidate: true })
+          }
         />
       </section>
       <div
         className="flex items-center justify-center pt-[1px]"
         onClick={() => navigate("/onboarding/address")}
       >
-        <Btn_Static label="다음" kind="GR400" size="L" />
+        <Btn_Static
+          label="다음"
+          kind="GR400"
+          size="L"
+          initialStatus={!isNextEnabled ? "disabled" : "default"}
+        />
       </div>
     </div>
   );
