@@ -46,7 +46,7 @@ export const OnboardingInfoPage = () => {
 
         <section className="text-left flex flex-col  gap-3 w-full ">
           <p className="header-h4 pt-8 pb-5">기본 정보를 입력해주세요</p>
-
+          {/* 첫번째 */}
           <InputField
             labelName="이름"
             {...register("name", {
@@ -108,7 +108,7 @@ export const OnboardingInfoPage = () => {
 
         {/* 버튼 */}
         <div
-          className="flex items-center justify-center pt-26 mt-[3px] shrink-0 "
+          className="flex items-center justify-center pt-21 mt-[3px] shrink-0 "
           onClick={() => navigate("/onboarding/level")}
         >
           <Btn_Static label="다음" kind="GR400" size="L" />

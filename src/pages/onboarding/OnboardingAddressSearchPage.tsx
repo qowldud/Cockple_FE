@@ -7,6 +7,10 @@
 // import Grad_GR400_L from "../../components/common/Btn_Static/Text/Grad_GR400_L";
 // import { ProgressBar } from "../../components/common/ProgressBar";
 
+import { useForm } from "react-hook-form";
+import InputField from "../../components/common/Search_Filed/InputField";
+import { useState } from "react";
+
 // export const OnboardingAddressSearchPage = () => {
 //   const [setRegister, setIsRegister] = useState(false);
 
@@ -56,3 +60,50 @@
 //     </>
 //   );
 // };
+
+// export default function OnboardingAddressSearchPage() {
+//   const kkk = () => {
+//     console.log("제출", getValues("phone"));
+//   };
+//   const {
+//     data,
+//     register,
+//     handleSubmit,
+//     setValue,
+//     watch,
+//     getValues,
+//     formState: { errors },
+//   } = useForm();
+
+//   const InputValue = watch("phone") || "";
+
+//   return (
+//     <>
+//       <InputField
+//         labelName="전화번호"
+//         {...register("phone", {
+//           maxLength: {
+//             value: 2,
+//             message: "최대17글자까지 가능합니다",
+//           },
+//         })}
+//         errorMsg={errors.phone?.message as string}
+//         InputLength={InputValue.length}
+//       />
+//       <InputField
+//         labelName="name"
+//         {...register("name", {
+//           maxLength: {
+//             value: 2,
+//             message: "최대17글자까지 가능합니다",
+//           },
+//         })}
+//         errorMsg={errors.phone?.message as string}
+//         // InputLength={InputValue.length}
+//       />
+//       <button className="border" onClick={handleSubmit(kkk)}>
+//         클릭
+//       </button>
+//     </>
+//   );
+// }
