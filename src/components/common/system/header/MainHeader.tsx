@@ -7,19 +7,22 @@ import DropDownBtn from "../../DynamicBtn/DropDownBtn";
 interface MainHeaderProps {
   hasNotification?: boolean;
   background?: "white" | "clear";
+  className?: string;
 }
 
 export const MainHeader = ({
   hasNotification,
   background = "white",
+  className,
 }: MainHeaderProps) => {
   const alertIcon = hasNotification ? AlertNoti : Alert;
 
   return (
     <div
       className={clsx(
-        "fixed z-10 top-0 flex w-full max-w-[444px] justify-between items-center px-4 h-14 transition-all duration-500",
+        "fixed z-10 top-0 -ml-4 flex w-full max-w-[444px] justify-between items-center px-4 h-14 transition-all duration-500",
         background === "white" ? "bg-white" : "bg-transparent",
+        className,
       )}
     >
       <img src={LogoIcon} className="w-15" alt="Cockple Logo" />

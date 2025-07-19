@@ -58,7 +58,10 @@ export const HomePage = () => {
 
   return (
     <div className="flex flex-col justify-start items-center gap-vertical-section min-h-screen -mx-4 px-4 bg-white">
-      <MainHeader background={isScrolled ? "white" : "clear"} />
+      <MainHeader
+        background={isScrolled ? "white" : "clear"}
+        className="ml-4"
+      />
       {/* 배경색 적용 */}
       <div
         className="w-full min-h-94 flex flex-col gap-vertical-section"
