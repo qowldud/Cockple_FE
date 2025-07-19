@@ -3,14 +3,18 @@ import { PageHeader } from "../../components/common/system/header/PageHeader";
 import { MyExerciseSort } from "../../components/MyPage/MyExerciseSort";
 import { ContentCardL } from "../../components/common/contentcard/ContentCardL";
 import { MyExercise_None } from "../../components/MyPage/MyExercise_None";
-
+import { useLocation } from "react-router-dom"; 
 import type { ContentCardLProps } from "../../components/common/contentcard/ContentCardL";
 
 interface MyPageMyExercisePageProps {
   myActivityCount: ContentCardLProps[];
 }
 
-export const MyPageMyExercisePage = ({ myActivityCount }: MyPageMyExercisePageProps) => {
+// export const MyPageMyExercisePage = ({ myActivityCount }: MyPageMyExercisePageProps) => {
+export const MyPageMyExercisePage = () => {
+  const location = useLocation();
+  const myActivityCount = location.state?.myActivityCount ?? [];
+
   const [sortOption, setSortOption] = useState("최신순");
   const [selectedTab, setSelectedTab] = useState<"전체" | "참여 예정" | "참여 완료">("전체");
 
@@ -35,7 +39,7 @@ export const MyPageMyExercisePage = ({ myActivityCount }: MyPageMyExercisePagePr
   return (
     <div className="flex flex-col h-screen w-full max-w-[23.4375rem] bg-white mx-auto"> 
  
-      <div className="sticky top-0 z-20"> 
+      <div className="sticky top-0 z-20 bg-white"> 
         <PageHeader title="내 운동" />
 
         <div className="mb-5 px-4">
@@ -60,7 +64,7 @@ export const MyPageMyExercisePage = ({ myActivityCount }: MyPageMyExercisePagePr
         </div>
       </div>
 
-      <div className="flex-1 overflow-y-auto px-4 pb-6">
+      <div className="flex-1 overflow-y-auto pb-6">
         {filteredList.length > 0 ? (
           <>
             <div className="flex justify-end mb-3">
@@ -71,7 +75,7 @@ export const MyPageMyExercisePage = ({ myActivityCount }: MyPageMyExercisePagePr
             ))}
           </>
         ) : (
-          <div className="flex flex-col h-full items-center justify-center">
+          <div className="flex flex-col items-center justify-center">
             <MyExercise_None />
           </div>
         )}

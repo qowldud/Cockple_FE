@@ -40,6 +40,7 @@ export const MyPage = ({
       silverCount={silverCount}
       bronzeCount={bronzeCount}
       disabled={disabled}
+      onClick={() => navigate("/myPage/mymedal")}
     />
   );
 };

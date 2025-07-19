@@ -6,11 +6,14 @@ import { PageHeader } from "../../components/common/system/header/PageHeader";
 import { useNavigate } from "react-router-dom"; 
 import { MyPage_Profile_Medal } from "../../components/common/contentcard/MyPage_Profile_Medal";
 interface MyPageProps {
-  name: string;
-  gender: "female" | "male";
-  level: string;
-  birth: string;
-  profileImage: File;
+  name?: string;
+  gender?: "female" | "male";
+  level?: string;
+  birth?: string;
+  profileImage?: File;
+
+  myGroupCount?: number;  
+  myExerciseCount?: number; 
 
   myMedalTotal?: number;
   goldCount?: number;
@@ -29,6 +32,8 @@ export const MyPageProfile = ({
   goldCount = 0,
   silverCount = 0,
   bronzeCount = 0,
+  myGroupCount = 0,      
+  myExerciseCount = 0,   
   disabled = false,
 }: MyPageProps) => {
 
@@ -48,7 +53,7 @@ export const MyPageProfile = ({
       </div>
 
       <div className="my-8 flex flex-col gap-4">
-        <MyPage_Text textLabel="내 모임" numberValue={0} onClick={() => navigate("/mypage/profile/group")} />
+        <MyPage_Text textLabel="내 모임" numberValue={myGroupCount} onClick={() => navigate("/mypage/profile/group")} />
         <MyPage_Profile_Medal
           myMedalTotal={myMedalTotal}
           goldCount={goldCount}

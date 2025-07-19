@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { PageHeader } from "../../components/common/system/header/PageHeader";
 import Grad_GR400_L from "../../components/common/Btn_Static/Text/Grad_GR400_L";
@@ -68,7 +68,7 @@ export const MyPageMyMedalPage = ({
   silverCount = 0,
   bronzeCount = 0,
   disabled = false,
-  medals = dummyMedals,  // 기본값으로 더미 데이터 넣음
+  medals = dummyMedals, 
   // medals = [],
 }: MyMedalProps) => {
     const navigate = useNavigate();
@@ -85,11 +85,13 @@ export const MyPageMyMedalPage = ({
   };
 
   return (
-    <div className="flex flex-col h-screen w-full max-w-[23.4375rem] mx-auto bg-white"> 
-      <div className="sticky top-0 z-20 mb-5 bg-white">
+    <div className="flex flex-col min-h-[100dvh] w-full max-w-[23.4375rem] mx-auto bg-white">
+      <div className="sticky top-0 z-20 bg-white">
         <PageHeader title="내 메달" onBackClick={onBackClick} />
-        
-        {filteredList.length > 0 && ( 
+      </div>
+
+      <div className="flex flex-col gap-1 flex-grow overflow-y-auto">
+        {filteredList.length > 0 && (
           <>
             <MyPage_Medal2
               myMedalTotal={myMedalTotal}
@@ -97,11 +99,10 @@ export const MyPageMyMedalPage = ({
               silverCount={silverCount}
               bronzeCount={bronzeCount}
               disabled={disabled}
-              className="px-4" 
             />
 
-            <div className="w-full mb-0"> 
-              <div className="flex gap-4 px-4 relative h-10"> 
+            <div className="w-full mb-4">
+              <div className="flex gap-4 px-4 relative h-10">
                 <div className="absolute bottom-0 left-0 right-0 h-[0.125rem] bg-[#F4F5F6]" />
                 {["전체", "미입상 기록"].map((tab) => (
                   <button
@@ -122,33 +123,34 @@ export const MyPageMyMedalPage = ({
             </div>
           </>
         )}
-      </div>
-    <div className="flex flex-col gap-4 flex-grow overflow-y-auto ">
+
         {filteredList.length > 0 ? (
           filteredList.map((item, idx) => (
-            <MyMedal
-              key={idx}
-              title={item.title}
-              date={item.date}
-              medalImageSrc={item.medalImageSrc}
-              // disabled={!item.isAwarded}
-            />
+            <React.Fragment key={idx}>
+              <MyMedal
+                title={item.title}
+                date={item.date}
+                medalImageSrc={item.medalImageSrc}
+              />
+              <div className="border-t-[#E4E7EA] border-t-[0.5px] mx-1" />
+            </React.Fragment>
           ))
         ) : (
-          // MyMedal_None도 화면 높이를 차지해야 하므로 flex-col h-full로 감싸줍니다.
           <div className="flex flex-col h-full items-center justify-center">
             <MyMedal_None />
           </div>
         )}
 
-        {filteredList.length > 0 && ( 
+        {filteredList.length > 0 && (
+        <div className="mt-8">
           <Grad_GR400_L
             label="대화 기록 추가하기"
-            className="mt-8" 
             onClick={() => navigate("/mypage/mymedal/add")}
           />
+        </div>
         )}
       </div>
     </div>
+
   );
 };

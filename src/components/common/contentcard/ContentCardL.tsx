@@ -66,7 +66,7 @@ export const ContentCardL = ({
 
   return (
     <div
-      className={`w-[21.4375rem]  rounded-[1rem] p-3 space-y-3 transition-colors duration-150
+      className={`w-[21.4375rem] rounded-[1rem] p-3 mb-3 space-y-3 transition-colors duration-150
         ${containerPressed ? "bg-[#F4F5F6]" : "bg-white"} shadow`}
     >
       {/* 상단 */}
