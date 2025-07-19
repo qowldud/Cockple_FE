@@ -4,6 +4,7 @@ import ProfileImg from "../../components/common/Etc/ProfileImg";
 import { useNavigate } from "react-router-dom";
 import { ProgressBar } from "../../components/common/ProgressBar";
 import Btn_Static from "../../components/common/Btn_Static/Btn_Static";
+import IntroText from "./components/IntroText";
 
 export const OnboardingProfilePage = () => {
   const [setProfile, setIsProfile] = useState(false);
@@ -20,15 +21,14 @@ export const OnboardingProfilePage = () => {
       <PageHeader title="회원 정보 입력" />
       <ProgressBar width={setProfile ? "96" : "72"} />
 
-      <section className=" flex flex-col gap-[6.25rem] text-left  pt-8 pb-34 mb-[3px] ">
+      <section className=" flex flex-col gap-[6.25rem] text-left pb-34 mb-[3px] ">
         <div>
-          <div className="flex gap-2 flex-col">
-            <p className="header-h4">프로필을 등록해주세요</p>
-            <div className="body-md-500">
-              <p>내 모습을 보여주면,</p>
-              <p>모임에서 더 빠르게 친해질 수 있어요!</p>
-            </div>
-          </div>
+          <IntroText
+            title="프로필을 등록해주세요."
+            text1="내 모습을 보여주면,"
+            text2="모임에서 더 빠르게 친해질 수 있어요!"
+            isBar={true}
+          />
         </div>
         <ProfileImg
           size="XL"

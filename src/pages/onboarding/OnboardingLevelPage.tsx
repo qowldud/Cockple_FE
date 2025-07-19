@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { ProgressBar } from "../../components/common/ProgressBar";
 import Btn_Static from "../../components/common/Btn_Static/Btn_Static";
 import DropCheckBox from "../../components/common/Drop_Box/DropCheckBox";
+import IntroText from "./components/IntroText";
 
 export const OnboardingLevelPage = () => {
   const level = ["초심", "C조", "D조"];
@@ -14,14 +15,13 @@ export const OnboardingLevelPage = () => {
       <PageHeader title="회원 정보 입력" />
       <ProgressBar width="24" />
 
-      <section className="flex gap-8 text-left flex-col pt-8 pb-67 ">
-        <div className="flex flex-col gap-2">
-          <p className="header-h4 text-left">전국 급수를 입력해주세요.</p>
-          <div className="body-md-500 ">
-            <p>급수를 입력하면,</p>
-            <p>내 실력에 맞는 모임을 추천받을 수 있어요!</p>
-          </div>
-        </div>
+      <section className="flex gap-8 text-left flex-col pb-67 ">
+        <IntroText
+          title="전국 급수를 입력해주세요."
+          text1="급수를 입력하면,"
+          text2="내 실력에 맞는 모임을 추천받을 수 있어요!"
+          isBar={true}
+        />
 
         <DropCheckBox
           title="전국 급수"
