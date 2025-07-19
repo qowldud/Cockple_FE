@@ -27,13 +27,13 @@ export const SortBottomSheet = ({
       onClick={onClose}
     >
       <div
-        className="fixed bottom-0 w-full max-w-[444px] px-4 pt-4 pb-8 bg-white rounded-t-3xl"
+        className="fixed bottom-0 flex flex-col gap-1 w-full max-w-[444px] px-4 pt-4 pb-8 bg-white rounded-t-3xl"
         onClick={e => e.stopPropagation()}
       >
         {options.map(option => (
           <div
             key={option}
-            className="flex gap-2 w-full justify-between p-3"
+            className="flex items-center w-full h-14 justify-between p-3 active:bg-gy-100"
             onClick={() => {
               onSelect(option);
               onClose();

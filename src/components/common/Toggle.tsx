@@ -3,12 +3,12 @@ import Clear_XS from "../common/Btn_Static/Icon_Btn/Clear_XS";
 import ArrowDown from "@/assets/icons/arrow_down.svg";
 import ArrowUp from "@/assets/icons/arrow_up.svg";
 
-interface AccordionProps {
+interface ToggleProps {
   title: string;
   children: React.ReactNode;
 }
 
-export const Accordion = ({ title, children }: AccordionProps) => {
+export const Toggle = ({ title, children }: ToggleProps) => {
   const [open, setOpen] = useState(false);
   const icon = open ? ArrowUp : ArrowDown;
   return (
