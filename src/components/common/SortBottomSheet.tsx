@@ -1,5 +1,6 @@
 import CheckIcon from "@/assets/icons/check.svg";
 import { useLockBodyScroll } from "../../hooks/useLockBodyScroll";
+import clsx from "clsx";
 
 interface SortBottomSheetProps {
   isOpen: boolean;
@@ -7,6 +8,7 @@ interface SortBottomSheetProps {
   selected: string;
   onSelect: (option: string) => void;
   options?: string[];
+  className?: string;
 }
 
 const defaultOptions = ["최신순", "참여 인원 많은 순"];
@@ -17,13 +19,17 @@ export const SortBottomSheet = ({
   selected,
   onSelect,
   options = defaultOptions,
+  className,
 }: SortBottomSheetProps) => {
   useLockBodyScroll(isOpen);
 
   if (!isOpen) return;
   return (
     <div
-      className="fixed bottom-0 bg-black/20 -mx-4 w-full max-w-[444px] h-full"
+      className={clsx(
+        "fixed bottom-0 bg-black/20 -mx-4 w-full max-w-[444px] h-full",
+        className,
+      )}
       onClick={onClose}
     >
       <div

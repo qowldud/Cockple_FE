@@ -42,7 +42,7 @@ export default function DropDownBtn({
       type={type ? type : "button"}
     >
       {children}
-      <img src={icon} alt="지역 선택 메뉴열기" className=" size-4" />
+      <img src={icon} alt="지역 선택 메뉴열기" className="size-4.5" />
     </button>
   );
 }
