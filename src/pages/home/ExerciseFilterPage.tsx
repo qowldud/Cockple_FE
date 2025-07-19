@@ -1,34 +1,34 @@
 import { useState } from "react";
 import { PageHeader } from "../../components/common/system/header/PageHeader";
-import { Accordion } from "../../components/home/Accordion";
-import { MultiSelectButtonGroup } from "../../components/home/MultiSelectButtonGroup";
 import {
   isFilterDirty,
   useExerciseFilterStore,
 } from "../../store/useExerciseFilterStore";
 import { useNavigate } from "react-router-dom";
 import { CautionModal } from "./CautionModal";
-import { CustomSelect } from "./CustomSelect";
+import { Toggle } from "../../components/common/Toggle";
+import { DropBox } from "../../components/common/DropBox";
+import { MultiSelectButtonGroup } from "../../components/common/MultiSelectButtonGroup";
 
 const cities = [
-  { label: "서울특별시", value: "서울특별시", enabled: true },
-  { label: "부산광역시", value: "부산광역시", enabled: false },
-  { label: "대구광역시", value: "대구광역시", enabled: false },
-  { label: "인천광역시", value: "인천광역시", enabled: false },
-  { label: "광주광역시", value: "광주광역시", enabled: false },
-  { label: "대전광역시", value: "대전광역시", enabled: false },
-  { label: "울산광역시", value: "울산광역시", enabled: false },
-  { label: "세종특별자치시", value: "세종특별자치시", enabled: false },
-  { label: "경기도", value: "경기도", enabled: false },
-  { label: "강원특별자치도", value: "강원특별자치도", enabled: false },
-  { label: "충청북도", value: "충청북도", enabled: false },
-  { label: "충청남도", value: "충청남도", enabled: false },
-  { label: "전라북도", value: "전라북도", enabled: false },
-  { label: "전라남도", value: "전라남도", enabled: false },
-  { label: "경상북도", value: "경상북도", enabled: false },
-  { label: "경상남도", value: "경상남도", enabled: false },
-  { label: "제주특별자치도", value: "제주특별자치도", enabled: false },
-  { label: "전국구", value: "전국구", enabled: false },
+  { value: "서울특별시", enabled: true },
+  { value: "부산광역시", enabled: false },
+  { value: "대구광역시", enabled: false },
+  { value: "인천광역시", enabled: false },
+  { value: "광주광역시", enabled: false },
+  { value: "대전광역시", enabled: false },
+  { value: "울산광역시", enabled: false },
+  { value: "세종특별자치시", enabled: false },
+  { value: "경기도", enabled: false },
+  { value: "강원특별자치도", enabled: false },
+  { value: "충청북도", enabled: false },
+  { value: "충청남도", enabled: false },
+  { value: "전라북도", enabled: false },
+  { value: "전라남도", enabled: false },
+  { value: "경상북도", enabled: false },
+  { value: "경상남도", enabled: false },
+  { value: "제주특별자치도", enabled: false },
+  { value: "전국구", enabled: false },
 ];
 
 const seoulDistricts = [
@@ -81,9 +81,9 @@ export const ExerciseFilterPage = () => {
         <PageHeader title="필터" onBackClick={handleBack} />
 
         <div className="flex flex-col gap-vertical-section-s">
-          <Accordion title="지역">
+          <Toggle title="지역">
             <div className="flex justify-between">
-              <CustomSelect
+              <DropBox
                 options={cities}
                 value={selectedCity}
                 placeholder="시/도 선택"
@@ -94,11 +94,9 @@ export const ExerciseFilterPage = () => {
                 }}
               />
 
-              <CustomSelect
+              <DropBox
                 options={seoulDistricts.map(d => ({
-                  label: d,
                   value: d,
-                  enabled: true,
                 }))}
                 value={selectedDistrict}
                 onChange={gu => {
@@ -109,8 +107,8 @@ export const ExerciseFilterPage = () => {
                 placeholder="전체"
               />
             </div>
-          </Accordion>
-          <Accordion title="전국 급수">
+          </Toggle>
+          <Toggle title="전국 급수">
             <MultiSelectButtonGroup
               options={[
                 "전체",
@@ -126,23 +124,23 @@ export const ExerciseFilterPage = () => {
               selected={level}
               onChange={newVal => setFilter("level", newVal)}
             />
-          </Accordion>
-          <Accordion title="운동 스타일">
+          </Toggle>
+          <Toggle title="운동 스타일">
             <MultiSelectButtonGroup
               options={["전체", "여복", "남복", "혼복"]}
               selected={style}
               singleSelect={true}
               onChange={newVal => setFilter("style", newVal)}
             />
-          </Accordion>
-          <Accordion title="활동 시간">
+          </Toggle>
+          <Toggle title="활동 시간">
             <MultiSelectButtonGroup
               options={["상시", "오전", "오후"]}
               selected={time}
               singleSelect={true}
               onChange={newVal => setFilter("time", newVal)}
             />
-          </Accordion>
+          </Toggle>
         </div>
       </div>
 
