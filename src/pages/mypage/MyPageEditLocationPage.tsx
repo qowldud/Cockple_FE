@@ -123,7 +123,7 @@ export const MyPageEditLocationPage = ({ initialLocationValue = "" }: MyPageEdit
               </React.Fragment>
             ))
           ) : (
-            <p className=" body-rg-500 text-center">검색 결과가 없습니다.</p>
+            <p className=" body-rg-500 text-[#E4E7EA] text-center">검색 결과가 없습니다.</p>
           )}
         </div>
 

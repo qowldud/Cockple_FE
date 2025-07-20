@@ -7,8 +7,9 @@ import { MyGroupNone } from "../../components/MyPage/MyGroupNone";
 
 import CheckCircled from "../../assets/icons/check_circled.svg?react";
 import CheckCircledFilled from "../../assets/icons/check_circled_filled.svg?react";
+import  { useLocation } from "react-router-dom";
 
-interface GroupMProps {
+export  interface GroupMProps {
   id: number;
   groupName: string;
   groupImage: string;
@@ -26,10 +27,19 @@ interface MyPageMyGroupPageProps {
   groups: GroupMProps[];
 }
 
-export const MyPageMyGroupPage = ({ groups }: MyPageMyGroupPageProps) => {
+// export const MyPageMyGroupPage = ({ groups }: MyPageMyGroupPageProps) => {
+//   const [isChecked, setIsChecked] = useState(false);
+//   const [sortOption, setSortOption] = useState("최신순");
+//   const [favoriteGroups, setFavoriteGroups] = useState<GroupMProps[]>(groups || []);
+  // const location = useLocation();
+  // const groups: GroupMProps[] = location.state?.groups || [];
+export const MyPageMyGroupPage = () => {
+  const location = useLocation();
+  const groups: GroupMProps[] = location.state?.groups || [];
+  const [favoriteGroups, setFavoriteGroups] = useState<GroupMProps[]>(groups);
   const [isChecked, setIsChecked] = useState(false);
   const [sortOption, setSortOption] = useState("최신순");
-  const [favoriteGroups, setFavoriteGroups] = useState<GroupMProps[]>(groups || []);
+
 
   const handleToggleFavorite = (id: number) => {
     setFavoriteGroups(prev =>
@@ -55,10 +65,6 @@ export const MyPageMyGroupPage = ({ groups }: MyPageMyGroupPageProps) => {
     ? sortGroups(favoriteGroups.filter(group => group.isMine))  
     : sortGroups(favoriteGroups);                              
 
-  // const filteredGroups = isChecked
-  //   ? favoriteGroups.filter(group => group.isMine)
-  //   : favoriteGroups;
-
   const hasGroups = filteredGroups.length > 0;
 
   return (
@@ -67,7 +73,7 @@ export const MyPageMyGroupPage = ({ groups }: MyPageMyGroupPageProps) => {
       <div className="sticky top-0 z-20 bg-white">
         <PageHeader title="내 모임" />
       </div>
-      <div className="flex-1 flex flex-col p-4">
+      <div className="flex-1 flex flex-col">
         {hasGroups && (
           <div className="mb-8">
             <div className="flex justify-between items-start">
@@ -93,7 +99,7 @@ export const MyPageMyGroupPage = ({ groups }: MyPageMyGroupPageProps) => {
             filteredGroups.map(group => (
               <div key={group.id}>
                 <Group_M {...group} onToggleFavorite={handleToggleFavorite} />
-                <div className="border border-[#E4E7EA] mx-1 mt-2" />
+              <div className="border-t-[#E4E7EA] border-t-[0.0625rem] mx-1" />
               </div>
             ))
           ) : (

@@ -6,9 +6,7 @@ export const MyGroupNone = () => {
   const navigate = useNavigate();
 
   return (
-  <div className="flex items-center justify-center w-full grow px-4 py-8">
-
-     {/* <div className="flex items-center justify-center w-full h-[calc(100vh-8rem)] px-4"> */}
+    <div className="flex items-center justify-center w-full px-4 py-8">
       <div className="flex flex-col items-center gap-8">
         {/* 텍스트 */}
         <div className="flex flex-col gap-[0.5rem] text-center">

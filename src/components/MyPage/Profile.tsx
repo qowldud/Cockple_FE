@@ -17,9 +17,9 @@ export const Profile = ({
   birth,
   profileImage,
 }: ProfileProps) => {
+
   //이미지 File로 받기 위한 처리부분
   const [imageUrl, setImageUrl] = useState<string>("");
-
   useEffect(() => {
     if (profileImage instanceof File) {
       const objectUrl = URL.createObjectURL(profileImage);
@@ -29,8 +29,7 @@ export const Profile = ({
         URL.revokeObjectURL(objectUrl);
       };
     } else {
-      // fallback image
-      setImageUrl("/default-profile.png");
+      setImageUrl("/default-profile.png"); 
     }
   }, [profileImage]);
 
@@ -38,7 +37,7 @@ export const Profile = ({
   return (
     <div className="w-[21.44rem] h-[4.75rem] bg-white rounded-[1rem] px-4 py-2 flex items-center gap-[0.8125rem]">
       <img
-        src={imageUrl}
+        src={imageUrl || "/default-profile.png"}
         alt="프로필 이미지"
         className="w-[4.75rem] h-[4.75rem] rounded-full object-cover"
       />

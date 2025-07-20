@@ -22,7 +22,8 @@ export const Select = ({ selected, onSelect }: SelectProps) => {
     <div className="relative">
       <button
         onClick={() => setIsOpen(prev => !prev)}
-        className="w-[10.3125rem] py-2 flex items-center justify-between border border-[#E4E7EA] rounded-xl px-2"
+        className="flex items-center w-full pl-3 pr-2.5 py-2.5 gap-2 border-1 border-gy-200 bg-white body-md-500 border-soft disabled:text-gy-400"
+        // className="w-[10.3125rem] py-2 flex items-center justify-between border border-[#E4E7EA] rounded-xl px-2"
       >
         <p className="body-rg-500">{selected}</p>
         {isOpen ? <ArrowUP className="w-4 h-4 shrink-0" /> : <ArrowDown className="w-4 h-4 shrink-0" />}

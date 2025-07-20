@@ -59,7 +59,7 @@ export const MyPageProfileMedal = ({
       </div>
 
       {isEmpty ? (
-        <div className="h-[calc(100vh-56px)] flex items-center justify-center">
+        <div className="flex items-center justify-center">
         <ProfileMyMedal_None />
         </div>
       ) : (

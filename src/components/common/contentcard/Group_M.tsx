@@ -65,7 +65,7 @@ export const Group_M = ({
 
       {/* 정보 영역 */}
       <div className="w-[14.1875rem] h-[5.5rem] flex flex-col gap-[0.5rem] items-start text-black overflow-hidden">
-        <p className="body-rg-500 truncate w-full" title={groupName}>
+        <p className="text-left body-rg-500 truncate w-full" title={groupName}>
           {groupName}
         </p>
 
@@ -73,7 +73,7 @@ export const Group_M = ({
           {/* 위치 */}
           <div className="flex items-center gap-[0.25rem] w-full overflow-hidden">
             <Vector className="w-[0.875rem] h-[0.875rem] shrink-0" />
-            <span className="truncate w-full" title={location}>
+            <span className="text-left truncate w-full" title={location}>
               {location}
             </span>
           </div>
@@ -82,13 +82,13 @@ export const Group_M = ({
           <div className="flex gap-[0.625rem] w-full">
             <div className="flex items-center gap-[0.25rem] max-w-[6rem] overflow-hidden">
               <Female className="w-[0.875rem] h-[0.875rem] shrink-0" />
-              <span className="truncate" title={femaleLevel}>
+              <span className="text-left truncate" title={femaleLevel}>
                 {femaleLevel}
               </span>
             </div>
             <div className="flex items-center gap-[0.25rem] max-w-[6rem] overflow-hidden">
               <Male className="w-[0.875rem] h-[0.875rem] shrink-0" />
-              <span className="truncate" title={maleLevel}>
+              <span className="text-left  truncate" title={maleLevel}>
                 {maleLevel}
               </span>
             </div>
@@ -96,7 +96,7 @@ export const Group_M = ({
 
           {/* 다음 일정 */}
           <p
-            className="truncate w-full"
+            className="truncate w-full text-left"
             title={`${nextActivitDate} 운동 • 운동 ${upcomingCount}개 잔여 예정`}
           >
             {nextActivitDate} 운동 • 운동 {upcomingCount}개 잔여 예정

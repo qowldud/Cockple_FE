@@ -2,11 +2,8 @@ import { useState, useEffect } from "react";
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination } from 'swiper/modules';  
 import { useNavigate } from "react-router-dom";
-import ReactDOM from "react-dom/client";
-import { BrowserRouter } from "react-router-dom";
 import 'swiper/css';
 import 'swiper/css/pagination';
-import { useParams } from "react-router-dom";
 import { PageHeader } from "../../components/common/system/header/PageHeader";
 import Grad_Mix_L from "../../components/common/Btn_Static/Text/Grad_Mix_L";
 import { Modal_Delete } from "../../components/MyPage/Modal_ Delete";
@@ -22,12 +19,19 @@ interface MyPageMedalDetailPageProps {
 };
 
 export const MyPageMedalDetailPage = ({
-  photo,
-  title,
-  date,
-  participationType,
-  record,
-  videoUrl,
+  // photo,
+  // title,
+  // date,
+  // participationType,
+  // record,
+  // videoUrl,
+
+  photo=[Kitty,Kitty,Kitty],
+  title="콕",
+  date="2025.05.23",
+  participationType="D조",
+  record="ㅇㅇㅇㅇ",
+  videoUrl=["http://dd"],
 }: MyPageMedalDetailPageProps) => {
   const navigate = useNavigate();
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -50,35 +54,36 @@ export const MyPageMedalDetailPage = ({
       </div>
 
       {/* 스크롤 영역 */}
-      <div 
-        className="flex-1 overflow-y-auto px-5"
-        style={{ paddingTop: HEADER_HEIGHT }} 
+      <div
+        className="relative mt-2 overflow-visible w-full"
+        style={{
+          width: "100vw",
+          position: "relative",
+          left: "50%",
+          marginLeft: "-50vw",
+          padding: 0  // 패딩 제거
+        }}
       >
-        <div
-          className="relative mt-2 overflow-visible w-full"
-          style={{
-            width: "100vw",
-            position: "relative",
-            left: "50%",
-            marginLeft: "-50vw",
-          }}
+        <Swiper
+          modules={[Pagination]}
+          pagination={{ clickable: true }}
+          slidesPerView={1}
+          spaceBetween={0}  // 간격 제거
+          style={{ width: '100vw' }}
         >
-          <Swiper
-            modules={[Pagination]}
-            pagination={{ clickable: true }}
-            slidesPerView={1}
-            spaceBetween={10}
-          >
-            {images.map((img, idx) => (
-              <SwiperSlide key={idx}>
-                <img
-                  src={img}
-                  alt={`메달 이미지 ${idx + 1}`}
-                  className="w-full h-auto object-cover"
-                />
-              </SwiperSlide>
-            ))}
-          </Swiper>
+          {images.map((img, idx) => (
+            <SwiperSlide key={idx} style={{ padding: 0 }}>  {/* 슬라이드 패딩 제거 */}
+              <img
+                src={img}
+                alt={`메달 이미지 ${idx + 1}`}
+                style={{ 
+                  width: '100vw', 
+                  objectFit: 'cover' 
+                }}
+              />
+            </SwiperSlide>
+          ))}
+        </Swiper>
 
           {/* 오버레이 영역 */}
           <div className="absolute -bottom-8 left-4 right-4 flex items-start justify-between gap-4 z-10">
@@ -120,16 +125,16 @@ export const MyPageMedalDetailPage = ({
           <div className="flex flex-col gap-1">
             {urls.length > 0 ? (
               urls.map((url, idx) => (
-                <a
-                  key={idx}
-                  href={url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full border rounded-xl p-2 pr-14 body-md-500 border-[#E4E7EA] focus:outline-none text-blue-600 truncate"
-                  title={url} // 전체 주소는 툴팁으로 노출
-                >
-                  {url.length > 40 ? `${url.slice(0, 40)}...` : url}
-                </a>
+             <a
+              key={idx}
+              href={url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full border rounded-xl p-2 pr-14 body-md-500 border-[#E4E7EA] focus:outline-none text-black truncate text-left"
+              title={url}
+            >
+              {url.length > 40 ? `${url.slice(0, 40)}...` : url}
+            </a>
               ))
             ) : (
               <p className="body-md-500 text-[#E4E7EA]">등록된 영상 링크가 없습니다.</p>
@@ -143,7 +148,14 @@ export const MyPageMedalDetailPage = ({
           <Grad_Mix_L
             type="delete"
             label="수정하기"
-            onClick={() => navigate(`/mypage/mymedal/add`)}
+            onClick={() => 
+            navigate("/mypage/mymedal/add", {
+              state: {
+                mode: "edit",
+                medalData: { title, date, participationType, record, photo, videoUrl }
+              }
+            })
+          }
             onImageClick={() => setIsDeleteModalOpen(true)}
           />
         </div>
@@ -161,7 +173,9 @@ export const MyPageMedalDetailPage = ({
           </div>
         )}
       </div>
-    </div>
+  
   );
 };
+
+
 
