@@ -88,7 +88,7 @@ export const GroupRecommendFilterPage = () => {
     }
   };
   return (
-    <div className="h-screen -mb-8 pb-8 flex flex-col justify-between">
+    <div className="h-screen -mb-8 flex flex-col justify-between">
       <div className="flex flex-col gap-5">
         <PageHeader title="필터" onBackClick={handleBack} />
 
