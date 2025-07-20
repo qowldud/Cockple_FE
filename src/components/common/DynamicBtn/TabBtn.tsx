@@ -52,7 +52,7 @@ export default function TabBtn({
       type={type ? type : "button"}
     >
       {children}
-      <span className={`${span} absolute bottom-0 w-full left-0`}></span>
+      <span className={`${span} absolute bottom-0 w-full left-0 z-10`}></span>
     </button>
   );
 }

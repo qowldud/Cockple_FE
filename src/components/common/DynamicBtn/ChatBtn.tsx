@@ -47,8 +47,8 @@ export default function ChatBtn({
         <img
           src={imgSrc} //props로 src받기
           //src="/src/assets/images/image.png" //임시로 하드코딩
-          alt=""
-          className=" size-6  aspect-square rounded-lg"
+          alt="groupProfile"
+          className="size-6 aspect-square rounded-lg"
         />
         {children}
       </div>

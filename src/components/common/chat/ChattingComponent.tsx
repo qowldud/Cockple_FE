@@ -1,7 +1,7 @@
 //채팅창 말풍선 컴포넌트
 
 import React, { useState, useEffect } from "react";
-import type { ChattingComponentProps } from "../../types/chat";
+import type { ChattingComponentProps } from "../../../types/chat";
 
 interface Props extends ChattingComponentProps {
   onImageClick?: (src: string) => void;
@@ -9,6 +9,7 @@ interface Props extends ChattingComponentProps {
 
 const ChattingComponent = ({
   nickname,
+  profile,
   chatting,
   time,
   isMe,
@@ -59,7 +60,7 @@ const ChattingComponent = ({
           {/* 텍스트 메시지 말풍선 */}
           {chatting && (
             <>
-              <div className="flex flex-col justify-center items-end body-sg-500">
+              <div className="flex flex-col justify-center items-end body-sm-500">
                 {unreadCount !== undefined && unreadCount > 0 && (
                   <span className="text-gr-500">{unreadCount}</span>
                 )}
@@ -68,7 +69,7 @@ const ChattingComponent = ({
               <div className="mr-3">
                 <div
                   id="chatting"
-                  className="flex max-w-[15rem] px-3 py-2 text-left items-center gap-[0.625rem] bg-white border-round"
+                  className="flex max-w-[15rem] px-3 py-2 text-left items-start gap-[0.625rem] bg-white border-round"
                 >
                   <span className="body-rg-500 text-black">
                     {formatMessage(chatting)}
@@ -81,7 +82,7 @@ const ChattingComponent = ({
           {/* 이미지 메시지 */}
           {imageUrls.length > 0 && (
             <>
-              <div className="flex flex-col justify-center items-end body-sg-500">
+              <div className="flex flex-col justify-center items-end body-sm-500">
                 {unreadCount !== undefined && unreadCount > 0 && (
                   <span className="text-gr-500">{unreadCount}</span>
                 )}
@@ -95,6 +96,13 @@ const ChattingComponent = ({
         </div>
       ) : (
         <div id="you" className="flex items-start gap-3 self-stretch">
+          <div className="py-2 items-center justify-center gap-[0.625rem]">
+            <img
+              src={profile}
+              alt="profile"
+              className="w-10 h-10 aspect-square rounded-[2.75rem]"
+            />
+          </div>
           <div className="flex flex-col items-start gap-1">
             <p id="nickname" className="body-rg-500">
               {chatNick}
@@ -112,7 +120,7 @@ const ChattingComponent = ({
                       {formatMessage(chatting)}
                     </span>
                   </div>
-                  <div className="flex flex-col justify-center items-start body-sg-500">
+                  <div className="flex flex-col justify-center items-start body-sm-500">
                     {unreadCount !== undefined && unreadCount > 0 && (
                       <span className="text-gr-500">{unreadCount}</span>
                     )}

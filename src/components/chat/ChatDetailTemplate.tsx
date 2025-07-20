@@ -2,8 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import ChattingComponent from "./ChattingComponent";
-import Clear_M from "../common/Btn_Static/Icon_Btn/Clear_M";
+import ChattingComponent from "../common/chat/ChattingComponent";
 import FileSendModal from "./FileSendModal";
 import ImagePreviewModal from "./ImagePreviewModal";
 import ChatBtn from "../common/DynamicBtn/ChatBtn";
@@ -11,10 +10,8 @@ import ChatBtn from "../common/DynamicBtn/ChatBtn";
 import type { Chatting } from "../../types/chat";
 
 import ProfileImg from "../../assets/images/Profile_Image.png";
-import ArrowLeft from "../../assets/icons/arrow_left.svg";
-import Camera from "../../assets/icons/camera.svg";
-import Imogi from "../../assets/icons/emoji_smile.svg";
-import Chat from "../../assets/icons/chat.svg";
+import BottomChatInput from "../common/chat/BottomChatInput";
+import { PageHeader } from "../common/system/header/PageHeader";
 
 interface ChatDetailTemplateProps {
   chatId: string;
@@ -125,17 +122,8 @@ export const ChatDetailTemplate = ({
       }}
     >
       {/* 헤더 */}
-      <div className="h-[3.5rem] flex items-center px-4 gap-3 shrink-0 bg-white">
-        <Clear_M
-          iconMap={{
-            disabled: ArrowLeft,
-            default: ArrowLeft,
-            pressing: ArrowLeft,
-            clicked: ArrowLeft,
-          }}
-          onClick={onBack}
-        />
-        <div className="header-h4">{chatName}</div>
+      <div className="px-2">
+        <PageHeader title={chatName} onBackClick={onBack} />
       </div>
 
       {/* 메시지 영역 */}
@@ -171,7 +159,7 @@ export const ChatDetailTemplate = ({
       </div>
 
       {/* 입력창 */}
-      <div className="flex px-4 pt-2 pb-8 items-center justify-center gap-2 bg-white shadow-ds50">
+      {/* <div className="flex px-4 pt-2 pb-8 items-center justify-center gap-2 bg-white shadow-ds50">
         <Clear_M
           iconMap={{
             disabled: Camera,
@@ -222,7 +210,21 @@ export const ChatDetailTemplate = ({
           }}
           onClick={handleSendMessage}
         />
-      </div>
+      </div> */}
+      <BottomChatInput
+        input={input}
+        isComposing={isComposing}
+        onInputChange={setInput}
+        onKeyDown={handleKeyDown}
+        onCompositionStart={() => setIsComposing(true)}
+        onCompositionEnd={e => {
+          setIsComposing(false);
+          setInput(e.currentTarget.value);
+        }}
+        onSendMessage={handleSendMessage}
+        onImageUpload={handleImageUpload}
+        fileInputRef={fileInputRef}
+      />
 
       {pendingImage && (
         <FileSendModal
