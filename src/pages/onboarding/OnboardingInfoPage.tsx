@@ -72,11 +72,13 @@ export const OnboardingInfoPage = () => {
                 children="남성"
                 isSelected={selected === "boy"}
                 onClick={() => isSelected(selected === "boy" ? null : "boy")}
+                className="w-19"
               />
               <TextBox
                 children="여성"
                 isSelected={selected === "girl"}
                 onClick={() => isSelected(selected === "girl" ? null : "girl")}
+                className="w-19"
               />
             </div>
           </div>

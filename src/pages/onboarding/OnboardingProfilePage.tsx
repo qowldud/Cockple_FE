@@ -17,7 +17,7 @@ export const OnboardingProfilePage = () => {
     }
   };
   return (
-    <div className="w-full min-h-screen flex flex-col">
+    <div className="w-full flex flex-col -mb-8">
       <PageHeader title="회원 정보 입력" />
       <ProgressBar width={setProfile ? "96" : "72"} />
 
