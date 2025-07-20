@@ -16,6 +16,7 @@ export const MyPage_Medal2 = ({
   disabled = false,
 }: MyPageProps) => {
 
+  
   return (
     <div className="flex flex-col gap-[1rem]"> 
 

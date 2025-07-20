@@ -21,6 +21,7 @@ export const MyPage = ({
   
   // 메달이 없으면 MyPage_Text
   const navigate = useNavigate(); 
+  // console.log(goldCount);
   if (myMedalTotal === 0) {
     return (
       <MyPage_Text

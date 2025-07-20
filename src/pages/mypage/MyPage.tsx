@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import type { GroupMProps } from "./MyPageMyGroupPage"; 
 import type { ContentCardLProps } from "../../components/common/contentcard/ContentCardL";
+import type { MedalType } from "./MyPageMyMedalPage";
 
 interface MyPageProps {
   name?: string;
@@ -26,6 +27,14 @@ interface MyPageProps {
   disabled?: boolean;
 };
 
+interface MedalItem {
+  id: number;
+  title: string;
+  date: string;
+  medalImageSrc: string;
+  isAwarded: boolean;
+  type: "gold" | "silver" | "bronze" | "none";
+}
 
 export const MyPage = ({
   // name,
@@ -119,11 +128,50 @@ const dummyEx: ContentCardLProps[] = [
     like: true,
   },
 ];
+//메달 더미
+ const dummyMedals: MedalItem[] = [
+    {
+      id: 1,
+      title: "2024년 동네 마라톤 대회",
+      date: "2024.05.10",
+      medalImageSrc: "/images/medal_gold.png",
+      isAwarded: true,
+      type: "gold",
+    },
+    {
+      id: 2,
+      title: "주말 배드민턴 친선전",
+      date: "2024.06.15",
+      medalImageSrc: "/images/medal_silver.png",
+      isAwarded: false,
+      type: "silver",
+    },
+    {
+      id: 3,
+      title: "새벽 조깅 챌린지",
+      date: "2024.07.08",
+      medalImageSrc: "/images/medal_none.png",
+      isAwarded: false,
+      type: "none",
+    },
+    {
+      id: 4,
+      title: "수영장 자유형 기록 측정",
+      date: "2024.07.12",
+      medalImageSrc: "/images/medal_none.png",
+      isAwarded: false,
+      type: "none",
+    },
+  ];
 
 const [groups, setGroups] = useState<GroupMProps[]>(dummyGroups);
 const [exercises, setExercises] = useState<ContentCardLProps[]>(dummyEx);
+const totalMedals = dummyMedals.filter((m) => m.isAwarded).length;
+  const gold = dummyMedals.filter((m) => m.type === "gold").length;
+  const silver = dummyMedals.filter((m) => m.type === "silver").length;
+  const bronze = dummyMedals.filter((m) => m.type === "bronze").length;
 
-
+  console.log(goldCount);
   return (
     <div className="flex flex-col pt-15 overflow-auto">
       <div className="flex flex-col gap-[1.25rem]">
@@ -161,14 +209,44 @@ const [exercises, setExercises] = useState<ContentCardLProps[]>(dummyEx);
 
         {/* <MyPage_Text textLabel="내 모임" numberValue={myGroupCount} onClick={() => navigate("/myPage/mygroup")} /> */}
         {/* <MyPage_Text textLabel="내 운동" numberValue={myExerciseCount} onClick={() => navigate("/myPage/myexercise")}/> */}
-        <MyPageContentcard
+        {/* <MyPageContentcard
           myMedalTotal={myMedalTotal}
           goldCount={goldCount}
           silverCount={silverCount}
           bronzeCount={bronzeCount}
           disabled={disabled}
           onClick={() => navigate("/myPage/mymedal")}  
-        />
+        /> */}
+<MyPageContentcard
+  myMedalTotal={totalMedals}
+  goldCount={gold}
+  silverCount={silver}
+  bronzeCount={bronze}
+  disabled={disabled}
+  onClick={() => {
+  console.log("navigate with state:", {
+    medals: dummyMedals,
+    goldCount: gold,
+    silverCount: silver,
+    bronzeCount: bronze,
+    myMedalTotal: totalMedals,
+    disabled,
+  });
+  navigate("/myPage/mymedal", {
+    state: {
+      medals: dummyMedals,
+      goldCount: gold,
+      silverCount: silver,
+      bronzeCount: bronze,
+      myMedalTotal: totalMedals,
+      disabled,
+    },
+  });
+}}
+/>
+
+
+
       </div>
 
       <div className="gap-[0.25rem]">
