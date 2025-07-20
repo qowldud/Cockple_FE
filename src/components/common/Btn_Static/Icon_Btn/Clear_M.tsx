@@ -16,24 +16,24 @@ const Clear_M = ({
   onClick,
   iconMap,
 }: ClearMProps) => {
-  const [status, setStatus] = useState<BtnStatus>(initialStatus);
-  const currentIcon = iconMap?.[status];
+  // const [status, setStatus] = useState<BtnStatus>(initialStatus);
+  const currentIcon = iconMap?.[initialStatus];
 
-  const isDisabled = status === "disabled";
+  const isDisabled = initialStatus === "disabled";
 
-  const handleMouseDown = () => {
-    if (!isDisabled) setStatus("pressing");
-  };
+  // const handleMouseDown = () => {
+  //   if (!isDisabled) setStatus("pressing");
+  // };
 
-  const handleMouseUp = () => {
-    if (!isDisabled && status === "pressing") {
-      setStatus("clicked");
-      onClick?.();
-    }
-  };
+  // const handleMouseUp = () => {
+  //   if (!isDisabled && status === "pressing") {
+  //     setStatus("clicked");
+  //     onClick?.();
+  //   }
+  // };
 
   const getBg = () => {
-    switch (status) {
+    switch (initialStatus) {
       case "pressing":
         return "bg-gy-100";
       case "disabled":
@@ -44,7 +44,7 @@ const Clear_M = ({
   };
 
   const getIcon = () => {
-    switch (status) {
+    switch (initialStatus) {
       case "disabled":
         return ArrowLeftGY400;
       default:
@@ -59,8 +59,11 @@ const Clear_M = ({
         ${getBg()} 
         ${isDisabled ? "cursor-not-allowed" : "cursor-pointer"}`}
       disabled={status === "disabled"}
-      onMouseDown={handleMouseDown}
-      onMouseUp={handleMouseUp}
+      // onMouseDown={handleMouseDown}
+      // onMouseUp={handleMouseUp}
+      onClick={() => {
+        if (!isDisabled) onClick?.();
+      }}
     >
       <img
         src={`${currentIcon ? currentIcon : getIcon()}`}

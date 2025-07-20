@@ -64,7 +64,7 @@ export const ChatDetailTemplate = ({
           minute: "2-digit",
         }),
         isMe: true,
-        unreadCount: 0,
+        unreadCount: 1,
       };
 
       setChattings(prev => [...prev, newChat]);
@@ -79,15 +79,41 @@ export const ChatDetailTemplate = ({
     }
   };
 
+  // const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   const file = e.target.files?.[0];
+  //   if (!file) return;
+
+  //   const fileUrl = URL.createObjectURL(file);
+  //   setPendingImage(fileUrl);
+  //   setPendingFileName(file.name);
+  //   setPendingFileSize((file.size / 1024).toFixed(0) + "KB");
+
+  //   e.target.value = "";
+  // };
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
     const fileUrl = URL.createObjectURL(file);
-    setPendingImage(fileUrl);
-    setPendingFileName(file.name);
-    setPendingFileSize((file.size / 1024).toFixed(0) + "KB");
 
+    // 채팅에 바로 전송
+    const newChat: Chatting = {
+      id: chattings.length + 1,
+      nickname: "나",
+      profile: ProfileImg,
+      chatting: "",
+      time: new Date().toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+      }),
+      isMe: true,
+      unreadCount: 1,
+      imageUrls: [fileUrl],
+    };
+
+    setChattings(prev => [...prev, newChat]);
+
+    // 초기화
     e.target.value = "";
   };
 
@@ -104,7 +130,7 @@ export const ChatDetailTemplate = ({
         minute: "2-digit",
       }),
       isMe: true,
-      unreadCount: 0,
+      unreadCount: 1,
       imageUrls: [pendingImage],
     };
 
@@ -114,7 +140,7 @@ export const ChatDetailTemplate = ({
 
   return (
     <div
-      className="relative flex flex-col h-screen"
+      className="relative flex flex-col min-h-[100dvh] -mb-8"
       style={{
         width: "calc(100% + 2rem)",
         marginLeft: "-1rem",
@@ -159,58 +185,6 @@ export const ChatDetailTemplate = ({
       </div>
 
       {/* 입력창 */}
-      {/* <div className="flex px-4 pt-2 pb-8 items-center justify-center gap-2 bg-white shadow-ds50">
-        <Clear_M
-          iconMap={{
-            disabled: Camera,
-            default: Camera,
-            pressing: Camera,
-            clicked: Camera,
-          }}
-          onClick={() => fileInputRef.current?.click()}
-        />
-        <input
-          type="file"
-          accept="image/*"
-          hidden
-          ref={fileInputRef}
-          onChange={handleImageUpload}
-        />
-
-        <div className="flex h-14 py-[0.625rem] px-3 flex-end items-center gap-2">
-          <input
-            type="text"
-            value={input}
-            onChange={e => setInput(e.target.value)}
-            onKeyDown={handleKeyDown}
-            onCompositionStart={() => setIsComposing(true)}
-            onCompositionEnd={e => {
-              setIsComposing(false);
-              setInput(e.currentTarget.value);
-            }}
-            className="outline-0"
-          />
-          <Clear_M
-            iconMap={{
-              disabled: Imogi,
-              default: Imogi,
-              pressing: Imogi,
-              clicked: Imogi,
-            }}
-            onClick={() => {}}
-          />
-        </div>
-
-        <Clear_M
-          iconMap={{
-            disabled: Chat,
-            default: Chat,
-            pressing: Chat,
-            clicked: Chat,
-          }}
-          onClick={handleSendMessage}
-        />
-      </div> */}
       <BottomChatInput
         input={input}
         isComposing={isComposing}
@@ -226,7 +200,7 @@ export const ChatDetailTemplate = ({
         fileInputRef={fileInputRef}
       />
 
-      {pendingImage && (
+      {/* {pendingImage && (
         <FileSendModal
           imageUrl={pendingImage}
           fileName={pendingFileName}
@@ -234,7 +208,7 @@ export const ChatDetailTemplate = ({
           onCancel={() => setPendingImage(null)}
           onSend={handleSendPendingImage}
         />
-      )}
+      )} */}
     </div>
   );
 };
