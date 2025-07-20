@@ -3,6 +3,7 @@ import Clear_M from "../Btn_Static/Icon_Btn/Clear_M";
 import Camera from "../../../assets/icons/camera.svg";
 import Imogi from "../../../assets/icons/emoji_smile.svg";
 import Chat from "../../../assets/icons/chat.svg";
+import ChatGY400 from "../../../assets/icons/chat_GY.svg";
 
 interface BottomChatInputProps {
   input: string;
@@ -48,7 +49,7 @@ const BottomChatInput = ({
       />
 
       {/* 텍스트 입력 */}
-      <div className="flex h-14 py-[0.625rem] px-3 flex-end items-center gap-2">
+      <div className="flex h-14 py-[0.625rem] px-3 flex-end items-center gap-2 border border-gy-200 border-soft">
         <input
           type="text"
           value={input}
@@ -71,13 +72,14 @@ const BottomChatInput = ({
 
       {/* 전송 버튼 */}
       <Clear_M
+        initialStatus={input.trim() === "" ? "disabled" : "default"}
         iconMap={{
-          disabled: Chat,
+          disabled: ChatGY400,
           default: Chat,
           pressing: Chat,
           clicked: Chat,
         }}
-        onClick={onSendMessage}
+        onClick={input.trim() === "" ? undefined : onSendMessage}
       />
     </div>
   );
