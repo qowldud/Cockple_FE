@@ -7,6 +7,7 @@ import { MultiSelectButtonGroup } from "../../components/common/MultiSelectButto
 import { CautionModal } from "../../components/group/main/CautionModal";
 import { useGroupRecommendFilterState } from "../../store/useGroupRecommendFilterStore";
 import Grad_Mix_L from "../../components/common/Btn_Static/Text/Grad_Mix_L";
+import { TextBoxM } from "../../components/group/main/TextBox_M";
 
 const cities = [
   { value: "서울특별시", enabled: true },
@@ -161,7 +162,20 @@ export const GroupRecommendFilterPage = () => {
             />
           </Toggle>
           <Toggle title="키워드">
-            <></>
+            <div className="flex flex-wrap gap-4">
+              <TextBoxM className="w-41 h-10">
+                <span>브랜드 스폰</span>
+              </TextBoxM>
+              <TextBoxM className="w-41 h-10">
+                <span>가입비 무료</span>
+              </TextBoxM>
+              <TextBoxM className="w-19 h-10">
+                <span>친목</span>
+              </TextBoxM>
+              <TextBoxM className="w-64 h-10">
+                <span>운영진이 게임을 짜드려요</span>
+              </TextBoxM>
+            </div>
           </Toggle>
         </div>
       </div>
