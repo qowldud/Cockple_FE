@@ -64,7 +64,7 @@ export const ChatDetailTemplate = ({
           minute: "2-digit",
         }),
         isMe: true,
-        unreadCount: 0,
+        unreadCount: 1,
       };
 
       setChattings(prev => [...prev, newChat]);
@@ -79,15 +79,41 @@ export const ChatDetailTemplate = ({
     }
   };
 
+  // const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   const file = e.target.files?.[0];
+  //   if (!file) return;
+
+  //   const fileUrl = URL.createObjectURL(file);
+  //   setPendingImage(fileUrl);
+  //   setPendingFileName(file.name);
+  //   setPendingFileSize((file.size / 1024).toFixed(0) + "KB");
+
+  //   e.target.value = "";
+  // };
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
     const fileUrl = URL.createObjectURL(file);
-    setPendingImage(fileUrl);
-    setPendingFileName(file.name);
-    setPendingFileSize((file.size / 1024).toFixed(0) + "KB");
 
+    // 채팅에 바로 전송
+    const newChat: Chatting = {
+      id: chattings.length + 1,
+      nickname: "나",
+      profile: ProfileImg,
+      chatting: "",
+      time: new Date().toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+      }),
+      isMe: true,
+      unreadCount: 1,
+      imageUrls: [fileUrl],
+    };
+
+    setChattings(prev => [...prev, newChat]);
+
+    // 초기화
     e.target.value = "";
   };
 
@@ -104,7 +130,7 @@ export const ChatDetailTemplate = ({
         minute: "2-digit",
       }),
       isMe: true,
-      unreadCount: 0,
+      unreadCount: 1,
       imageUrls: [pendingImage],
     };
 
@@ -174,7 +200,7 @@ export const ChatDetailTemplate = ({
         fileInputRef={fileInputRef}
       />
 
-      {pendingImage && (
+      {/* {pendingImage && (
         <FileSendModal
           imageUrl={pendingImage}
           fileName={pendingFileName}
@@ -182,7 +208,7 @@ export const ChatDetailTemplate = ({
           onCancel={() => setPendingImage(null)}
           onSend={handleSendPendingImage}
         />
-      )}
+      )} */}
     </div>
   );
 };
