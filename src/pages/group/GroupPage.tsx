@@ -12,11 +12,18 @@ import { Group_M } from "../../components/common/contentcard/Group_M";
 import { Empty } from "../../components/group/main/Empty";
 import AddIcon from "@/assets/icons/add.svg";
 import { useNavigate } from "react-router-dom";
+import { useGroupRecommendFilterState } from "../../store/useGroupRecommendFilterStore";
 
 export const GroupPage = () => {
   const navigate = useNavigate();
   const data: IFMyGroupData[] = groupExerciseData;
   const recommendDate = RecommendGroupData;
+  const { resetFilter } = useGroupRecommendFilterState();
+
+  const onClickGroupRecommend = () => {
+    resetFilter();
+    navigate("/group/recommend");
+  };
   return (
     <div className="flex flex-col">
       <MainHeader />
@@ -66,7 +73,7 @@ export const GroupPage = () => {
                 pressing: ArrowRight,
                 clicked: ArrowRight,
               }}
-              onClick={() => navigate("/group/recommend")}
+              onClick={onClickGroupRecommend}
             />
           </div>
 

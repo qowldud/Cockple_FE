@@ -7,12 +7,19 @@ import { groupExerciseData } from "../../components/home/mock/homeMock";
 import { SortBottomSheet } from "../../components/common/SortBottomSheet";
 import { useNavigate } from "react-router-dom";
 import Sort from "../../components/common/Sort";
+import {
+  isFilterDirty,
+  useExerciseFilterStore,
+} from "../../store/useExerciseFilterStore";
 
 export const RecommendPage = () => {
   const navigate = useNavigate();
   const [isSortOpen, setIsSortOpen] = useState(false);
   const [sortOption, setSortOption] = useState("최신순");
   const data = groupExerciseData;
+  const { region, level, style, time } = useExerciseFilterStore();
+  const filterState = { region, level, style, time };
+  const filterStatus = isFilterDirty(filterState) ? "clicked" : "default";
   return (
     <div className="flex flex-col gap-2 -mx-4 px-4 bg-white">
       <PageHeader title="운동 추천" onBackClick={() => navigate("/")} />
@@ -24,7 +31,10 @@ export const RecommendPage = () => {
           </CheckBoxBtn>
 
           <div className="flex items-center">
-            <FilterBtn onClick={() => navigate("/recommend/filter")}>
+            <FilterBtn
+              onClick={() => navigate("/recommend/filter")}
+              forceStatus={filterStatus}
+            >
               <span>필터</span>
             </FilterBtn>
             <div className="h-4 w-px bg-gray-200 mx-1"></div>

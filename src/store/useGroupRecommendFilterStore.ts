@@ -8,7 +8,7 @@ export type FilterKey =
   | "time"
   | "keyword";
 
-interface GroupRecommendFilterState {
+export interface GroupRecommendFilterState {
   region: string[]; // 지역 (2단계)
   level: string[]; // 전국 급수
   style: string; // 운동 스타일

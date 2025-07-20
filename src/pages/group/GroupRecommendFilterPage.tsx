@@ -1,14 +1,12 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { PageHeader } from "../../components/common/system/header/PageHeader";
 import { useNavigate } from "react-router-dom";
 import { Toggle } from "../../components/common/Toggle";
 import { DropBox } from "../../components/common/DropBox";
 import { MultiSelectButtonGroup } from "../../components/common/MultiSelectButtonGroup";
 import { CautionModal } from "../../components/group/main/CautionModal";
-import {
-  isFilterDirty,
-  useGroupRecommendFilterState,
-} from "../../store/useGroupRecommendFilterStore";
+import { useGroupRecommendFilterState } from "../../store/useGroupRecommendFilterStore";
+import Grad_Mix_L from "../../components/common/Btn_Static/Text/Grad_Mix_L";
 
 const cities = [
   { value: "서울특별시", enabled: true },
@@ -61,23 +59,36 @@ const seoulDistricts = [
 ];
 
 export const GroupRecommendFilterPage = () => {
-  const { region, level, style, day, time, keyword, setFilter } =
+  const { region, level, style, day, time, keyword, setFilter, resetFilter } =
     useGroupRecommendFilterState();
+  const initialFilterRef = useRef({
+    region,
+    level,
+    style,
+    day,
+    time,
+    keyword,
+  });
   const [showModal, setShowModal] = useState(false);
   const [selectedCity, setSelectedCity] = useState("");
   const [selectedDistrict, setSelectedDistrict] = useState("전체");
   const navigate = useNavigate();
 
   const handleBack = () => {
-    const filterState = { region, level, style, day, time, keyword };
-    if (isFilterDirty(filterState)) {
+    const currentFilter = { region, level, style, day, time, keyword };
+    const initialFilter = initialFilterRef.current;
+
+    const isDirty =
+      JSON.stringify(currentFilter) !== JSON.stringify(initialFilter);
+
+    if (isDirty) {
       setShowModal(true);
     } else {
       navigate(-1);
     }
   };
   return (
-    <div className="flex flex-col justify-between">
+    <div className="h-screen -mb-8 pb-8 flex flex-col justify-between">
       <div className="flex flex-col gap-5">
         <PageHeader title="필터" onBackClick={handleBack} />
 
@@ -155,9 +166,19 @@ export const GroupRecommendFilterPage = () => {
         </div>
       </div>
 
-      <div className="flex gap-2"></div>
+      <Grad_Mix_L
+        type="refresh"
+        label="필터 적용"
+        onImageClick={resetFilter}
+        onClick={() => navigate(-1)}
+      />
 
-      {showModal && <CautionModal onClose={() => setShowModal(false)} />}
+      {showModal && (
+        <CautionModal
+          onClose={() => setShowModal(false)}
+          initialFilter={initialFilterRef.current}
+        />
+      )}
     </div>
   );
 };

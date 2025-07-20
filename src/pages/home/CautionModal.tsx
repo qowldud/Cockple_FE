@@ -3,18 +3,27 @@ import GY800_S from "../../components/common/Btn_Static/Text/GY800_S";
 import RD500_S from "../../components/common/Btn_Static/Text/RD500_S";
 import { ModalBar } from "../../components/common/system/ModalBar";
 import Emoji from "@/assets/icons/emoji_surprise.svg";
-import { useExerciseFilterStore } from "../../store/useExerciseFilterStore";
+import {
+  useExerciseFilterStore,
+  type ExerciseFilterState,
+  type FilterKey,
+} from "../../store/useExerciseFilterStore";
 
 interface CautionModalProps {
   onClose: () => void;
+  initialFilter: Pick<ExerciseFilterState, FilterKey>;
 }
 
-export const CautionModal = ({ onClose }: CautionModalProps) => {
+export const CautionModal = ({ onClose, initialFilter }: CautionModalProps) => {
   const navigate = useNavigate();
-  const resetFilter = useExerciseFilterStore(state => state.resetFilter);
+  const setFilter = useExerciseFilterStore(state => state.setFilter);
   const handleBackAndReset = () => {
-    resetFilter();
-    navigate("/recommend");
+    (Object.keys(initialFilter) as (keyof typeof initialFilter)[]).forEach(
+      key => {
+        setFilter(key, initialFilter[key]);
+      },
+    );
+    navigate(-1);
   };
   return (
     <div className="flex justify-center items-center fixed bottom-0 bg-black/20 -mx-4 w-full max-w-[444px] h-full">

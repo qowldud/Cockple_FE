@@ -1,20 +1,29 @@
 import { useNavigate } from "react-router-dom";
 import Emoji from "@/assets/icons/emoji_surprise.svg";
-import { useExerciseFilterStore } from "../../../store/useExerciseFilterStore";
 import { ModalBar } from "../../common/system/ModalBar";
 import RD500_S from "../../common/Btn_Static/Text/RD500_S";
 import GY800_S from "../../common/Btn_Static/Text/GY800_S";
+import {
+  useGroupRecommendFilterState,
+  type FilterKey,
+  type GroupRecommendFilterState,
+} from "../../../store/useGroupRecommendFilterStore";
 
 interface CautionModalProps {
   onClose: () => void;
+  initialFilter: Pick<GroupRecommendFilterState, FilterKey>;
 }
 
-export const CautionModal = ({ onClose }: CautionModalProps) => {
+export const CautionModal = ({ onClose, initialFilter }: CautionModalProps) => {
   const navigate = useNavigate();
-  const resetFilter = useExerciseFilterStore(state => state.resetFilter);
+  const setFilter = useGroupRecommendFilterState(state => state.setFilter);
   const handleBackAndReset = () => {
-    resetFilter();
-    navigate("/recommend");
+    (Object.keys(initialFilter) as (keyof typeof initialFilter)[]).forEach(
+      key => {
+        setFilter(key, initialFilter[key]);
+      },
+    );
+    navigate(-1);
   };
   return (
     <div className="flex justify-center items-center fixed bottom-0 bg-black/20 -mx-4 w-full max-w-[444px] h-full">

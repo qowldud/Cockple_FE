@@ -7,12 +7,20 @@ import Sort from "../../components/common/Sort";
 import { Exercise_M } from "../../components/common/contentcard/Exercise_M";
 import { SortBottomSheet } from "../../components/common/SortBottomSheet";
 import { groupExerciseData } from "../../components/home/mock/homeMock";
+import {
+  isFilterDirty,
+  useGroupRecommendFilterState,
+} from "../../store/useGroupRecommendFilterStore";
 
 export const GroupRecommendPage = () => {
   const navigate = useNavigate();
   const [isSortOpen, setIsSortOpen] = useState(false);
   const [sortOption, setSortOption] = useState("최신순");
+  const { region, level, style, day, time, keyword } =
+    useGroupRecommendFilterState();
+  const filterState = { region, level, style, day, time, keyword };
   const data = groupExerciseData;
+  const filterStatus = isFilterDirty(filterState) ? "clicked" : "default";
   return (
     <div className="flex flex-col gap-2">
       <PageHeader title="모임 추천" />
@@ -23,7 +31,10 @@ export const GroupRecommendPage = () => {
           </CheckBoxBtn>
 
           <div className="flex items-center">
-            <FilterBtn onClick={() => navigate("/group/recommend-filter")}>
+            <FilterBtn
+              onClick={() => navigate("/group/recommend-filter")}
+              forceStatus={filterStatus}
+            >
               <span>필터</span>
             </FilterBtn>
             <div className="h-4 w-px bg-gray-200 mx-1"></div>

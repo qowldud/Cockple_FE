@@ -1,14 +1,12 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { PageHeader } from "../../components/common/system/header/PageHeader";
-import {
-  isFilterDirty,
-  useExerciseFilterStore,
-} from "../../store/useExerciseFilterStore";
+import { useExerciseFilterStore } from "../../store/useExerciseFilterStore";
 import { useNavigate } from "react-router-dom";
 import { CautionModal } from "./CautionModal";
 import { Toggle } from "../../components/common/Toggle";
 import { DropBox } from "../../components/common/DropBox";
 import { MultiSelectButtonGroup } from "../../components/common/MultiSelectButtonGroup";
+import Grad_Mix_L from "../../components/common/Btn_Static/Text/Grad_Mix_L";
 
 const cities = [
   { value: "서울특별시", enabled: true },
@@ -61,22 +59,34 @@ const seoulDistricts = [
 ];
 
 export const ExerciseFilterPage = () => {
-  const { region, level, style, time, setFilter } = useExerciseFilterStore();
+  const { region, level, style, time, setFilter, resetFilter } =
+    useExerciseFilterStore();
+  const initialFilterRef = useRef({
+    region,
+    level,
+    style,
+    time,
+  });
   const [showModal, setShowModal] = useState(false);
   const [selectedCity, setSelectedCity] = useState("");
   const [selectedDistrict, setSelectedDistrict] = useState("전체");
   const navigate = useNavigate();
 
   const handleBack = () => {
-    const filterState = { region, level, style, time };
-    if (isFilterDirty(filterState)) {
+    const currentFilter = { region, level, style, time };
+    const initialFilter = initialFilterRef.current;
+
+    const isDirty =
+      JSON.stringify(currentFilter) !== JSON.stringify(initialFilter);
+
+    if (isDirty) {
       setShowModal(true);
     } else {
       navigate(-1);
     }
   };
   return (
-    <div className="flex flex-col justify-between">
+    <div className="h-screen -mb-8 pb-8 flex flex-col justify-between">
       <div className="flex flex-col gap-5">
         <PageHeader title="필터" onBackClick={handleBack} />
 
@@ -143,10 +153,18 @@ export const ExerciseFilterPage = () => {
           </Toggle>
         </div>
       </div>
-
-      <div className="flex gap-2"></div>
-
-      {showModal && <CautionModal onClose={() => setShowModal(false)} />}
+      <Grad_Mix_L
+        type="refresh"
+        label="필터 적용"
+        onImageClick={resetFilter}
+        onClick={() => navigate(-1)}
+      />
+      {showModal && (
+        <CautionModal
+          onClose={() => setShowModal(false)}
+          initialFilter={initialFilterRef.current}
+        />
+      )}
     </div>
   );
 };
