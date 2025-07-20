@@ -1,20 +1,21 @@
 import { useNavigate } from "react-router-dom";
-import Grad_GR400_L from "../../components/common/Btn_Static/Text/Grad_GR400_L";
 import { PageHeader } from "../../components/common/system/header/PageHeader";
+import Btn_Static from "../../components/common/Btn_Static/Btn_Static";
+import IntroText from "./components/IntroText";
 
 export const OnboardingConfirmStartPage = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="w-full min-h-screen flex flex-col">
+    <div className="w-full  flex flex-col -mb-8">
       <PageHeader title="가입 완료" />
-      <section className="flex items-center flex-col  grow gap-15">
-        <div className="flex flex-col gap-2  items-stretch text-left w-full">
-          <p className="header-h4 pt-9">입상 기록이 나를 더 잘 보여줄거에요!</p>
-          <div className="body-md-500">
-            <p>마이페이지에서 대회 경력을 등록해보세요.</p>
-          </div>
-        </div>
+      <section className="flex items-center flex-col  gap-15 pb-24 ">
+        <IntroText
+          title="입상 기록이 나를 더 잘 보여줄거에요!"
+          text1="마이페이지에서 대회 경력을 등록해보세요."
+          isBar={true}
+          className="pt-9 items-stretch text-left  w-full"
+        />
         {/* 끊고 */}
         <div className="flex gap-8 flex-col items-center">
           <div className="flex shadow-ds200 rounded-lg bg-white py-1 px-4 gap-1 items-center justify-center body-rg-500">
@@ -63,7 +64,7 @@ export const OnboardingConfirmStartPage = () => {
         className="flex items-center justify-center header-h4 "
         onClick={() => navigate("/")}
       >
-        <Grad_GR400_L label="시작하기" />
+        <Btn_Static label="시작하기" kind="GR400" size="L" />
       </div>
     </div>
   );

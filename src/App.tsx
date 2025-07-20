@@ -38,7 +38,6 @@ import { GroupChatDetailPage } from "./pages/chat/GroupChatDetailPage";
 import { PersonalChatDetailPage } from "./pages/chat/PersonalChatDetailPage";
 import { MyGroupExercisePage } from "./pages/home/MyGroupExercisePage";
 import OnboardingLayout from "./pages/onboarding/OnBoardingLayout";
-import { OnboardingAddressSearchPage } from "./pages/onboarding/OnboardingAddressSearchPage";
 import { OnboardingConfirmStartPage } from "./pages/onboarding/OnBoardingConfirmStartPage";
 import useSplashStore from "./zustand/useSplashStore";
 import SplashScreen from "./components/common/system/SplashScreen";
@@ -68,7 +67,7 @@ const router = createBrowserRouter([
       { path: "info", element: <OnboardingInfoPage /> },
       { path: "level", element: <OnboardingLevelPage /> },
       { path: "address", element: <OnboardingAddressPage /> },
-      { path: "address/search", element: <OnboardingAddressSearchPage /> },
+      // { path: "address/search", element: <OnboardingAddressSearchPage /> },
       { path: "profile", element: <OnboardingProfilePage /> },
       // { path: "profile/input", element: <OnboardingProfileInputPage /> },
       { path: "confirm", element: <OnboardingConfirmPage /> },

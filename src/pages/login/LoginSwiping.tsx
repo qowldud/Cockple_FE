@@ -23,7 +23,7 @@ export default function LoginSwiping({
       <img
         src="/src/assets/images/image.png"
         alt="캐릭터img"
-        className="size-50  aspect-square object-cover"
+        className="size-45  aspect-square object-cover"
       />
 
       <div className="header-h5 max-w-60 mb-10">
