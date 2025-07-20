@@ -23,7 +23,7 @@ export const GroupRecommendPage = () => {
           </CheckBoxBtn>
 
           <div className="flex items-center">
-            <FilterBtn onClick={() => navigate("/recommend/filter")}>
+            <FilterBtn onClick={() => navigate("/group/recommend-filter")}>
               <span>필터</span>
             </FilterBtn>
             <div className="h-4 w-px bg-gray-200 mx-1"></div>
@@ -60,6 +60,7 @@ export const GroupRecommendPage = () => {
         onClose={() => setIsSortOpen(false)}
         selected={sortOption}
         onSelect={option => setSortOption(option)}
+        options={["최신순", "운동 많은 순"]}
       />
     </div>
   );
