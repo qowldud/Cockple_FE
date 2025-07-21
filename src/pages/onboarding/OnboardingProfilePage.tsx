@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { PageHeader } from "../../components/common/system/header/PageHeader";
 import ProfileImg from "../../components/common/Etc/ProfileImg";
 import { useNavigate } from "react-router-dom";
@@ -8,6 +8,9 @@ import IntroText from "./components/IntroText";
 
 export const OnboardingProfilePage = () => {
   const [setProfile, setIsProfile] = useState(false);
+  const [preview, setPreview] = useState<string | null>(null);
+
+  const fileInput = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
   const handleClick = () => {
     if (setProfile) {
@@ -16,6 +19,20 @@ export const OnboardingProfilePage = () => {
       setIsProfile(true);
     }
   };
+
+  useEffect(() => {
+    // console.log("렌더링 시점, preview 값:", preview);
+  }, [preview]);
+  const imageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log(e);
+    const file = e.target.files?.[0];
+    if (file) {
+      const imageUrl = URL.createObjectURL(file);
+      setPreview(imageUrl); // 미리보기 업뎃뎃
+      // fileInput.current = file;
+    }
+  };
+
   return (
     <div className="w-full flex flex-col -mb-8">
       <PageHeader title="회원 정보 입력" />
@@ -30,14 +47,31 @@ export const OnboardingProfilePage = () => {
             isBar={true}
           />
         </div>
-        <ProfileImg
-          size="XL"
-          edit={setProfile}
-          src={
-            setProfile
-              ? "/src/assets/images/profile_Image.png"
-              : "/src/assets/images/base_profile_img.png"
-          }
+        <label
+          htmlFor={setProfile ? "image-upload" : ""}
+          className={`w-fit  mx-auto ${setProfile ? "cursor-pointer" : ""}`}
+        >
+          <ProfileImg
+            size="XL"
+            edit={setProfile}
+            src={
+              preview
+                ? preview
+                : setProfile
+                  ? "/src/assets/images/profile_Image.png"
+                  : "/src/assets/images/base_profile_img.png"
+            }
+          />
+        </label>
+        <input
+          ref={fileInput}
+          type="file"
+          accept="image/*"
+          id="image-upload"
+          className="hidden"
+          // {...register("api보고 결정")}
+          onChange={imageChange}
+          aria-label="프로필 이미지 업로드"
         />
       </section>
       <div
