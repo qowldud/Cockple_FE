@@ -1,9 +1,8 @@
 // 그룹 채팅창과 개인 채팅창에 사용되는 공통 컴포넌트(템플릿)
 
 import React, { useState, useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
 import ChattingComponent from "../common/chat/ChattingComponent";
-import FileSendModal from "./FileSendModal";
+//import FileSendModal from "./FileSendModal";
 import ImagePreviewModal from "./ImagePreviewModal";
 import ChatBtn from "../common/DynamicBtn/ChatBtn";
 
@@ -36,9 +35,9 @@ export const ChatDetailTemplate = ({
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [previewImage, setPreviewImage] = useState<string | null>(null);
-  const [pendingImage, setPendingImage] = useState<string | null>(null);
-  const [pendingFileName, setPendingFileName] = useState<string>("");
-  const [pendingFileSize, setPendingFileSize] = useState<string>("");
+  // const [pendingImage, setPendingImage] = useState<string | null>(null);
+  // const [pendingFileName, setPendingFileName] = useState<string>("");
+  // const [pendingFileSize, setPendingFileSize] = useState<string>("");
 
   const chatEndRef = useRef<HTMLDivElement>(null);
 
@@ -117,26 +116,26 @@ export const ChatDetailTemplate = ({
     e.target.value = "";
   };
 
-  const handleSendPendingImage = () => {
-    if (!pendingImage) return;
+  // const handleSendPendingImage = () => {
+  //   if (!pendingImage) return;
 
-    const newChat: Chatting = {
-      id: chattings.length + 1,
-      nickname: "나",
-      profile: ProfileImg,
-      chatting: "",
-      time: new Date().toLocaleTimeString([], {
-        hour: "2-digit",
-        minute: "2-digit",
-      }),
-      isMe: true,
-      unreadCount: 1,
-      imageUrls: [pendingImage],
-    };
+  //   const newChat: Chatting = {
+  //     id: chattings.length + 1,
+  //     nickname: "나",
+  //     profile: ProfileImg,
+  //     chatting: "",
+  //     time: new Date().toLocaleTimeString([], {
+  //       hour: "2-digit",
+  //       minute: "2-digit",
+  //     }),
+  //     isMe: true,
+  //     unreadCount: 1,
+  //     imageUrls: [pendingImage],
+  //   };
 
-    setChattings(prev => [...prev, newChat]);
-    setPendingImage(null);
-  };
+  //   setChattings(prev => [...prev, newChat]);
+  //   setPendingImage(null);
+  // };
 
   return (
     <div
