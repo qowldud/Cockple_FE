@@ -2,7 +2,9 @@ import { PageHeader } from "../../components/common/system/header/PageHeader";
 import { useForm } from "react-hook-form";
 import TextBox from "../../components/common/Text_Box/TextBox";
 import { useRef, useState } from "react";
-import DateAndTimePicker from "../../components/common/Date_Time/DateAndPicker";
+import DateAndTimePicker, {
+  type DateAndTimePickerHandle,
+} from "../../components/common/Date_Time/DateAndPicker";
 import { useNavigate } from "react-router-dom";
 import { ProgressBar } from "../../components/common/ProgressBar";
 import Btn_Static from "../../components/common/Btn_Static/Btn_Static";
@@ -12,7 +14,7 @@ export const OnboardingInfoPage = () => {
   const navigate = useNavigate();
   const {
     // data,
-    register,
+    // register,
     // handleSubmit,
     setValue,
     watch,
@@ -23,7 +25,7 @@ export const OnboardingInfoPage = () => {
   const [selected, isSelected] = useState<"boy" | "girl" | null>(null);
 
   const [selectedDate, setSelectedDate] = useState("");
-  const pickerRef = useRef(null);
+  const pickerRef = useRef<DateAndTimePickerHandle>(null);
 
   const handleCloseOverlay = () => {
     if (pickerRef.current) {
@@ -105,7 +107,8 @@ export const OnboardingInfoPage = () => {
               id="date-picker-overlay"
               className="fixed inset-0 bg-black/50 z-40 flex items-center justify-center"
               onClick={e => {
-                if (e.target.id === "date-picker-overlay") {
+                const target = e.target as HTMLElement;
+                if (target.id === "date-picker-overlay") {
                   handleCloseOverlay();
                 }
               }}
