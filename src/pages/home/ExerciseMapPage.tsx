@@ -13,6 +13,31 @@ declare global {
 
 export {};
 
+const dummyResponse = {
+  currentLocation: {
+    latitude: 37.52947998479421,
+    longitude: 126.83257288886509,
+  },
+  searchRadius: 5000,
+  exerciseLocations: [
+    {
+      locationId: 1,
+      latitude: 37.5301,
+      longitude: 126.8329,
+    },
+    {
+      locationId: 2,
+      latitude: 37.5311,
+      longitude: 126.8339,
+    },
+    {
+      locationId: 3,
+      latitude: 37.5285,
+      longitude: 126.8315,
+    },
+  ],
+};
+
 export const ExerciseMapPage = () => {
   const mapRef = useRef<HTMLDivElement>(null);
   const [calendar, setCalendar] = useState(false);
@@ -40,21 +65,41 @@ export const ExerciseMapPage = () => {
       navigator.geolocation.getCurrentPosition(position => {
         const lat = position.coords.latitude;
         const lng = position.coords.longitude;
+        console.log("lat, lng: ", lat, " ", lng);
 
         const currentPos = new kakao.maps.LatLng(lat, lng);
 
         map.setCenter(currentPos);
 
-        const marker = new kakao.maps.Marker({
+        const myLocationMarker = new kakao.maps.Marker({
           position: currentPos,
           image: new kakao.maps.MarkerImage(
             "/src/assets/icons/map_mylocation.svg",
             new kakao.maps.Size(40, 40),
-            { offset: new kakao.maps.Point(18, 18) },
+            { offset: new kakao.maps.Point(20, 20) },
           ),
         });
 
-        marker.setMap(map);
+        myLocationMarker.setMap(map);
+
+        dummyResponse.exerciseLocations.forEach(loc => {
+          const marker = new kakao.maps.Marker({
+            position: new kakao.maps.LatLng(loc.latitude, loc.longitude),
+            image: new kakao.maps.MarkerImage(
+              "/src/assets/icons/map_marker.svg",
+              new kakao.maps.Size(28.8, 35.2),
+              {
+                offset: new kakao.maps.Point(20, 20),
+              },
+            ),
+            map,
+          });
+
+          // 마커 클릭 이벤트 등록
+          kakao.maps.event.addListener(marker, "click", () => {
+            // 모달
+          });
+        });
       });
     } else {
       console.warn("Geolocation을 사용할 수 없어요.");
