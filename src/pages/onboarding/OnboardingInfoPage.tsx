@@ -23,7 +23,7 @@ export const OnboardingInfoPage = () => {
   } = useForm();
 
   const [selected, isSelected] = useState<"boy" | "girl" | null>(null);
-
+  // const [nameInput, setNameInput] = useState("");
   const [selectedDate, setSelectedDate] = useState("");
   const pickerRef = useRef<DateAndTimePickerHandle>(null);
 
@@ -36,19 +36,23 @@ export const OnboardingInfoPage = () => {
     setOpenModal(false); // 닫기
   };
 
-  const handleInputDetected = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const input = e.target.value;
-    if (input.length <= 17) {
-      setValue("name", input, { shouldValidate: true });
-    }
-  };
-
   const [openModal, setOpenModal] = useState(false);
 
   const nameValue = watch("name") || "";
   const birthdayValue = watch("birthday") || "";
   const isFormValid =
     nameValue.length > 0 && selected !== null && birthdayValue.length > 0;
+
+  const handleInputDetected = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let input = e.target.value;
+    //한글,영어만 입력되도록, 공백포함 17글자
+    input = input.slice(0, 17);
+    const filtered = input.replace(
+      /[^가-힣a-zA-Z\s\u1100-\u11FF\u3130-\u318F\uAC00-\uD7AF]/g,
+      "",
+    );
+    setValue("name", filtered);
+  };
 
   return (
     <>
