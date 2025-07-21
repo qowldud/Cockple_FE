@@ -59,6 +59,13 @@ const seoulDistricts = [
   "강동구",
 ];
 
+const keywords = [
+  { label: "브랜드 스폰", width: "w-41" },
+  { label: "가입비 무료", width: "w-38" },
+  { label: "친목", width: "w-19" },
+  { label: "운영진이 게임을 짜드려요", width: "w-60" },
+];
+
 export const GroupRecommendFilterPage = () => {
   const { region, level, style, day, time, keyword, setFilter, resetFilter } =
     useGroupRecommendFilterState();
@@ -88,6 +95,18 @@ export const GroupRecommendFilterPage = () => {
       navigate(-1);
     }
   };
+
+  const handleKeywordClick = (kw: string) => {
+    if (keyword.includes(kw)) {
+      setFilter(
+        "keyword",
+        keyword.filter(k => k !== kw),
+      );
+    } else {
+      setFilter("keyword", [...keyword, kw]);
+    }
+  };
+
   return (
     <div className="min-h-screen -mb-8 flex flex-col justify-between">
       <div className="flex flex-col gap-5">
@@ -163,18 +182,16 @@ export const GroupRecommendFilterPage = () => {
           </Toggle>
           <Toggle title="키워드">
             <div className="flex flex-wrap gap-4">
-              <TextBoxM className="w-41 h-10">
-                <span>브랜드 스폰</span>
-              </TextBoxM>
-              <TextBoxM className="w-41 h-10">
-                <span>가입비 무료</span>
-              </TextBoxM>
-              <TextBoxM className="w-19 h-10">
-                <span>친목</span>
-              </TextBoxM>
-              <TextBoxM className="w-64 h-10">
-                <span>운영진이 게임을 짜드려요</span>
-              </TextBoxM>
+              {keywords.map(({ label, width }) => (
+                <TextBoxM
+                  key={label}
+                  className={width}
+                  selected={keyword.includes(label)}
+                  onClick={() => handleKeywordClick(label)}
+                >
+                  <span>{label}</span>
+                </TextBoxM>
+              ))}
             </div>
           </Toggle>
         </div>
