@@ -19,7 +19,7 @@ export const OnboardingProfilePage = () => {
   return (
     <div className="w-full flex flex-col -mb-8">
       <PageHeader title="회원 정보 입력" />
-      <ProgressBar width={setProfile ? "96" : "72"} />
+      <ProgressBar width={setProfile ? "96" : "76"} />
 
       <section className=" flex flex-col gap-[6.25rem] text-left pb-34 mb-[3px] ">
         <div>

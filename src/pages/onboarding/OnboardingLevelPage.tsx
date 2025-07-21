@@ -7,14 +7,23 @@ import IntroText from "./components/IntroText";
 import { useForm } from "react-hook-form";
 
 export const OnboardingLevelPage = () => {
-  const level = ["초심", "C조", "D조"];
+  const level = [
+    "왕초심",
+    "초심",
+    "D조",
+    "C조",
+    "B조",
+    "A조",
+    "준자강",
+    "자강",
+  ];
 
   const navigate = useNavigate();
   const {
-    register,
+    // register,
     setValue,
     watch,
-    formState: { errors },
+    // formState: { errors },
   } = useForm();
 
   const levelValue = watch("level") || "";
@@ -22,7 +31,7 @@ export const OnboardingLevelPage = () => {
   return (
     <div className="w-full flex flex-col -mb-8">
       <PageHeader title="회원 정보 입력" />
-      <ProgressBar width="24" />
+      <ProgressBar width={!isNextEnabled ? "28" : "48"} />
 
       <section className="flex gap-8 text-left flex-col pb-67 ">
         <IntroText

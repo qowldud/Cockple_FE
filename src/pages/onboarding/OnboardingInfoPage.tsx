@@ -11,13 +11,13 @@ import InputField from "../../components/common/Search_Filed/InputField";
 export const OnboardingInfoPage = () => {
   const navigate = useNavigate();
   const {
-    data,
+    // data,
     register,
-    handleSubmit,
+    // handleSubmit,
     setValue,
     watch,
-    getValues,
-    formState: { errors },
+    // getValues,
+    // formState: { errors },
   } = useForm();
 
   const [selected, isSelected] = useState<"boy" | "girl" | null>(null);
@@ -34,6 +34,13 @@ export const OnboardingInfoPage = () => {
     setOpenModal(false); // 닫기
   };
 
+  const handleInputDetected = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const input = e.target.value;
+    if (input.length <= 17) {
+      setValue("name", input, { shouldValidate: true });
+    }
+  };
+
   const [openModal, setOpenModal] = useState(false);
 
   const nameValue = watch("name") || "";
@@ -45,20 +52,22 @@ export const OnboardingInfoPage = () => {
     <>
       <div className="flex flex-col -mb-8">
         <PageHeader title="회원 정보 입력" />
-        <ProgressBar width="4" />
+        <ProgressBar width={!isFormValid ? "4" : "24"} />
 
         <section className="text-left flex flex-col  gap-3 w-full ">
           <p className="header-h4 pt-8 pb-5">기본 정보를 입력해주세요</p>
           {/* 첫번째 */}
           <InputField
             labelName="이름"
-            {...register("name", {
-              maxLength: {
-                value: 2,
-                message: "",
-              },
-            })}
+            // {...register("name", {
+            //   maxLength: {
+            //     value: 2,
+            //     message: "",
+            //   },
+            // })}
+            value={nameValue}
             InputLength={nameValue.length}
+            onChange={handleInputDetected}
           />
 
           {/* 두번째 */}

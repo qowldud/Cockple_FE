@@ -39,7 +39,6 @@ export default function DropCheckBox({
       onChange?.("disabled");
     }
   };
-  console.log(open);
 
   return (
     <div className="flex gap-2 flex-col">
@@ -75,7 +74,7 @@ export default function DropCheckBox({
           </button>
           {open && !disabled && (
             <div className="absolute mt-1">
-              <ul className=" border rounded-xl border-gy-200">
+              <ul className=" border rounded-xl border-gy-200 max-h-32 overflow-y-auto w-40 overflow-x-hidden">
                 {options.map((item, idx) => {
                   return (
                     <li
