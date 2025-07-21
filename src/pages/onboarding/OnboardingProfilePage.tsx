@@ -72,9 +72,12 @@ export const OnboardingProfilePage = () => {
   };
 
   return (
-    <div className="w-full flex flex-col -mb-8 relative">
+    <div
+      className={` flex flex-col relative -mb-8 min-h-[100dvh] ${isCropping ? "-mx-4" : ""}`}
+      style={{ maxWidth: "444px" }}
+    >
       <PageHeader title="회원 정보 입력" />
-      <ProgressBar width={setProfile ? "96" : "76"} />
+      {isCropping ? "" : <ProgressBar width={setProfile ? "96" : "76"} />}
       <section className=" flex flex-col gap-[6.25rem] text-left pb-34 mb-[3px] ">
         <div>
           <IntroText
@@ -122,14 +125,10 @@ export const OnboardingProfilePage = () => {
       <div className="flex justify-center" onClick={handleClick}>
         <Btn_Static label="다음" kind="GR400" size="L" />
       </div>
+
       {/* 이미지 모달 */}
       {isCropping && originalImage && (
-        <div
-          className="z-50 flex flex-col w-full inset-0  absolute bg-black "
-          style={{
-            maxWidth: "444px",
-          }}
-        >
+        <div className="z-50 flex flex-col w-full inset-0  absolute bg-black ">
           {/* 크롭 영역 */}
           <div className="flex-1 relative ">
             <Cropper
@@ -142,18 +141,18 @@ export const OnboardingProfilePage = () => {
               onCropComplete={(_, areaPixels) =>
                 setCroppedAreaPixels(areaPixels)
               }
-              style={{
-                containerStyle: {
-                  width: "100%",
-                  height: "100%",
-                  position: "relative",
-                },
-              }}
+              // style={{
+              //   containerStyle: {
+              //     width: "100%",
+              //     height: "100%",
+              //     position: "relative",
+              //   },
+              // }}
             />
           </div>
 
           {/* 푸터 */}
-          <div className="flex justify-between items-center px-4 py-4 bg-black text-white relative z-10 -mb-3.5">
+          <div className="flex justify-between items-center px-4 py-4 bg-black text-white relative z-10 ">
             <button onClick={() => setIsCropping(false)} className="text-sm">
               취소
             </button>
