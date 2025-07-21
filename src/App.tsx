@@ -1,6 +1,5 @@
 import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
 import "./App.css";
-import { SplashPage } from "./pages/login/SplashPage";
 import { LoginPage } from "./pages/login/LoginPage";
 import { ChatPage } from "./pages/chat/ChatPage";
 import { LikedPage } from "./pages/like/LikedPage";
@@ -40,7 +39,7 @@ import { MyGroupExercisePage } from "./pages/home/MyGroupExercisePage";
 import OnboardingLayout from "./pages/onboarding/OnBoardingLayout";
 import { OnboardingConfirmStartPage } from "./pages/onboarding/OnBoardingConfirmStartPage";
 import useSplashStore from "./zustand/useSplashStore";
-import SplashScreen from "./components/common/system/SplashScreen";
+import SplashScreen from "./pages/login/SplashScreen";
 import { useEffect } from "react";
 // import { OnboardingProfileInputPage } from "./pages/onboarding/OnBoardingProfileInputPage";
 import { ExerciseFilterPage } from "./pages/home/ExerciseFilterPage";
@@ -53,10 +52,6 @@ import { GroupRecommendPage } from "./pages/group/GroupRecommendPage";
 import { GroupRecommendFilterPage } from "./pages/group/GroupRecommendFilterPage";
 
 const router = createBrowserRouter([
-  {
-    path: "/splash",
-    element: <SplashPage />,
-  },
   {
     path: "/login",
     element: <LoginPage />,
