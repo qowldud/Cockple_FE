@@ -5,10 +5,18 @@ import { useNavigate } from "react-router-dom";
 import { ProgressBar } from "../../components/common/ProgressBar";
 import Btn_Static from "../../components/common/Btn_Static/Btn_Static";
 import IntroText from "./components/IntroText";
+import Cropper from "react-easy-crop";
 
 export const OnboardingProfilePage = () => {
   const [setProfile, setIsProfile] = useState(false);
   const [preview, setPreview] = useState<string | null>(null);
+
+  //crop라이브러리
+  const [originalImage, setOriginalImage] = useState<string | null>(null);
+  const [isCropping, setIsCropping] = useState(false);
+  const [crop, setCrop] = useState({ x: 0, y: 0 });
+  const [zoom, setZoom] = useState(1);
+  const [croppedAreaPixels, setCroppedAreaPixels] = useState<any>(null);
 
   const fileInput = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
@@ -28,16 +36,45 @@ export const OnboardingProfilePage = () => {
     const file = e.target.files?.[0];
     if (file) {
       const imageUrl = URL.createObjectURL(file);
-      setPreview(imageUrl); // 미리보기 업뎃뎃
+      // setPreview(imageUrl); // 미리보기 업뎃
+      setOriginalImage(imageUrl);
+      setIsCropping(true);
       // fileInput.current = file;
     }
   };
 
+  const getCroppedImg = (
+    imageSrc: string,
+    cropPixels: any,
+  ): Promise<string> => {
+    return new Promise(resolve => {
+      const image = new Image();
+      image.src = imageSrc;
+      image.onload = () => {
+        const canvas = document.createElement("canvas");
+        canvas.width = cropPixels.width;
+        canvas.height = cropPixels.height;
+        const ctx = canvas.getContext("2d")!;
+        ctx.drawImage(
+          image,
+          cropPixels.x,
+          cropPixels.y,
+          cropPixels.width,
+          cropPixels.height,
+          0,
+          0,
+          cropPixels.width,
+          cropPixels.height,
+        );
+        resolve(canvas.toDataURL("image/jpeg"));
+      };
+    });
+  };
+
   return (
-    <div className="w-full flex flex-col -mb-8">
+    <div className="w-full flex flex-col -mb-8 relative">
       <PageHeader title="회원 정보 입력" />
       <ProgressBar width={setProfile ? "96" : "76"} />
-
       <section className=" flex flex-col gap-[6.25rem] text-left pb-34 mb-[3px] ">
         <div>
           <IntroText
@@ -85,6 +122,59 @@ export const OnboardingProfilePage = () => {
       <div className="flex justify-center" onClick={handleClick}>
         <Btn_Static label="다음" kind="GR400" size="L" />
       </div>
+      {/* 이미지 모달 */}
+      {isCropping && originalImage && (
+        <div
+          className="z-50 flex flex-col w-full inset-0  absolute bg-black "
+          style={{
+            maxWidth: "444px",
+          }}
+        >
+          {/* 크롭 영역 */}
+          <div className="flex-1 relative ">
+            <Cropper
+              image={originalImage}
+              crop={crop}
+              zoom={zoom}
+              aspect={1}
+              onCropChange={setCrop}
+              onZoomChange={setZoom}
+              onCropComplete={(_, areaPixels) =>
+                setCroppedAreaPixels(areaPixels)
+              }
+              style={{
+                containerStyle: {
+                  width: "100%",
+                  height: "100%",
+                  position: "relative",
+                },
+              }}
+            />
+          </div>
+
+          {/* 푸터 */}
+          <div className="flex justify-between items-center px-4 py-4 bg-black text-white relative z-10 -mb-3.5">
+            <button onClick={() => setIsCropping(false)} className="text-sm">
+              취소
+            </button>
+            <button
+              onClick={async () => {
+                if (!originalImage || !croppedAreaPixels) return;
+                const cropped = await getCroppedImg(
+                  originalImage,
+                  croppedAreaPixels,
+                );
+                setPreview(cropped);
+                setIsProfile(true);
+                setIsCropping(false);
+              }}
+              className="text-sm"
+            >
+              선택
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
