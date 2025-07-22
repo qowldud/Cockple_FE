@@ -6,7 +6,7 @@ import { ProgressBar } from "../../components/common/ProgressBar";
 import Btn_Static from "../../components/common/Btn_Static/Btn_Static";
 import IntroText from "./components/IntroText";
 import Cropper from "react-easy-crop";
-
+import type { Area } from "react-easy-crop";
 export const OnboardingProfilePage = () => {
   const [setProfile, setIsProfile] = useState(false);
   const [preview, setPreview] = useState<string | null>(null);
@@ -16,7 +16,7 @@ export const OnboardingProfilePage = () => {
   const [isCropping, setIsCropping] = useState(false);
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
-  const [croppedAreaPixels, setCroppedAreaPixels] = useState<any>(null);
+  const [croppedAreaPixels, setCroppedAreaPixels] = useState<Area | null>(null);
 
   const fileInput = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
@@ -29,14 +29,13 @@ export const OnboardingProfilePage = () => {
   };
 
   useEffect(() => {
-    // console.log("렌더링 시점, preview 값:", preview);
+    // console.log(preview);
   }, [preview]);
   const imageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     console.log(e);
     const file = e.target.files?.[0];
     if (file) {
       const imageUrl = URL.createObjectURL(file);
-      // setPreview(imageUrl); // 미리보기 업뎃
       setOriginalImage(imageUrl);
       setIsCropping(true);
       // fileInput.current = file;
@@ -45,7 +44,7 @@ export const OnboardingProfilePage = () => {
 
   const getCroppedImg = (
     imageSrc: string,
-    cropPixels: any,
+    cropPixels: Area,
   ): Promise<string> => {
     return new Promise(resolve => {
       const image = new Image();
@@ -130,7 +129,7 @@ export const OnboardingProfilePage = () => {
       {isCropping && originalImage && (
         <div className="z-50 flex flex-col w-full inset-0  absolute bg-black ">
           {/* 크롭 영역 */}
-          <div className="flex-1 relative ">
+          <div className="pb-130 relative ">
             <Cropper
               image={originalImage}
               crop={crop}
@@ -138,21 +137,14 @@ export const OnboardingProfilePage = () => {
               aspect={1}
               onCropChange={setCrop}
               onZoomChange={setZoom}
-              onCropComplete={(_, areaPixels) =>
+              onCropComplete={(_: Area, areaPixels: Area) =>
                 setCroppedAreaPixels(areaPixels)
               }
-              // style={{
-              //   containerStyle: {
-              //     width: "100%",
-              //     height: "100%",
-              //     position: "relative",
-              //   },
-              // }}
             />
           </div>
 
           {/* 푸터 */}
-          <div className="flex justify-between items-center px-4 py-4 bg-black text-white relative z-10 ">
+          <div className="flex justify-between items-center px-4 py-4 bg-black text-white relative z-10  ">
             <button onClick={() => setIsCropping(false)} className="text-sm">
               취소
             </button>
