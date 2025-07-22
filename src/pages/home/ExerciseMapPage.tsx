@@ -5,6 +5,7 @@ import ArrowUp from "@/assets/icons/arrow_up.svg";
 import { ExerciseMapCalendar } from "../../components/home/ExerciseMapCalendar";
 import { Exercise_M } from "../../components/common/contentcard/Exercise_M";
 import { motion } from "framer-motion";
+import clsx from "clsx";
 
 declare global {
   interface Window {
@@ -156,12 +157,14 @@ export const ExerciseMapPage = () => {
     useState<SelectedLocation | null>(null);
   const [isExpanded, setIsExpanded] = useState(false);
   const ArrowIcon = calendar ? ArrowUp : ArrowDown;
+  const [enableDrag, setEnableDrag] = useState(true);
+  const scrollRef = useRef<HTMLDivElement>(null);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleDragEnd = (_: any, info: { offset: { y: number } }) => {
     if (info.offset.y < -10) {
       setIsExpanded(true);
-    } else if (info.offset.y > 200) {
+    } else if (info.offset.y > 200 && enableDrag) {
       setSelectedLocationId(null);
     } else {
       setIsExpanded(false);
@@ -187,46 +190,55 @@ export const ExerciseMapPage = () => {
 
     const map = new kakao.maps.Map(container, options);
 
-    navigator.geolocation.getCurrentPosition(position => {
-      const lat = position.coords.latitude;
-      const lng = position.coords.longitude;
-      console.log("lat, lng: ", lat, " ", lng);
+    map.setCenter(currentPos);
 
-      const currentPos = new kakao.maps.LatLng(lat, lng);
+    const myLocationMarker = new kakao.maps.Marker({
+      position: currentPos,
+      image: new kakao.maps.MarkerImage(
+        "/src/assets/icons/map_mylocation.svg",
+        new kakao.maps.Size(40, 40),
+        { offset: new kakao.maps.Point(20, 20) },
+      ),
+    });
 
-      map.setCenter(currentPos);
+    myLocationMarker.setMap(map);
 
-      const myLocationMarker = new kakao.maps.Marker({
-        position: currentPos,
+    dummyResponse.exerciseLocations.forEach(loc => {
+      const marker = new kakao.maps.Marker({
+        position: new kakao.maps.LatLng(loc.latitude, loc.longitude),
         image: new kakao.maps.MarkerImage(
-          "/src/assets/icons/map_mylocation.svg",
-          new kakao.maps.Size(40, 40),
-          { offset: new kakao.maps.Point(20, 20) },
+          "/src/assets/icons/map_marker.svg",
+          new kakao.maps.Size(28.8, 35.2),
+          {
+            offset: new kakao.maps.Point(20, 20),
+          },
         ),
+        map,
       });
 
-      myLocationMarker.setMap(map);
-
-      dummyResponse.exerciseLocations.forEach(loc => {
-        const marker = new kakao.maps.Marker({
-          position: new kakao.maps.LatLng(loc.latitude, loc.longitude),
-          image: new kakao.maps.MarkerImage(
-            "/src/assets/icons/map_marker.svg",
-            new kakao.maps.Size(28.8, 35.2),
-            {
-              offset: new kakao.maps.Point(20, 20),
-            },
-          ),
-          map,
-        });
-
-        // 마커 클릭 이벤트 등록
-        kakao.maps.event.addListener(marker, "click", () => {
-          setSelectedLocationId(dummyExerciseDetail);
-        });
+      // 마커 클릭 이벤트 등록
+      kakao.maps.event.addListener(marker, "click", () => {
+        setSelectedLocationId(dummyExerciseDetail);
       });
     });
+    // });
   }, []);
+
+  useEffect(() => {
+    if (!isExpanded || !scrollRef.current) return;
+
+    const el = scrollRef.current;
+    const onScroll = () => {
+      if (el.scrollTop === 0) {
+        setEnableDrag(true);
+      } else {
+        setEnableDrag(false);
+      }
+    };
+
+    el.addEventListener("scroll", onScroll);
+    return () => el.removeEventListener("scroll", onScroll);
+  }, [isExpanded]);
 
   return (
     <div className="flex flex-col items-center h-screen -mx-4 -mb-8">
@@ -251,21 +263,27 @@ export const ExerciseMapPage = () => {
       {/* bottom */}
       {selectedLocationId && (
         <motion.div
-          drag="y"
+          drag={enableDrag ? "y" : false}
           initial={false}
           dragConstraints={{ top: 0, bottom: 0 }}
           onDragEnd={handleDragEnd}
-          className="flex flex-col fixed bottom-0 max-w-[444px] rounded-t-3xl z-10 w-full bg-white px-4 overflow-y-scroll scrollbar-hide"
-          animate={{ height: isExpanded ? "80%" : "16.25rem", opacity: 1 }}
+          className="flex flex-col fixed bottom-0 max-w-[444px] rounded-t-3xl z-10 w-full bg-white px-4"
+          animate={{ height: isExpanded ? "70%" : "16.25rem", opacity: 1 }}
           transition={{ type: "spring", bounce: 0.2 }}
         >
-          <div className="w-full flex justify-center pt-2">
+          <div className="w-full flex justify-center pt-2 pb-3">
             <div className="w-20 h-1 rounded-lg bg-gy-400"></div>
           </div>
 
-          <div className="flex flex-col">
+          <div
+            ref={scrollRef}
+            className={clsx(
+              "flex flex-col ",
+              isExpanded ? "overflow-y-scroll scrollbar-hide" : "",
+            )}
+          >
             {dummyExerciseDetail.exercises.map(exercise => (
-              <div className="py-3 border-b-1 border-gy-200">
+              <div className="pb-3 border-b-1 border-gy-200 mb-3">
                 <Exercise_M
                   key={exercise.exerciseId}
                   id={exercise.exerciseId}
