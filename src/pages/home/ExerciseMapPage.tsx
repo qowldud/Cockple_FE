@@ -161,7 +161,9 @@ export const ExerciseMapPage = () => {
   const handleDragEnd = (_: any, info: { offset: { y: number } }) => {
     if (info.offset.y < -10) {
       setIsExpanded(true);
-    } else if (info.offset.y > 50) {
+    } else if (info.offset.y > 200) {
+      setSelectedLocationId(null);
+    } else {
       setIsExpanded(false);
     }
   };
