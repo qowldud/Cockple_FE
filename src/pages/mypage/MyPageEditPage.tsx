@@ -50,7 +50,7 @@ export const MyPageEditPage = ({
   streetAddr="ㅈ돋ㅁㅎㄱ",
   // isMainAddr,
   // streetAddr,
-  keywords = ["ㅇ", "ㅇㅎㅁㅈㅎㄷ", "ㅇㅎㅈ", "ㅎㅁㄶ조", "ㅇ", "ㅇㅎㅁㅈㅎㄷ", "ㅇㅎㅈ"],
+  keywords = ["브랜드 스폰","친목","운영진이 게임을 짜드려요","가입비 무료"],
 }: MyPageEditProps) => {
   const navigate = useNavigate();
 
