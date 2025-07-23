@@ -20,7 +20,7 @@ export const PersonalChatDetailPage = () => {
         chatting: "안녕하세요! 개인채팅입니다 :)",
         time: "10:30",
         isMe: false,
-        unreadCount: 1,
+        unreadCount: 0,
       },
       {
         id: 2,
@@ -29,7 +29,7 @@ export const PersonalChatDetailPage = () => {
         chatting: "반가워요!",
         time: "10:35",
         isMe: true,
-        unreadCount: 0,
+        unreadCount: 1,
       },
     ],
   };

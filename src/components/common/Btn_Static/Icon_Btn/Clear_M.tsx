@@ -68,7 +68,7 @@ const Clear_M = ({
       <img
         src={`${currentIcon ? currentIcon : getIcon()}`}
         alt="icon"
-        className="w-[1.5rem] h-[1.5rem] aspect-square"
+        className="w-[1.5rem] h-[1.5rem] min-w-[1.5rem] min-h-[1.5rem] aspect-square"
       />
     </button>
   );
