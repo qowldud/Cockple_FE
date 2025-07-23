@@ -1,7 +1,6 @@
 import { PageHeader } from "../../components/common/system/header/PageHeader";
-import { useForm } from "react-hook-form";
 import TextBox from "../../components/common/Text_Box/TextBox";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import DateAndTimePicker, {
   type DateAndTimePickerHandle,
 } from "../../components/common/Date_Time/DateAndPicker";
@@ -9,39 +8,49 @@ import { useNavigate } from "react-router-dom";
 import { ProgressBar } from "../../components/common/ProgressBar";
 import Btn_Static from "../../components/common/Btn_Static/Btn_Static";
 import InputField from "../../components/common/Search_Filed/InputField";
+import { useOnboardingState } from "../../zustand/useOnboardingStore";
 
 export const OnboardingInfoPage = () => {
   const navigate = useNavigate();
-  const {
-    // data,
-    // register,
-    // handleSubmit,
-    setValue,
-    watch,
-    // getValues,
-    // formState: { errors },
-  } = useForm();
 
-  const [selected, isSelected] = useState<"boy" | "girl" | null>(null);
-  // const [nameInput, setNameInput] = useState("");
-  const [selectedDate, setSelectedDate] = useState("");
+  // const { setValue, watch } = useForm({
+  //   defaultValues: {
+  //     name,
+  //     birthday,
+  //   },
+  // });
+
+  //store
+  const { name, gender, birthday, setTemp } = useOnboardingState();
+  //정보
+  const [localName, setLocalName] = useState(name ?? "");
+  const [selected, isSelected] = useState<"boy" | "girl" | null>(gender);
+  const [selectedDate, setSelectedDate] = useState(birthday ?? "");
+  const [openModal, setOpenModal] = useState(false);
+
+  //초기화
+
+  useEffect(() => {
+    setLocalName(name);
+    isSelected(gender);
+    setSelectedDate(birthday);
+  }, []);
+
   const pickerRef = useRef<DateAndTimePickerHandle>(null);
 
   const handleCloseOverlay = () => {
     if (pickerRef.current) {
       const date = pickerRef.current.getDueString(); // 선택된 값
       setSelectedDate(date); //  input에 넣기
-      setValue("birthday", date, { shouldValidate: true }); //set Value를 통해 useForm에 전달
+      // setValue("birthday", date, { shouldValidate: true }); //set Value를 통해 useForm에 전달
     }
     setOpenModal(false); // 닫기
   };
 
-  const [openModal, setOpenModal] = useState(false);
-
-  const nameValue = watch("name") || "";
-  const birthdayValue = watch("birthday") || "";
+  // const nameValue = watch("name") || "";
+  // const birthdayValue = watch("birthday") || "";
   const isFormValid =
-    nameValue.length > 0 && selected !== null && birthdayValue.length > 0;
+    localName.length > 0 && selected !== null && selectedDate.length > 0;
 
   const handleInputDetected = (e: React.ChangeEvent<HTMLInputElement>) => {
     let input = e.target.value;
@@ -51,7 +60,16 @@ export const OnboardingInfoPage = () => {
       /[^가-힣a-zA-Z\s\u1100-\u11FF\u3130-\u318F\uAC00-\uD7AF]/g,
       "",
     );
-    setValue("name", filtered);
+    setLocalName(filtered);
+  };
+
+  const handleNext = () => {
+    setTemp({
+      name: localName,
+      gender: selected,
+      birthday: selectedDate,
+    });
+    navigate("/onboarding/level");
   };
 
   return (
@@ -71,8 +89,8 @@ export const OnboardingInfoPage = () => {
             //     message: "",
             //   },
             // })}
-            value={nameValue}
-            InputLength={nameValue.length}
+            value={localName}
+            InputLength={localName.length}
             onChange={handleInputDetected}
           />
 
@@ -130,7 +148,7 @@ export const OnboardingInfoPage = () => {
         {/* 버튼 */}
         <div
           className="flex items-center justify-center pt-21 mt-[3px] shrink-0 "
-          onClick={() => navigate("/onboarding/level")}
+          onClick={handleNext}
         >
           <Btn_Static
             label="다음"

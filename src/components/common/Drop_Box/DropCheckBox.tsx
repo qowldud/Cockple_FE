@@ -9,13 +9,12 @@ interface DropBoxCheckBoxProps {
   checkLabel: string;
   value?: string | null;
   onChange?: (value: string | null) => void;
+  checked?: boolean;
 }
 
 export default function DropCheckBox({
   title,
   options,
-  //   defaultValue = "option",
-  //   disabledText = "",
   checkLabel = "Text",
   value,
   onChange,
@@ -93,7 +92,11 @@ export default function DropCheckBox({
           )}
         </div>
 
-        <CheckBoxBtn children={checkLabel} onClick={handleDisableToggle} />
+        <CheckBoxBtn
+          children={checkLabel}
+          onClick={handleDisableToggle}
+          checked={value === "disabled"}
+        />
       </div>
     </div>
   );
