@@ -2,7 +2,7 @@ import React from "react";
 import classNames from "classnames";
 
 interface ImageBoxProps {
-  imageSrc?: string;
+  imageSrc?: string | React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
   disabled?: boolean;
   isSelected: boolean;
   onClick: () => void;
@@ -20,17 +20,14 @@ export const ImageBox = ({
     return (
       <div
         className={classNames(
-          "w-27 h-[7.5rem] bg-white py-6 px-3 rounded-xl shadow-ds100 border border-transparent opacity-50 pointer-events-none cursor-not-allowed"
+          "w-27 h-[7.5rem] bg-white py-6 px-3 rounded-xl shadow-ds100 border border-transparent opacity-50 pointer-events-none cursor-not-allowed",
         )}
       >
-        <div className="w-[5.5rem] h-[5.5rem] flex items-center justify-center rounded-md bg-[#E4E7EA]">
-          {imageSrc && (
-            <img
-              src={imageSrc}
-              alt="preview"
-              className="w-full h-full object-cover rounded-md"
-            />
+       <div className="w-[5.5rem] h-[5.5rem] flex items-center justify-center rounded-md transition-colors duration-150">
+          {imageSrc && typeof imageSrc === "string" && (
+            <img src={imageSrc} alt="preview" className="w-full h-full object-cover rounded-md" />
           )}
+          {imageSrc && typeof imageSrc !== "string" && React.createElement(imageSrc)}
         </div>
       </div>
     );
@@ -48,7 +45,7 @@ export const ImageBox = ({
           "bg-white": !isPressing,
           "border-1 border-[#0B9A4E]": isSelected,
           "border-transparent": !isSelected,
-        }
+        },
       )}
       onClick={onClick}
       onMouseDown={handleMouseDown}
@@ -57,16 +54,15 @@ export const ImageBox = ({
       onTouchStart={handleMouseDown}
       onTouchEnd={handleMouseEnd}
     >
-      <div
-        className="w-[5.5rem] h-[5.5rem] bg-[#E4E7EA] flex items-center justify-center rounded-md transition-colors duration-150"
-      >
-        {imageSrc && (
+      <div className="w-[5.5rem] h-[5.5rem]  flex items-center justify-center rounded-md transition-colors duration-150">
+        {imageSrc && typeof imageSrc === "string" && (
           <img
             src={imageSrc}
             alt="preview"
             className="w-full h-full object-cover rounded-md"
           />
         )}
+        {imageSrc && typeof imageSrc !== "string" && React.createElement(imageSrc)}
       </div>
     </div>
   );

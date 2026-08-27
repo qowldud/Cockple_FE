@@ -9,22 +9,35 @@ import {
   addMonths,
   subMonths,
 } from "date-fns";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import MonthNum from "./MonthNum";
+import ArrowLeft from "@/assets/icons/arrow_left.svg?url";
+import ArrowRight from "@/assets/icons/arrow_right.svg?url";
 
 interface MonthlyCalendarProps {
   selectedDate?: number | string;
   onClick?: (date: number | string) => void;
+  onMonthChange?: (newMonth: Date) => void;
   exerciseDays?: string[]; //날짜 문자열 기반
 }
 
 export default function MonthlyCalendar({
   exerciseDays = [],
   onClick,
+  onMonthChange,
+  selectedDate,
 }: MonthlyCalendarProps) {
-  const [currentDate, setCurrentDate] = useState(new Date());
-  const [selected, setSelected] = useState<string | null>(null);
+  const [currentDate, setCurrentDate] = useState(
+    selectedDate ? new Date(selectedDate) : new Date(),
+  );
+  const [selected, setSelected] = useState<string | null>(
+    selectedDate ? format(selectedDate, "yyyy-MM-dd") : null,
+  );
   const weekDays = ["월", "화", "수", "목", "금", "토", "일"];
+
+  useEffect(() => {
+    onMonthChange?.(currentDate);
+  }, [currentDate, onMonthChange]);
 
   const allDates = eachDayOfInterval({
     start: startOfWeek(startOfMonth(currentDate), { weekStartsOn: 1 }),
@@ -41,14 +54,14 @@ export default function MonthlyCalendar({
       {/* 상단 네비게이션 */}
       <div className="flex justify-between items-center w-full">
         <img
-          src="/src/assets/icons/arrow_left.svg"
+          src={ArrowLeft}
           alt=""
           className="size-4 cursor-pointer"
           onClick={() => setCurrentDate(pre => subMonths(pre, 1))}
         />
         <p className="body-rg-600">{format(currentDate, "yyyy.MM")}</p>
         <img
-          src="/src/assets/icons/arrow_right.svg"
+          src={ArrowRight}
           alt=""
           className="size-4 cursor-pointer"
           onClick={() => setCurrentDate(pre => addMonths(pre, 1))}

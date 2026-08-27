@@ -1,42 +1,26 @@
-import { PageHeader } from "../../components/common/system/header/PageHeader";
+import { PageHeader } from "@/components/common/system/header/PageHeader";
 import { useNavigate } from "react-router-dom";
-import { ProgressBar } from "../../components/common/ProgressBar";
-import Btn_Static from "../../components/common/Btn_Static/Btn_Static";
-import DropCheckBox from "../../components/common/Drop_Box/DropCheckBox";
-import IntroText from "./components/IntroText";
+import { ProgressBar } from "@/components/common/ProgressBar";
+import Btn_Static from "@/components/common/Btn_Static/Btn_Static";
+import DropCheckBox from "@/components/common/Drop_Box/DropCheckBox";
+import IntroText from "@/components/onboarding/IntroText";
 import { useForm } from "react-hook-form";
-import { useOnboardingState } from "../../zustand/useOnboardingStore";
+import { useOnboardingState } from "@/store/useOnboardingStore";
+import { LEVEL_KEY } from "@/constants/options";
 
 export const OnboardingLevelPage = () => {
-  const levelOptions = [
-    "왕초심",
-    "초심",
-    "D조",
-    "C조",
-    "B조",
-    "A조",
-    "준자강",
-    "자강",
-  ];
   const navigate = useNavigate();
   const { level, setTemp } = useOnboardingState();
 
-  const {
-    // register,
-    setValue,
-    watch,
-    // formState: { errors },
-  } = useForm({
+  const { setValue, watch } = useForm({
     defaultValues: {
-      levelOptions: level ?? "",
+      LEVEL_KEY: level ?? "",
     },
   });
 
-  // console.log(level);
-
-  const levelValue = watch("levelOptions") || "";
+  const levelValue = watch("LEVEL_KEY") || "";
   const isFormValid =
-    levelValue === "disabled" || levelOptions.includes(levelValue);
+    levelValue === "disabled" || LEVEL_KEY.includes(levelValue);
 
   const handleNext = () => {
     setTemp({
@@ -46,11 +30,11 @@ export const OnboardingLevelPage = () => {
   };
 
   return (
-    <div className="w-full flex flex-col -mb-8">
+    <div className="w-full flex flex-col -mb-8 pt-14 min-h-dvh">
       <PageHeader title="회원 정보 입력" />
       <ProgressBar width={!isFormValid ? "28" : "48"} />
 
-      <section className="flex gap-8 text-left flex-col pb-67 ">
+      <section className="flex gap-8 text-left flex-col flex-1 ">
         <IntroText
           title="전국 급수를 입력해주세요."
           text1="급수를 입력하면,"
@@ -60,17 +44,17 @@ export const OnboardingLevelPage = () => {
 
         <DropCheckBox
           title="전국 급수"
-          options={levelOptions}
+          options={LEVEL_KEY.slice(1)}
           checkLabel="급수 없음"
           value={levelValue}
           checked={levelValue === "disabled"}
           onChange={val =>
-            setValue("levelOptions", val ?? "", { shouldValidate: true })
+            setValue("LEVEL_KEY", val ?? "", { shouldValidate: true })
           }
         />
       </section>
       <div
-        className="flex items-center justify-center pt-[1px]"
+        className="flex items-center justify-center mb-6"
         onClick={handleNext}
       >
         <Btn_Static

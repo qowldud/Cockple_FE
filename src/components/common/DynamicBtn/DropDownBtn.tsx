@@ -1,5 +1,7 @@
-import type { BaseBtnProps, TextIconStatus } from "../../../types/DynamicBtn";
 import useDynamicStatus from "../../../hooks/useDynamicStatus";
+import arrowDown from "@/assets/icons/arrow_down.svg?url";
+import arrowDownG from "@/assets/icons/arrow_downG.svg?url";
+import type { BaseBtnProps, TextIconStatus } from "../../../types/dynamicBtn";
 
 export default function DropDownBtn({
   children,
@@ -16,25 +18,25 @@ export default function DropDownBtn({
 
   const statusMap: Record<TextIconStatus, { bg?: string; icon: string }> = {
     clicked: {
-      icon: "/src/assets/icons/arrow_down.svg",
+      icon: arrowDown,
     },
     pressing: {
       bg: "bg-gy-100",
-      icon: "/src/assets/icons/arrow_down.svg",
+      icon: arrowDown,
     },
     default: {
-      icon: "/src/assets/icons/arrow_down.svg",
+      icon: arrowDown,
     },
     disabled: {
       bg: "text-gy-400",
-      icon: "/src/assets/icons/arrow_downG.svg",
+      icon: arrowDownG,
     },
   };
   const { bg, icon } = statusMap[status as TextIconStatus];
 
   return (
     <button
-      className={`inline-flex pr-[0.625rem] py-1 pl-4 gap-1 rounded-lg items-center header-h4  ${bg} ${disabled ? "cursor-not-allowed" : "cursor-pointer"}`}
+      className={`inline-flex pr-2.5 py-1 pl-3 gap-1 rounded-lg items-center header-h4 active:bg-gy-100  ${bg} ${disabled ? "cursor-not-allowed" : "cursor-pointer"}`}
       onMouseDown={onMouseDown}
       onMouseUp={onMouseUp}
       onMouseLeave={onMouseLeave}

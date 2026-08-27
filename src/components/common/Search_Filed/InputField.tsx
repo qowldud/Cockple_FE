@@ -1,5 +1,6 @@
 import type { InputHTMLAttributes } from "react";
 import type { FieldValues, UseFormRegister } from "react-hook-form";
+import Circle_RedIcon from "@/assets/icons/cicle_s_red.svg?url";
 
 interface InputFieldProps extends InputHTMLAttributes<HTMLInputElement> {
   labelName?: string;
@@ -8,8 +9,11 @@ interface InputFieldProps extends InputHTMLAttributes<HTMLInputElement> {
   className?: string;
   InputLength?: number | null;
   InputMaxLength?: number | null;
+  isRequired?: boolean;
   onClick?: () => void;
   register?: UseFormRegister<FieldValues>;
+  disabled?: boolean;
+  isTextArea?: boolean;
 }
 
 export default function InputField({
@@ -20,22 +24,42 @@ export default function InputField({
   register,
   InputLength,
   InputMaxLength = 17,
+  disabled,
+  isRequired = true,
+  isTextArea = false,
   ...props
 }: InputFieldProps) {
   return (
     <div className="text-left flex flex-col gap-2 relative  pb-5">
       <div className="flex px-1 gap-[2px] items-center">
-        {labelName && <p className="header-h5">{labelName}</p>}
-        <img src="/src/assets/icons/cicle_s_red.svg" alt="icon-cicle" />
+        {labelName && (
+          <p
+            className={`header-h5 ${disabled ? "text-gy-600" : "text-black"} `}
+          >
+            {labelName}
+          </p>
+        )}
+        {isRequired && <img src={Circle_RedIcon} alt="icon-cicle" />}
       </div>
       <div className="relative">
-        <input
-          type="text"
-          className={`w-full rounded-xl  border py-[0.625rem] pl-3 pr-15 body-md-500 focus:outline-none  ${errorMsg ? "!border-rd-500" : "focus:border-active border-gray-200"} ${className}`}
-          {...register}
-          {...props}
-          placeholder={placeholder}
-        />
+        {isTextArea ? (
+          <textarea
+            className={`w-full rounded-xl resize-none border py-[0.625rem] pl-3 pr-17 body-md-500 focus:outline-none h-25 ${errorMsg ? "!border-rd-500" : "focus:border-active border-gray-200"} ${className} ${disabled ? "!border-gray-200 cursor-not-allowed" : ""}`}
+            {...register}
+            {...(props as React.TextareaHTMLAttributes<HTMLTextAreaElement>)}
+            placeholder={placeholder}
+            disabled={disabled}
+          />
+        ) : (
+          <input
+            type="text"
+            className={`w-full rounded-xl  border py-[0.625rem] pl-3 pr-15 body-md-500 focus:outline-none  ${errorMsg ? "!border-rd-500" : "focus:border-active border-gray-200"} ${className} ${disabled ? "!border-gray-200 cursor-not-allowed" : ""}`}
+            {...register}
+            {...props}
+            placeholder={placeholder}
+            disabled={disabled}
+          />
+        )}
         {typeof InputLength === "number" && (
           <p className="absolute right-2 top-3 body-rg-500 text-gy-400">
             ({InputLength} / {InputMaxLength} )

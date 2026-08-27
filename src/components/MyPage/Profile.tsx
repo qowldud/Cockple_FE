@@ -1,13 +1,14 @@
 import { useState, useEffect } from "react";
 import Female from "../../assets/icons/female.svg?react";
 import Male from "../../assets/icons/male.svg?react";
+import BaseProfileImg from "@/assets/images/base_profile_img.png?url";
 
 interface ProfileProps {
   name: string;
-  gender: "female" | "male";
+  gender: "FEMALE" | "MALE";
   level: string;
   birth?: string;
-  profileImage: File | null | undefined;
+  profileImage: File | string | null | undefined;
 }
 
 export const Profile = ({
@@ -17,7 +18,7 @@ export const Profile = ({
   birth,
   profileImage,
 }: ProfileProps) => {
-
+  
   //이미지 File로 받기 위한 처리부분
   const [imageUrl, setImageUrl] = useState<string>("");
   useEffect(() => {
@@ -28,16 +29,15 @@ export const Profile = ({
       return () => {
         URL.revokeObjectURL(objectUrl);
       };
-    } else {
-      setImageUrl("/default-profile.png"); 
+    } else if (typeof profileImage === "string") {
+      setImageUrl(profileImage);
     }
   }, [profileImage]);
-
 
   return (
     <div className="w-[21.44rem] h-[4.75rem] bg-white rounded-[1rem] px-4 py-2 flex items-center gap-[0.8125rem]">
       <img
-        src={imageUrl || "/default-profile.png"}
+        src={imageUrl || BaseProfileImg}
         alt="프로필 이미지"
         className="w-[4.75rem] h-[4.75rem] rounded-full object-cover"
       />
@@ -45,7 +45,7 @@ export const Profile = ({
       <div className="flex flex-col justify-center gap-[0.25rem]">
         <div className="flex items-center gap-1">
           <p className="header-h5 text-black">{name}</p>
-          {gender === "female" ? (
+          {gender === "FEMALE" ? (
             <Female className="w-[1rem] h-[1rem]" />
           ) : (
             <Male className="w-[1rem] h-[1rem]" />

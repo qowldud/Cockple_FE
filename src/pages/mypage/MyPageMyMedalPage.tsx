@@ -5,84 +5,107 @@ import Grad_GR400_L from "../../components/common/Btn_Static/Text/Grad_GR400_L";
 import { MyMedal } from "../../components/common/contentcard/MyMedal";
 import { MyPage_Medal2 } from "../../components/common/contentcard/MyPage_Medal2";
 import { MyMedal_None } from "../../components/MyPage/MyMedal_None";
+import { getMyMedals, getMyContestList } from "../../api/contest/contestmy";
+import type { MedalItem } from "../../api/contest/contestmy";
+import BaseProfileImg from "../../assets/images/base_profile_img.png?url";
+import { LoadingSpinner } from "../../components/common/LoadingSpinner";
 
-interface MedalItem {
+interface MedalUIItem {
+  contentId: number;
   title: string;
   date: string;
-  medalImageSrc: string;
-  isAwarded: boolean;
+  medalImageSrc: string | null;
 }
 
-interface MyMedalProps {
-  name: string;    
-  gender: string;
-  group: string;
-  birth: string;
-  imageSrc: string;
+const MyPageMyMedalPage = () => {
+  const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(true);
 
-  myMedalTotal?: number;
-  goldCount?: number;
-  silverCount?: number;
-  bronzeCount?: number;
-  disabled?: boolean;
+  const [medalData, setMedalData] = useState<{
+    myMedalTotal: number;
+    goldCount: number;
+    silverCount: number;
+    bronzeCount: number;
+    medals: MedalItem[];
+  } | null>(null);
 
-  medals: MedalItem[];
-}
-
-const dummyMedals: MedalItem[] = [
-  {
-    title: "2024년 동네 마라톤 대회",
-    date: "2024.05.10",
-    medalImageSrc: "/images/medal_gold.png",
-    isAwarded: true,
-  },
-  {
-    title: "주말 배드민턴 친선전",
-    date: "2024.06.15",
-    medalImageSrc: "/images/medal_silver.png",
-    isAwarded: true,
-  },
-  {
-    title: "새벽 조깅 챌린지",
-    date: "2024.07.08",
-    medalImageSrc: "/images/medal_none.png",
-    isAwarded: false,
-  },
-  {
-    title: "수영장 자유형 기록 측정",
-    date: "2024.07.12",
-    medalImageSrc: "/images/medal_none.png",
-    isAwarded: false,
-  },
-];
-
-export const MyPageMyMedalPage = ({
-  name,
-  gender,
-  group,
-  birth,
-  imageSrc,
-
-  myMedalTotal = 0,
-  goldCount = 0,
-  silverCount = 0,
-  bronzeCount = 0,
-  disabled = false,
-  medals = dummyMedals, 
-  // medals = [],
-}: MyMedalProps) => {
-    const navigate = useNavigate();
+  const [contestList, setContestList] = useState<MedalUIItem[]>([]);
   const [selectedTab, setSelectedTab] = useState<"전체" | "미입상 기록">("전체");
 
-  const filteredList = medals.filter((item) => {
-    if (selectedTab === "전체") return true;
-    if (selectedTab === "미입상 기록") return !item.isAwarded;
-    return true;
-  });
+  // 메달 정보 조회
+  const fetchMedals = async () => {
+    try {
+      const response = await getMyMedals();
+      const medals = response.medals ?? [];
+      setMedalData({ ...response, medals });
+    } catch (error) {
+      console.error("메달 정보 조회 실패", error);
+    }
+  };
+
+  useEffect(() => {
+    const loadData = async () => {
+      setIsLoading(true);
+      await Promise.all([fetchMedals(), fetchContests()]);
+      setIsLoading(false);
+    };
+    loadData();
+  }, []);
+
+  // 대회 리스트 조회
+  const fetchContests = async () => {
+    try {
+      const records = await getMyContestList();
+      const transformed: MedalUIItem[] = records.map((item) => ({
+        contentId: item.contestId,
+        title: item.contestName,
+        date: new Date(item.date).toLocaleDateString("ko-KR"),
+        medalImageSrc: item.medalImgUrl ?? BaseProfileImg,
+      }));
+      setContestList(transformed);
+    } catch (err) {
+      console.error("대회 기록 조회 실패", err);
+    }
+  };
 
   const onBackClick = () => {
     navigate("/myPage");
   };
+
+  if (isLoading) {
+    return (
+      <div className="flex flex-col items-center justify-center h-screen">
+        <div className="translate-y-10">
+          <LoadingSpinner />
+        </div>
+      </div>
+    );
+  }
+
+  if (!medalData) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <p>메달 정보를 불러올 수 없습니다.</p>
+      </div>
+    );
+  }
+
+  const shownList: MedalUIItem[] =
+    selectedTab === "전체"
+      ? contestList.map((item) => ({
+          contentId: item.contentId,
+          title: item.title,
+          date: item.date,
+          medalImageSrc: item.medalImageSrc ?? BaseProfileImg,
+        }))
+      : medalData.medals
+          .filter((item) => !item.isAwarded)
+          .map((item) => ({
+            contentId: item.id,
+            title: item.title,
+            date: new Date(item.date).toLocaleDateString("ko-KR"),
+            medalImageSrc: item.medalImgUrl ?? BaseProfileImg,
+          }));
 
   return (
     <div className="flex flex-col min-h-[100dvh] w-full max-w-[23.4375rem] mx-auto bg-white">
@@ -91,66 +114,68 @@ export const MyPageMyMedalPage = ({
       </div>
 
       <div className="flex flex-col gap-1 flex-grow overflow-y-auto">
-        {filteredList.length > 0 && (
-          <>
-            <MyPage_Medal2
-              myMedalTotal={myMedalTotal}
-              goldCount={goldCount}
-              silverCount={silverCount}
-              bronzeCount={bronzeCount}
-              disabled={disabled}
-            />
+        {/* 메달 현황 */}
+        <MyPage_Medal2
+          myMedalTotal={medalData.myMedalTotal}
+          goldCount={medalData.goldCount}
+          silverCount={medalData.silverCount}
+          bronzeCount={medalData.bronzeCount}
+        />
 
-            <div className="w-full mb-4">
-              <div className="flex gap-4 px-4 relative h-10">
-                <div className="absolute bottom-0 left-0 right-0 h-[0.125rem] bg-[#F4F5F6]" />
-                {["전체", "미입상 기록"].map((tab) => (
-                  <button
-                    key={tab}
-                    onClick={() => setSelectedTab(tab as "전체" | "미입상 기록")}
-                    className="flex flex-col items-center w-max relative"
-                  >
-                    <span className="header-h5 inline-block">{tab}</span>
-                    {selectedTab === tab && (
-                      <span
-                        className="absolute bottom-0 h-[0.125rem] bg-[#1ABB65] rounded-full transition-all duration-150"
-                        style={{ width: `${tab.length + 2}ch` }}
-                      />
-                    )}
-                  </button>
-                ))}
-              </div>
-            </div>
-          </>
-        )}
+        <div className="w-full mb-4">
+          <div className="flex gap-4 px-4 relative h-10">
+            <div className="absolute bottom-0 left-0 right-0 h-[0.125rem] bg-[#F4F5F6]" />
+            {["전체", "미입상 기록"].map((tab) => (
+              <button
+                key={tab}
+                onClick={() => setSelectedTab(tab as "전체" | "미입상 기록")}
+                className="flex flex-col items-center w-max relative"
+              >
+                <span className="header-h5 inline-block">{tab}</span>
+                {selectedTab === tab && (
+                  <span
+                    className="absolute bottom-0 h-[0.125rem] bg-[#1ABB65] rounded-full transition-all duration-150"
+                    style={{ width: `${tab.length + 2}ch` }}
+                  />
+                )}
+              </button>
+            ))}
+          </div>
+        </div>
 
-        {filteredList.length > 0 ? (
-          filteredList.map((item, idx) => (
-            <React.Fragment key={idx}>
-              <MyMedal
-                title={item.title}
-                date={item.date}
-                medalImageSrc={item.medalImageSrc}
-              />
-              <div className="border-t-[#E4E7EA] border-t-[0.0625rem] mx-1" />
-            </React.Fragment>
-          ))
+        {/* 선택된 탭에 따른 리스트 */}
+        {shownList.length > 0 ? (
+          shownList.map((item) => {
+            return (
+              <React.Fragment key={item.contentId}>
+                <MyMedal
+                  contentId={item.contentId}
+                  title={item.title}
+                  date={item.date}
+                  medalImageSrc={item.medalImageSrc ?? BaseProfileImg}
+                />
+                <div className="border-t-[#E4E7EA] border-t-[0.0625rem] mx-1" />
+              </React.Fragment>
+            );
+          })
         ) : (
           <div className="flex flex-col h-full items-center justify-center">
             <MyMedal_None />
           </div>
         )}
 
-        {filteredList.length > 0 && (
-        <div className="mt-8">
-          <Grad_GR400_L
-            label="대화 기록 추가하기"
-            onClick={() => navigate("/mypage/mymedal/add")}
-          />
-        </div>
+        {/* 대회 기록 추가하기 버튼 */}
+        {shownList.length > 0 && (
+          <div className="mt-8">
+            <Grad_GR400_L
+              label="대회 기록 추가하기"
+              onClick={() => navigate("/mypage/mymedal/add")}
+            />
+          </div>
         )}
       </div>
     </div>
-
   );
 };
+
+export default MyPageMyMedalPage;

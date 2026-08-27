@@ -1,33 +1,62 @@
 //채팅창 말풍선 컴포넌트
 
-import React, { useState, useEffect } from "react";
-import type { ChattingComponentProps } from "../../../types/chat";
+import React, { useState, useEffect, useMemo } from "react";
+import { useNavigate } from "react-router-dom";
+import type { ChatMessageResponse, ImageInfo } from "../../../types/chat";
 
-interface Props extends ChattingComponentProps {
-  onImageClick?: (src: string) => void;
+import BaseProfileImage from "@/assets/images/base_profile_img.png";
+
+import clsx from "clsx"; // 상단에 추가
+import { ChatWithDrawnModal } from "@/components/chat/ChatWithDrawnModal";
+
+interface ChattingComponentProps {
+  message: ChatMessageResponse;
+  isMe: boolean;
+  unreadCount?: number;
+  isAloneWithdrawn?: boolean;
+  //🌟onImageClick?: (src: string) => void;
+  onImageClick?: (p: { url: string; isEmoji: boolean }) => void;
+  time: string;
 }
 
+// 이미지 URL 판별 (이모티콘 TEXT 보정용)
+// const looksLikeImageUrl = (u?: string | null) =>
+//   !!u && /^https?:\/\/.+\.(png|jpe?g|gif|webp|jfif|svg)$/i.test(u);
+
 const ChattingComponent = ({
-  nickname,
-  profile,
-  chatting,
-  time,
+  message,
   isMe,
+  isAloneWithdrawn,
   unreadCount,
-  imageUrls = [],
   onImageClick,
-}: Props) => {
+  time,
+}: ChattingComponentProps) => {
   //chatNick 상태 변수와 setChatNick 함수 정의
+  const navigate = useNavigate();
   const [chatNick, setChatNick] = useState("");
+  //탈퇴시 modal처리 ,
+  const [modal, setModal] = useState(false);
+
+  //회원탈퇴여부
+  const isWithdrawn = message.isSenderWithdrawn;
+  const handleIsUser = () => {
+    if (message.senderId == null) return;
+    if (!isWithdrawn) {
+      navigate(`/mypage/profile/${message.senderId}`);
+    } else {
+      setModal(true);
+    }
+  };
 
   //isMe와 nickname에 따라 chatNick을 설정
   useEffect(() => {
-    setChatNick(isMe ? "나" : nickname);
-  }, [isMe, nickname]);
+    setChatNick(isMe ? "나" : message.senderName);
+  }, [isMe, message.senderName]);
 
-  //메세지 포맷팅 함수 정의 (개행 문자를 <br/>로 변환)
-  const formatMessage = (text: string) => {
-    return text.split("\n").map((line, index) => (
+  const formatMessage = (raw?: string | null) => {
+    const text = raw ?? ""; // null/undefined 방어
+    if (text === "") return null; // 내용 없으면 아무것도 렌더하지 않음
+    return text.split(/\r?\n/).map((line, index) => (
       <React.Fragment key={index}>
         {line}
         <br />
@@ -35,19 +64,107 @@ const ChattingComponent = ({
     ));
   };
 
-  const renderImageList = () => (
-    <div className="flex flex-wrap gap-2 mt-1">
-      {imageUrls.map((src, idx) => (
-        <img
-          key={idx}
-          src={src}
-          alt={`img-${idx}`}
-          className="w-40 h-40 object-cover rounded-lg cursor-pointer"
-          onClick={() => onImageClick?.(src)}
-        />
-      ))}
-    </div>
-  );
+  const imgs = useMemo<ImageInfo[]>(() => message.images ?? [], [message]);
+  const hasImages = imgs.length > 0;
+
+  const ImageTiles: React.FC<{
+    images: ImageInfo[];
+    onClick?: (p: { url: string; isEmoji: boolean }) => void;
+  }> = ({ images, onClick }) => {
+    const count = images.length;
+
+    if (count === 1) {
+      const img = images[0];
+      //🌟
+      const isEmoji = !!img.isEmoji;
+
+      // 이모티콘: 고정 소형(원하면 56px/64px 등으로 바꿔도 됨)
+      if (isEmoji) {
+        return (
+          <button
+            type="button"
+            className="block focus:outline-none"
+            //onClick={() => onClick?.({ url: img.imageUrl, isEmoji })}
+            aria-label="emoji-1"
+          >
+            <img
+              src={img.imageUrl}
+              alt="emoji-1"
+              className="w-[10rem] h-[10rem] rounded-xl object-contain"
+              loading="lazy"
+              draggable={false}
+            />
+          </button>
+        );
+      }
+
+      return (
+        <button
+          type="button"
+          className="block max-w-[15rem] focus:outline-none"
+          onClick={() => onClick?.({ url: img.imageUrl, isEmoji: img.isEmoji })}
+          aria-label="image-1"
+        >
+          <img
+            src={img.imageUrl}
+            alt="img-1"
+            className="w-full h-auto object-contain"
+            loading="lazy"
+          />
+        </button>
+      );
+    }
+
+    // 2/4장: 2열 그리드, 3/5장 이상: 3열 그리드
+    //const cols = count === 2 || count === 4 ? 2 : 3;
+    const colsClass =
+      count === 2 || count === 4 ? "grid-cols-2" : "grid-cols-3";
+
+    return (
+      // <div className={`grid grid-cols-${cols} gap-2 max-w-[15rem]`}>
+      <div
+        className={clsx(
+          "grid gap-2 w-full max-w-[15rem] min-h-[1px] [contain:layout]", // ★ w-full/min-h/contain 추가
+          colsClass, // ★ 빌드 타임 클래스 보장
+        )}
+      >
+        {images.map((img, idx) => (
+          <button
+            key={idx}
+            type="button"
+            className="block focus:outline-none"
+            onClick={() =>
+              onClick?.({ url: img.imageUrl, isEmoji: img.isEmoji })
+            }
+            aria-label={`image-${idx + 1}`}
+          >
+            <img
+              src={img.imageUrl}
+              alt={`img-${idx + 1}`}
+              className="w-full aspect-square object-cover rounded-lg"
+              loading="lazy"
+            />
+          </button>
+        ))}
+      </div>
+    );
+  };
+
+  if (message.messageType === "SYSTEM") {
+    return (
+      <div className="w-full flex justify-center my-2">
+        <span className="text-gy-700 body-sm-500">
+          {formatMessage(message.content)}
+        </span>
+      </div>
+    );
+  }
+
+  //🌟
+  const profileSrc =
+    message.senderProfileImageUrl && message.senderProfileImageUrl.trim()
+      ? message.senderProfileImageUrl
+      : BaseProfileImage;
 
   return (
     <div>
@@ -57,50 +174,56 @@ const ChattingComponent = ({
           id="me"
           className="flex justify-end items-end gap-2 shrink-0 self-stretch"
         >
-          {/* 텍스트 메시지 말풍선 */}
-          {chatting && (
-            <>
-              <div className="flex flex-col justify-center items-end body-sm-500">
-                {unreadCount !== undefined && unreadCount > 0 && (
-                  <span className="text-gr-500">{unreadCount}</span>
-                )}
-                <span className="text-gy-700">{time}</span>
-              </div>
-              <div className="mr-3">
-                <div
-                  id="chatting"
-                  className="flex max-w-[15rem] px-3 py-2 text-left items-start gap-[0.625rem] bg-white border-round"
-                >
-                  <span className="body-rg-500 text-black">
-                    {formatMessage(chatting)}
-                  </span>
-                </div>
-              </div>
-            </>
-          )}
+          {/* 텍스트/이미지 공통 시간+읽음 */}
+          <div className="flex flex-col justify-center items-end body-sm-500">
+            {unreadCount && unreadCount > 0 && (
+              <span className="text-gr-500">{unreadCount}</span>
+            )}
+            <span className="text-gy-700">{time}</span>
+          </div>
 
-          {/* 이미지 메시지 */}
-          {imageUrls.length > 0 && (
-            <>
-              <div className="flex flex-col justify-center items-end body-sm-500">
-                {unreadCount !== undefined && unreadCount > 0 && (
-                  <span className="text-gr-500">{unreadCount}</span>
-                )}
-                <span className="text-gy-700">{time}</span>
+          <div className="mr-3">
+            {/* TEXT */}
+            {/* TEXT: content가 있고, 이미지가 없을 때만 말풍선 렌더 */}
+            {(message.content ?? "") !== "" && !hasImages && (
+              <div
+                id="chatting"
+                className="flex max-w-[15rem] px-3 py-2 text-left items-start gap-[0.625rem] bg-white border-round"
+              >
+                <span
+                  className="body-rg-500 break-words"
+                  style={{
+                    wordBreak: "break-word",
+                    overflowWrap: "break-word",
+                  }}
+                >
+                  {formatMessage(message.content)}
+                </span>
               </div>
-              <div className="mr-3 flex flex-col items-end gap-1">
-                <div className="flex flex-wrap gap-2">{renderImageList()}</div>
+            )}
+
+            {/*IMAGE*/}
+            {/* IMAGE: messageType이 TEXT더라도 imgs가 있으면 이미지 출력 */}
+            {hasImages && (
+              <div className="mr-3 flex flex-col items-end max-w-[15rem] min-w-0 min-h-[1px] [contain:layout]">
+                <ImageTiles images={imgs} onClick={onImageClick} />
               </div>
-            </>
-          )}
+            )}
+          </div>
         </div>
       ) : (
+        // 상대 메시지
         <div id="you" className="flex items-start gap-3 self-stretch">
           <div className="py-2 items-center justify-center gap-[0.625rem]">
             <img
-              src={profile}
+              //🌟src={message.senderProfileImageUrl}
+              src={profileSrc}
               alt="profile"
-              className="w-10 h-10 aspect-square rounded-[2.75rem]"
+              className={clsx(
+                "w-10 h-10 aspect-square rounded-[2.75rem] cursor-pointer",
+                (isAloneWithdrawn || isWithdrawn) && "opacity-20",
+              )}
+              onClick={handleIsUser}
             />
           </div>
           <div className="flex flex-col items-start gap-1">
@@ -108,33 +231,24 @@ const ChattingComponent = ({
               {chatNick}
             </p>
 
-            {/* 텍스트 메시지 */}
-            {chatting && (
-              <>
-                <div className="flex items-end gap-2 self-stretch">
-                  <div
-                    id="chatting"
-                    className="flex max-w-[15rem] px-3 py-2 items-start text-left gap-[0.625rem] bg-white border-round"
+            {/* TEXT: content가 있고, 이미지가 없을 때만 말풍선 렌더 */}
+            {(message.content ?? "") !== "" && !hasImages && (
+              <div className="flex items-end gap-2 self-stretch">
+                <div
+                  id="chatting"
+                  className="flex max-w-[15rem] px-3 py-2 items-start text-left gap-[0.625rem] bg-white border-round"
+                >
+                  <span
+                    className="body-rg-500 break-words"
+                    style={{
+                      wordBreak: "break-word",
+                      overflowWrap: "break-word",
+                    }}
                   >
-                    <span className="body-rg-500">
-                      {formatMessage(chatting)}
-                    </span>
-                  </div>
-                  <div className="flex flex-col justify-center items-start body-sm-500">
-                    {unreadCount !== undefined && unreadCount > 0 && (
-                      <span className="text-gr-500">{unreadCount}</span>
-                    )}
-                    <span className="text-gy-700">{time}</span>
-                  </div>
+                    {formatMessage(message.content)}
+                  </span>
                 </div>
-              </>
-            )}
-
-            {/* 이미지 메시지 */}
-            {imageUrls.length > 0 && (
-              <div className="flex items-end flex-wrap gap-2 self-stretch">
-                {renderImageList()}
-                <div className="flex flex-col justify-center items-start body-sg-500">
+                <div className="flex flex-col justify-center items-start body-sm-500">
                   {unreadCount !== undefined && unreadCount > 0 && (
                     <span className="text-gr-500">{unreadCount}</span>
                   )}
@@ -142,9 +256,18 @@ const ChattingComponent = ({
                 </div>
               </div>
             )}
+
+            {/*IMAGE*/}
+            {/* IMAGE: messageType이 TEXT더라도 imgs가 있으면 이미지 출력 */}
+            {hasImages && (
+              <div className="mr-3 flex flex-col items-end max-w-[15rem] min-w-0 min-h-[1px] [contain:layout]">
+                <ImageTiles images={imgs} onClick={onImageClick} />
+              </div>
+            )}
           </div>
         </div>
       )}
+      {modal && <ChatWithDrawnModal onClose={() => setModal(false)} />}
     </div>
   );
 };

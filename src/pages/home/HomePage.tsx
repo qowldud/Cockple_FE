@@ -1,37 +1,20 @@
 import { useEffect, useState } from "react";
-import { MainHeader } from "../../components/common/system/header/MainHeader";
-import { WorkoutDayEntry } from "../../components/home/WorkoutDayEntry";
-import { Footer } from "../../components/common/system/Footer";
-import { dailyExerciseData } from "../../components/home/mock/homeMock";
-import { MyGroupWorkoutSection } from "../../components/home/MyGroupWorkoutSection";
-import { RecommendedWorkoutSection } from "../../components/home/RecommendedWorkoutSection";
-import { FloatingButton } from "../../components/common/system/FloatingButton";
+import { MyGroupWorkoutSection } from "@/components/home/MyGroupWorkoutSection";
+import { RecommendedWorkoutSection } from "@/components/home/RecommendedWorkoutSection";
+import { FloatingButton } from "@/components/common/system/FloatingButton";
 import MapIcon from "@/assets/icons/map_white.svg";
 import { useNavigate } from "react-router-dom";
-import WeeklyCalendar from "../../components/common/Date_Time/WeeklyCalendar";
-
-export type DailyExerciseItem = {
-  id: number;
-  title: string;
-  location: string;
-  time: string;
-  imgSrc: string;
-};
-
-export type GroupExerciseItem = {
-  id: number;
-  title: string;
-  location: string;
-  date: string;
-  time: string;
-  imgSrc: string;
-};
+import { MyExerciseCalendar } from "@/components/home/MyExerciseCalendar";
+import { MainHeader } from "@/components/common/system/header/MainHeader";
+import { Footer } from "@/components/common/system/Footer";
+import { useFcmToken } from "@/hooks/useFcmToken";
 
 export const HomePage = () => {
-  const exerciseData = dailyExerciseData;
   const navigate = useNavigate();
+  const [count, setCount] = useState<number | null>(null);
   const [isScrolled, setIsScrolled] = useState(false);
   const [rightOffset, setRightOffset] = useState(0);
+  useFcmToken();
 
   useEffect(() => {
     const updateOffset = () => {
@@ -64,7 +47,7 @@ export const HomePage = () => {
       />
       {/* 배경색 적용 */}
       <div
-        className="w-full min-h-94 flex flex-col gap-vertical-section"
+        className="w-full flex flex-col gap-vertical-section"
         style={{
           background: "var(--color-gradient-home-header)",
           width: "calc(100% + 2rem)",
@@ -74,16 +57,17 @@ export const HomePage = () => {
           {/* 문구 */}
           <div className="flex flex-col items-start pb-5">
             <div className="body-lg-700">
-              {exerciseData ? (
+              {count ? (
                 <div>
-                  오늘의 운동은<span className="text-gr-600 mx-1">2</span>개!
+                  오늘의 운동은<span className="text-gr-600 mx-1">{count}</span>
+                  개!
                 </div>
               ) : (
                 <div>오늘은 쉬는 날!</div>
               )}
             </div>
             <div className="body-md-700">
-              {exerciseData ? (
+              {count ? (
                 <div>화이팅 넘치는 하루가 될 거에요!</div>
               ) : (
                 <div>내일 더 힘차게 달려봐요!</div>
@@ -91,13 +75,7 @@ export const HomePage = () => {
             </div>
           </div>
 
-          {/* 달력 */}
-          <div className="w-full h-17">
-            <WeeklyCalendar />
-          </div>
-
-          {/* 해당 날짜 운동 */}
-          <WorkoutDayEntry exerciseData={exerciseData ?? null} />
+          <MyExerciseCalendar setCount={setCount} />
         </div>
       </div>
 

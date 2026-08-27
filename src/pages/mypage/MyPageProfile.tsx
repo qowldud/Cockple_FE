@@ -1,91 +1,155 @@
 import { MyPage_Text } from "../../components/common/contentcard/MyPage_Text";
 import { Profile } from "../../components/MyPage/Profile";
-import { MyPage as MyPageContentcard } from "../../components/common/contentcard/MyPage";
-import Grad_GR400_L from "../../components/common/Btn_Static/Text/Grad_GR400_L";
 import { PageHeader } from "../../components/common/system/header/PageHeader";
-import { useNavigate } from "react-router-dom"; 
-import { useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { MyPage_Profile_Medal } from "../../components/common/contentcard/MyPage_Profile_Medal";
-import type { GroupMProps } from "./MyPageMyGroupPage"; 
+import { getProfile } from "../../api/member/profile";
+import { getOtherUserMedals } from "../../api/contest/member";
+import type { ProfileResponseData } from "../../api/member/profile";
+import { useState, useEffect } from "react";
+import Grad_GR400_L from "@/components/common/Btn_Static/Text/Grad_GR400_L";
+import { createDirectChat } from "@/api/chat/direct";
 
-interface MyPageProps {
-  name?: string;
-  gender?: "female" | "male";
-  level?: string;
-  birth?: string;
-  profileImage?: File;
-
-  myGroupCount?: number;  
-  // myExerciseCount?: number; 
-
-  myMedalTotal?: number;
-  goldCount?: number;
-  silverCount?: number;
-  bronzeCount?: number;
-  disabled?: boolean;
-}
-export const MyPageProfile = ({
-  // name,
-  // gender,
-  // level,
-  // birth,
-  // profileImage,
-  name = "김태연",
-  gender = "female",
-  level = "중급",
-  birth = "1990-04-18",
-  profileImage ,
-
-  myMedalTotal = 0,
-  goldCount = 0,
-  silverCount = 0,
-  bronzeCount = 0,
-  myGroupCount = 0,      
-  myExerciseCount = 0,   
-  disabled = false,
-}: MyPageProps) => {
-
+export const MyPageProfile = () => {
+  const { memberId } = useParams<{ memberId: string }>();
+  const numericMemberId = memberId ? Number(memberId) : null;
   const navigate = useNavigate();
 
-  const dummyGroups: GroupMProps[] = [
-  { id: 1, groupName: "운동모임 A", groupImage: "", location: "서울", femaleLevel: "초급", maleLevel: "중급", nextActivitDate: "2025-07-19", upcomingCount: 5, isMine: true },
-  { id: 2, groupName: "요가모임 B", groupImage: "", location: "부산", femaleLevel: "중급", maleLevel: "중급", nextActivitDate: "2025-07-20", upcomingCount: 2, isMine: false },
-  { id: 3, groupName: "축구모임 C", groupImage: "", location: "대전", femaleLevel: "고급", maleLevel: "고급", nextActivitDate: "2025-07-21", upcomingCount: 7, isMine: true },
-  ];
-  const [groups, setGroups] = useState<GroupMProps[]>(dummyGroups);
+  const [profileData, setProfileData] = useState<ProfileResponseData | null>(
+    null,
+  );
+  const [medalData, setMedalData] = useState({
+    myMedalTotal: 0,
+    goldCount: 0,
+    silverCount: 0,
+    bronzeCount: 0,
+  });
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (numericMemberId === null || Number.isNaN(numericMemberId)) {
+      setError("잘못된 회원 ID입니다.");
+      setLoading(false);
+      return;
+    }
+
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        // 다른 회원 프로필 조회
+        const profile = await getProfile(numericMemberId);
+        // myPartyCnt → myGroupCount 매핑
+        const mappedProfile = {
+          ...profile,
+          myGroupCount: profile.myPartyCnt,
+        };
+        setProfileData(mappedProfile);
+
+        // 다른 회원 메달 조회
+        const medals = await getOtherUserMedals(numericMemberId);
+        setMedalData({
+          myMedalTotal: medals.myMedalTotal,
+          goldCount: medals.goldCount,
+          silverCount: medals.silverCount,
+          bronzeCount: medals.bronzeCount,
+        });
+      } catch (e: any) {
+        setError(e.message || "데이터를 불러오는 중 오류가 발생했습니다.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [numericMemberId]);
+
+  // 급수
+  function convertLevel(level: string): string {
+    const levelMap: Record<string, string> = {
+      EXPERT: "자강",
+      SEMI_EXPERT: "준자강",
+      A: "A조",
+      B: "B조",
+      C: "C조",
+      D: "D조",
+      BEGINNER: "초심",
+      NOVICE: "왕초심",
+      NONE: "급수 없음",
+    };
+    return level ? (levelMap[level.toUpperCase()] ?? "급수 없음") : "급수 없음";
+  }
+  const handleChatClick = async () => {
+    if (!numericMemberId) return;
+
+    try {
+      const res = await createDirectChat(numericMemberId);
+      if (res.success && res.data?.chatRoomId) {
+        navigate(`/chat/personal/${res.data.chatRoomId}`, {
+          state: { chatName: profileData?.memberName },
+        });
+      } else {
+        console.error("채팅방 생성 실패", res);
+      }
+    } catch (err: any) {
+      console.error(err);
+    }
+  };
+
+  if (loading) return <div className="text-center py-10">로딩 중...</div>;
+  if (error)
+    return <div className="text-center py-10 text-red-500">에러: {error}</div>;
 
   return (
-    <div className="flex flex-col pb-26 overflow-auto">
-      <div className="gap-[1.25rem]">
-        <PageHeader title="프로필" />
-        <Profile
-          name={name}
-          gender={gender}
-          level={level}
-          birth={birth}
-          profileImage={profileImage}
-        />
+    <div className="flex flex-col overflow-hidden w-full h-screen relative">
+      <div className="flex flex-col gap-[1.25rem] w-full">
+        {/* 1. 상단 헤더 영역 */}
+        <div className="w-full">
+          <PageHeader title={profileData?.memberName || "프로필"} />
+        </div>
+
+        <div className="w-full flex flex-col items-center overflow-y-auto overflow-x-hidden px-4 pb-24">
+          <Profile
+            name={profileData?.memberName || ""}
+            gender={profileData?.gender === "MALE" ? "MALE" : "FEMALE"}
+            level={convertLevel(profileData?.level || "")}
+            birth={profileData?.birth || ""}
+            profileImage={profileData?.profileImgUrl || ""}
+          />
+
+          <div className="my-8 flex flex-col gap-4">
+            <MyPage_Text
+              textLabel="모임"
+              numberValue={profileData?.myGroupCount ?? 0}
+              onClick={() =>
+                navigate(`/mypage/mygroup?memberId=${numericMemberId}`)
+              }
+            />
+            <MyPage_Profile_Medal
+              myMedalTotal={medalData.myMedalTotal}
+              goldCount={medalData.goldCount}
+              silverCount={medalData.silverCount}
+              bronzeCount={medalData.bronzeCount}
+              onClick={() =>
+                navigate(`/mypage/profile/medal/${numericMemberId}`, {
+                  state: {
+                    myMedalTotal: medalData.myMedalTotal,
+                    goldCount: medalData.goldCount,
+                    silverCount: medalData.silverCount,
+                    bronzeCount: medalData.bronzeCount,
+                  },
+                })
+              }
+            />
+          </div>
+        </div>
       </div>
 
-      <div className="my-8 flex flex-col gap-4">
-        <MyPage_Text
-        textLabel="내 모임"
-        numberValue={groups.length}
-        onClick={() => navigate("/mypage/mygroup", { state: { groups } })}
-        />
-        {/* <MyPage_Text textLabel="내 모임" numberValue={myGroupCount} onClick={() => navigate("/mypage/profile/group")} /> */}
-        <MyPage_Profile_Medal
-          myMedalTotal={myMedalTotal}
-          goldCount={goldCount}
-          silverCount={silverCount}
-          bronzeCount={bronzeCount}
-          disabled={disabled}
-          onClick={() => navigate("/mypage/profile/medal")} 
-        />
+      <div className="absolute bottom-[2rem] left-0 w-full flex justify-center z-50 pointer-events-none">
+        <div className="pointer-events-auto">
+          <Grad_GR400_L label="개인 채팅 보내기" onClick={handleChatClick} />
+        </div>
       </div>
-        
-     <Grad_GR400_L label="개인 채팅 보내기" onClick={() => navigate("/chat/group/:chatId")} />
     </div>
   );
 };
-

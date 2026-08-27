@@ -1,66 +1,151 @@
-import ProfileImage from "../../../assets/icons/ProfileImage.svg?react";
-import Prohibition from "../../../assets/icons/prohibition.svg?react";
-import StarIcon  from "../../../assets/icons/star_filled_GR.svg?react";
-import Female from "../../../assets/icons/female.svg?react";
-import Male from "../../../assets/icons/male.svg?react";
-import Message from "../../../assets/icons/message.svg?react";
-import { Modal_Subtract_Leader } from "../../MyPage/Modal_Subtract_Leader";
+import ProfileImage from "@/assets/images/base_profile_img.png";
+import Prohibition from "@/assets/icons/prohibition.svg?react";
+import StarIcon from "@/assets/icons/star_filled_GR.svg?react";
+import YEStarIcon from "@/assets/icons/star_filled_YE.svg?react";
+import Star from "@/assets/icons/star.svg?react";
+import Female from "@/assets/icons/female.svg?react";
+import Male from "@/assets/icons/male.svg?react";
+import Message from "@/assets/icons/message.svg?react";
+import InviteModal from "../../../components/group/groupMaking/InviteModal";
+import { Modal_Subtract } from "../../group/Modal_Subtract";
 import { useState } from "react";
+import type { ModalConfig } from "../../group/modalConfig";
+import { getModalConfig } from "../../group/modalConfig";
+import clsx from "clsx";
 
-type MemberStatus = "Participating" | "waiting" | "invite" | "request" | "approved";
+type MemberStatus =
+  | "Participating"
+  | "waiting"
+  | "invite"
+  | "request"
+  | "approved";
 
 interface MemberProps {
+  participantId?: number; // 참여자 Id
+  memberId?: number; // 고유 Id
+  requestId?: number; // joinRequestId를 매핑
   status: MemberStatus;
   name: string;
-  gender: "male" | "female";
+  gender: "MALE" | "FEMALE";
   level: string;
+  lastExerciseDate?: string;
   birth?: string;
   showStar?: boolean;
   isGuest?: boolean;
+  guestNumber?: boolean;
   guestName?: string;
+  number?: number | string;
+  isMe?: boolean;
+  isLeader?: boolean;
+  isManager?: boolean;
+  inviterName?: string;
   onAccept?: () => void;
   onReject?: () => void;
   onClick?: () => void;
   onDelete?: () => void;
+  imgUrl?: string | null;
+  position?: string | null;
+  canCancel?: boolean;
+  isWithdrawn?: boolean;
+  //모달창 나오는 글 화면에 따라 다르게 나오게
+  showDeleteButton?: boolean;
+  modalConfig?: {
+    title: string;
+    messages: string[];
+    confirmLabel: string;
+    onConfirm?: () => void;
+  };
+  //부모임장 지정
+  onAppointClick?: () => void;
+  selectMode?: boolean;
+  useDeleteModal?: boolean;
+  hideNumber?: boolean;
 }
 
-export type { MemberProps };  
+export type { MemberProps };
+
+// 프로필 이미지 렌더링
+const Avatar = ({
+  imgUrl,
+  name,
+  isWithdrawn,
+}: {
+  imgUrl?: string | null;
+  name: string;
+  isWithdrawn?: boolean;
+}) => {
+  const [hasError, setHasError] = useState(false);
+
+  if (imgUrl && !hasError) {
+    return (
+      <img
+        src={imgUrl}
+        alt={`${name} 프로필`}
+        onError={() => setHasError(true)}
+        className={clsx(
+          "w-[2.5rem] h-[2.5rem] rounded-full object-cover",
+          isWithdrawn && "opacity-20",
+        )}
+      />
+    );
+  }
+  return (
+    <img
+      src={ProfileImage}
+      alt="기본 프로필"
+      className={clsx("w-[2.5rem] h-[2.5rem] rounded-full object-cover", isWithdrawn && "opacity-20")}
+    />
+  );
+};
 
 const MemberInfo = ({
   name,
   gender,
   level,
-  isGuest = false,
+  lastExerciseDate,
+  isGuest,
   guestName,
-  showStar = false,
-}: {
-  name: string;
-  gender: "male" | "female";
-  level: string;
-  isGuest?: boolean;
-  guestName?: string;
-  showStar?: boolean;
+  isLeader,
+  isManager,
+  position,
+}: Partial<MemberProps>) => {
+  const formattedDate = lastExerciseDate?.replace(/-/g, ".");
 
-}) => {
   return (
-    <div className="flex flex-col justify-center gap-[0.25rem] w-[9.75rem] h-[2.75rem]">
+    <div className="flex flex-col justify-center gap-[0.25rem] h-[2.75rem]">
       <div className="flex items-center gap-1">
         <p className="header-h5 text-black">{name}</p>
-        {showStar && <StarIcon className="w-[1rem] h-[1rem]" />}
+        {isLeader && <StarIcon className="w-[1rem] h-[1rem]" />}
+        {!isLeader && position === "sub_leader" && (
+          <YEStarIcon className="w-[1rem] h-[1rem]" />
+        )}
+        {isManager && (
+          <span className="text-[0.625rem] font-bold text-[#1F74FF] bg-[#E8F0FF] px-[0.375rem] py-[0.125rem] rounded-[8px] flex items-center gap-[0.125rem] whitespace-nowrap">
+            ★ 게임 진행자
+          </span>
+        )}
       </div>
       <div className="flex items-center gap-[0.25rem] body-sm-500">
-        {gender === "female" ? (
+        {gender === "FEMALE" ? (
           <Female className="w-[1rem] h-[1rem]" />
         ) : (
           <Male className="w-[1rem] h-[1rem]" />
         )}
         <p className="whitespace-nowrap">{level}</p>
+
+        {formattedDate && (
+          <>
+            <span className="text-[#D6DAE0]">|</span>
+            <p className="text-[#767B89] whitespace-nowrap">
+              마지막 운동일 {formattedDate}
+            </p>
+          </>
+        )}
+
         {isGuest && (
           <>
             <span className="text-[#D6DAE0]">|</span>
-            <p className="truncate overflow-hidden whitespace-nowrap max-w-[5rem]">
-              {guestName}
-            </p>
+            <p className="text-black whitespace-nowrap">{guestName} 게스트</p>
           </>
         )}
       </div>
@@ -68,142 +153,197 @@ const MemberInfo = ({
   );
 };
 
-export const Member = ({
-  status,
-  name,
-  gender,
-  level,
-  birth,
-  showStar,
-  isGuest,
-  guestName,
-  onAccept,
-  onReject,
-  onClick,
-  onDelete, 
-}: MemberProps) => {
-  //모달창 ->  서버장일때에만 가능하도록 수정
+// Participating, waiting
+const ListMemberLayout = ({
+  props,
+  onShowDeleteModal,
+}: {
+  props: MemberProps;
+  onShowDeleteModal: () => void;
+}) => {
+  const {
+    status,
+    number,
+    guestNumber,
+    hideNumber,
+    selectMode,
+    isLeader,
+    isGuest,
+    showDeleteButton,
+    onClick,
+    onAppointClick,
+    useDeleteModal,
+    onDelete,
+    isManager,
+  } = props;
+
+  const getNumberText = () => {
+    if (guestNumber) return number;
+    return status === "Participating" ? `No.${number}` : `대기.${number}`;
+  };
+
+  const handleDeleteClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (useDeleteModal) {
+      onShowDeleteModal();
+    } else {
+      onDelete?.();
+    }
+  };
+
+  const handleClick = isGuest ? undefined : onClick; 
+
+  return (
+    <div
+        className={clsx(
+          "w-full h-[4.75rem] bg-white rounded-[1rem] px-4 py-2 flex items-center gap-3",
+          !isGuest && onClick && "cursor-pointer", 
+        )}
+        onClick={handleClick} 
+      >
+      {!hideNumber && (
+        <p className="body-md-500 whitespace-nowrap">{getNumberText()}</p>
+      )}
+      <Avatar
+        imgUrl={props.imgUrl}
+        name={props.name}
+        isWithdrawn={props.isWithdrawn}
+      />
+      <MemberInfo {...props} />
+
+      {selectMode && !isLeader && !isManager && (
+        <Star
+          className="w-6 h-6 ml-auto cursor-pointer"
+          onClick={e => {
+            e.stopPropagation();
+            onAppointClick?.();
+          }}
+        />
+      )}
+      {showDeleteButton && (
+        <Prohibition
+          className="w-[2rem] h-[2rem] ml-auto cursor-pointer"
+          onClick={handleDeleteClick}
+        />
+      )}
+    </div>
+  );
+};
+
+// Invite
+const InviteMemberLayout = ({ props }: { props: MemberProps }) => {
+  const [isApplyModalOpen, setIsApplyModalOpen] = useState(false);
+
+  return (
+    <div className="w-[21.44rem] h-[4.75rem] bg-white rounded-[1rem] px-4 py-2 flex items-center gap-3">
+      <Avatar imgUrl={props.imgUrl} name={props.name} />
+      <MemberInfo {...props} />
+      <Message
+        className="w-[2rem] h-[2rem] ml-auto cursor-pointer"
+        onClick={e => {
+          e.stopPropagation();
+          setIsApplyModalOpen(true);
+        }}
+      />
+      {isApplyModalOpen && (
+        <InviteModal
+          onInvite={() => setIsApplyModalOpen(false)}
+          onClose={() => setIsApplyModalOpen(false)}
+        />
+      )}
+    </div>
+  );
+};
+
+// Request, Approved
+const RequestApprovalLayout = ({ props }: { props: MemberProps }) => {
+  const isApproved = props.status === "approved";
+
+  return (
+    <div className="flex flex-col w-full p-4 gap-3">
+      <div className="flex gap-3">
+        <Avatar imgUrl={props.imgUrl} name={props.name} />
+        <div className="flex flex-col items-start w-full gap-1">
+          <p className="header-h5 text-black">{props.name}</p>
+          <div className="flex justify-between items-center w-full body-sm-500 text-[#767B89]">
+            <div className="flex items-center gap-1">
+              {props.gender === "FEMALE" ? (
+                <Female className="w-4 h-4" />
+              ) : (
+                <Male className="w-4 h-4" />
+              )}
+              <p className="whitespace-nowrap">{props.level}</p>
+            </div>
+            <p className="whitespace-nowrap">{props.birth}</p>
+          </div>
+        </div>
+      </div>
+
+      <div className="flex justify-between items-center gap-2 body-sm-500">
+        <button
+          className={`w-[9.47rem] h-8 px-3 py-1 rounded-lg border ${isApproved ? "border-[#C0C4CD] text-[#C0C4CD]" : "border-[#F62D2D] text-[#F62D2D]"}`}
+          onClick={!isApproved ? props.onReject : undefined}
+        >
+          거절
+        </button>
+        <button
+          className={`w-[9.47rem] h-8 px-3 py-1 rounded-lg text-white ${isApproved ? "bg-[#C0C4CD]" : "bg-[#0B9A4E]"}`}
+          onClick={!isApproved ? props.onAccept : undefined}
+        >
+          {isApproved ? `${props.birth} 승인 완료` : "승인"}
+        </button>
+      </div>
+    </div>
+  );
+};
+
+export const Member = (props: MemberProps & { modalConfig?: ModalConfig }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const modalConfig =
+    props.modalConfig ??
+    getModalConfig(
+      props.status,
+      props.isLeader ?? false,
+      props.isMe ?? false,
+      props.name,
+    );
+
+  const handleConfirm = () => {
+    if (modalConfig?.onConfirm) {
+      modalConfig.onConfirm();
+    } else {
+      props.onDelete?.();
+    }
+    setIsModalOpen(false);
+  };
+
   const renderContent = () => {
-    switch (status) {
+    switch (props.status) {
       case "Participating":
+      case "waiting":
         return (
-
           <div className="relative">
-            <div
-              className="w-[21.44rem] h-[4.75rem] bg-white rounded-[1rem] px-4 py-2 flex items-center gap-3"
-              onClick={onClick}
-            >
-              <p className="body-md-500">No. 00</p>
-              <ProfileImage className="w-[2.5rem] h-[2.5rem]" />
-              <MemberInfo {...{ name, gender, level, showStar, isGuest, guestName }} />
-              <Prohibition
-                className="w-[2rem] h-[2rem] ml-auto cursor-pointer"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setIsModalOpen(true);
-                }}
+            <ListMemberLayout
+              props={props}
+              onShowDeleteModal={() => setIsModalOpen(true)}
+            />
+            {isModalOpen && modalConfig && (
+              <Modal_Subtract
+                title={modalConfig.title}
+                messages={modalConfig.messages}
+                confirmLabel={modalConfig.confirmLabel}
+                onCancel={() => setIsModalOpen(false)}
+                onConfirm={handleConfirm}
               />
-            </div>
-
-            {isModalOpen && (
-              <div className="absolute z-50 top-[5rem] left-1/2 -translate-x-1/2">
-                <Modal_Subtract_Leader
-                  onClose={() => setIsModalOpen(false)}
-                  onConfirm={() => {
-                    setIsModalOpen(false);
-                    onDelete?.(); // 삭제
-                  }}
-                />
-              </div>
             )}
           </div>
         );
-
-      case "waiting":
-        return (
-          <div className="w-[21.44rem] h-[4.75rem] bg-white rounded-[1rem] px-4 py-2 flex items-center gap-3">
-            <p className="body-md-500">대기00</p>
-            <ProfileImage className="w-[2.5rem] h-[2.5rem]" />
-            <MemberInfo {...{ name, gender, level, isGuest }} />
-            <Prohibition className="w-[2rem] h-[2rem] ml-auto" />
-          </div>
-        );
-
       case "invite":
-        return (
-          <div className="w-[21.44rem] h-[4.75rem] bg-white rounded-[1rem] px-4 py-2 flex items-center gap-3">
-            <ProfileImage className="w-[2.5rem] h-[2.5rem]" />
-            <MemberInfo {...{ name, gender, level }} />
-            <Message className="w-[2rem] h-[2rem] ml-auto" />
-          </div>
-        );
-
+        return <InviteMemberLayout props={props} />;
       case "request":
-        return (
-          <div className="w-[21.44rem] h-[7.5rem] rounded-[1rem] bg-white p-4 space-y-3">
-            <div className="flex items-center gap-3">
-              <ProfileImage className="w-[2.5rem] h-[2.5rem]" />
-              <div className="flex flex-col justify-center gap-[0.25rem] w-[15.44rem] h-[2.75rem]">
-                <div className="flex items-center gap-1">
-                  <p className="header-h5 text-black">{name}</p>
-                </div>
-                <div className="flex justify-between items-center w-full body-sm-500 text-[#767B89]">
-                  <div className="flex items-center gap-[0.25rem]">
-                    <Female className="w-[1rem] h-[1rem]" />
-                    <p className="whitespace-nowrap">{level}</p>
-                  </div>
-                  <p className="whitespace-nowrap">{birth}</p>
-                </div>
-              </div>
-            </div>
-            <div className="flex items-center gap-2 body-sm-500">
-              <button
-                className="w-[9.47rem] h-[2rem] px-3 py-1 rounded-lg border border-[#F62D2D] text-[#F62D2D]"
-                onClick={onReject}
-              >
-                거절
-              </button>
-              <button
-                className="w-[9.47rem] h-[2rem] px-3 py-1 rounded-lg bg-[#0B9A4E] text-white"
-                onClick={onAccept}
-              >
-                수락
-              </button>
-            </div>
-          </div>
-        );
-
       case "approved":
-        return (
-          <div className="w-[21.44rem] h-[7.5rem] rounded-[1rem] bg-white p-4 space-y-3">
-            <div className="flex items-center gap-3">
-              <ProfileImage className="w-[2.5rem] h-[2.5rem]" />
-              <div className="flex flex-col justify-center gap-[0.25rem] w-[15.44rem] h-[2.75rem]">
-                <div className="flex items-center gap-1">
-                  <p className="header-h5 text-black">{name}</p>
-                </div>
-                <div className="flex justify-between items-center w-full body-sm-500 text-[#767B89]">
-                  <div className="flex items-center gap-[0.25rem]">
-                    <Female className="w-[1rem] h-[1rem]" />
-                    <p className="whitespace-nowrap">{level}</p>
-                  </div>
-                  <p className="whitespace-nowrap">{birth}</p>
-                </div>
-              </div>
-            </div>
-            <div className="flex items-center gap-2 body-sm-500">
-              <button className="w-[9.47rem] h-[2rem] px-3 py-1 rounded-lg border border-[#C0C4CD] text-[#C0C4CD]">
-                거절
-              </button>
-              <button className="w-[9.47rem] h-[2rem] px-3 py-1 rounded-lg bg-[#C0C4CD] text-white">
-                {birth} 승인 완료
-              </button>
-            </div>
-          </div>
-        );
-
+        return <RequestApprovalLayout props={props} />;
       default:
         return null;
     }

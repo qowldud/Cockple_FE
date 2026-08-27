@@ -13,10 +13,10 @@ interface WeeklyCalendarProps {
   shadow?: boolean;
 }
 export default function WeeklyCalendar({
-  // selectedDate,
+  selectedDate,
   onClick,
   exerciseDays = [],
-  shadow = false,
+  shadow = true,
 }: WeeklyCalendarProps) {
   const today = new Date();
   const range = 90;
@@ -29,12 +29,42 @@ export default function WeeklyCalendar({
   const swiperRef = useRef<SwiperRef>(null);
   const [selected, setSelected] = useState<string | null>(null);
 
-  //슬라이스 이동
   useEffect(() => {
-    if (swiperRef.current && todayIndex >= 0) {
+    if (selectedDate) {
+      setSelected(String(selectedDate));
+    }
+  }, [selectedDate]);
+
+  //슬라이스 이동
+
+  useEffect(() => {
+    if (!swiperRef.current) return;
+
+    const selected = selectedDate ? String(selectedDate) : null;
+
+    // selectedDate가 있다면 해당 날짜가 포함된 주로 이동
+    if (selected) {
+      const selectedIndex = weeklyChunks.findIndex(week =>
+        week.some(d => d.full === selected),
+      );
+      if (selectedIndex >= 0) {
+        swiperRef.current.swiper.slideTo(selectedIndex, 0);
+        setSelected(selected); // 내부 상태도 반영
+        return;
+      }
+    }
+
+    // 기본: 오늘 날짜 주로 이동
+    if (todayIndex >= 0) {
       swiperRef.current.swiper.slideTo(todayIndex, 0);
     }
-  }, [todayIndex, swiperRef.current?.swiper]);
+  }, [selectedDate, weeklyChunks, todayIndex]);
+
+  // useEffect(() => {
+  //   if (swiperRef.current && todayIndex >= 0) {
+  //     swiperRef.current.swiper.slideTo(todayIndex, 0);
+  //   }
+  // }, [todayIndex, swiperRef.current?.swiper]);
 
   return (
     <Swiper
@@ -59,10 +89,10 @@ export default function WeeklyCalendar({
                 hasDot={exerciseDays.includes(d.full)}
                 color={
                   d.dayNumber === 0
-                    ? shadow
+                    ? !shadow
                       ? "Nred"
                       : "red"
-                    : shadow
+                    : !shadow
                       ? "Nblack"
                       : "black"
                 } // 일요일

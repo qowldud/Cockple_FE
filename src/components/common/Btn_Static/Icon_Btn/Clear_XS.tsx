@@ -1,5 +1,5 @@
 // components/Btn_Static/Text/RD500_M.tsx
-import React, { useState } from "react";
+import { useState } from "react";
 import ArrowRight from "../../../../assets/icons/arrow_right.svg";
 import ArrowRightGY400 from "../../../../assets/icons/arrow_right_gy_400.svg";
 
@@ -55,7 +55,7 @@ const Clear_XS = ({
   return (
     <button
       className={`
-        inline-flex p-1 items-center gap-3 border-hard
+        inline-flex p-1 items-center gap-3 border-hard active:bg-gy-100
         ${getBg()} 
         ${isDisabled ? "cursor-not-allowed" : "cursor-pointer"}`}
       disabled={status === "disabled"}

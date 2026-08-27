@@ -1,258 +1,138 @@
+// 내 마이페이지
+import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 import { MainHeader } from "../../components/common/system/header/MainHeader";
 import { MyPage_Text } from "../../components/common/contentcard/MyPage_Text";
 import { Profile } from "../../components/MyPage/Profile";
 import { MyPage as MyPageContentcard } from "../../components/common/contentcard/MyPage";
+
+import { useMyPageStore } from "../../store/useMyPageStore";
+import { LoadingSpinner } from "../../components/common/LoadingSpinner";
 import White_L_Thin from "../../components/common/Btn_Static/Text/White_L_Thin";
 import White_L from "../../components/common/Btn_Static/Text/White_L";
-import { useNavigate } from "react-router-dom"; 
-import { useEffect, useState } from "react";
-import type { GroupMProps } from "./MyPageMyGroupPage"; 
-import type { ContentCardLProps } from "../../components/common/contentcard/ContentCardL";
-import type { MedalType } from "./MyPageMyMedalPage";
+import { ModalContainer } from "@/components/MyPage/ModalContainer";
 
 interface MyPageProps {
-  name?: string;
-  gender?: "female" | "male";
-  level?: string;
-  birth?: string;
-  profileImage?: File;
-
-  myGroupCount?: number;  
-  myExerciseCount?: number; 
-
-  myMedalTotal?: number;
-  goldCount?: number;
-  silverCount?: number;
-  bronzeCount?: number;
   disabled?: boolean;
-};
-
-interface MedalItem {
-  id: number;
-  title: string;
-  date: string;
-  medalImageSrc: string;
-  isAwarded: boolean;
-  type: "gold" | "silver" | "bronze" | "none";
 }
 
-export const MyPage = ({
-  // name,
-  // gender,
-  // level,
-  // birth,
-  // profileImage,
-  name = "김태연",
-  gender = "female",
-  level = "중급",
-  birth = "1990-04-18",
-  profileImage ,
+export const MyPage = ({ disabled = false }: MyPageProps) => {
+  const navigate = useNavigate();
+  const { profile, fetchMyProfile, isLoading } = useMyPageStore();
 
-  myMedalTotal = 0,
-  goldCount = 0,
-  silverCount = 0,
-  bronzeCount = 0,
-  myGroupCount = 0,      
-  myExerciseCount = 0,   
-  disabled = false,
-}: MyPageProps) => {
+  useEffect(() => {
+    fetchMyProfile();
+  }, []);
 
-// export const MyPage = ({
-//   name = "김태연",
-//   gender = "female",
-//   level = "중급",
-//   birth = "1990-04-18",
-//   profileImage = dummyProfileImage,
+  const [modal, setModal] = useState(false);
 
-//   myMedalTotal = 10,
-//   goldCount = 3,
-//   silverCount = 4,
-//   bronzeCount = 3,
-//   disabled = false,
-//   myGroupCount = 4,      
-//   myExerciseCount = 5,   
-// }: MyPageProps) => {
-  
-  const navigate = useNavigate(); 
-  //모임 더미 데이터
-  const dummyGroups: GroupMProps[] = [
-  { id: 1, groupName: "운동모임 A", groupImage: "", location: "서울", femaleLevel: "초급", maleLevel: "중급", nextActivitDate: "2025-07-19", upcomingCount: 5, isMine: true },
-  { id: 2, groupName: "요가모임 B", groupImage: "", location: "부산", femaleLevel: "중급", maleLevel: "중급", nextActivitDate: "2025-07-20", upcomingCount: 2, isMine: false },
-  { id: 3, groupName: "축구모임 C", groupImage: "", location: "대전", femaleLevel: "고급", maleLevel: "고급", nextActivitDate: "2025-07-21", upcomingCount: 7, isMine: true },
-  ];
-  //운동 더미 데이터
-const dummyEx: ContentCardLProps[] = [
-  {
-    id: 1,
-    isUserJoined: true,
-    isGuestAllowedByOwner: true,
-    isCompleted: true,
-    title: "하위",
-    date: "2025-07-20",
-    location: "인천",
-    time: "오전",
-    femaleLevel: "전국",
-    maleLevel: "초딩",
-    currentCount: 1,
-    totalCount: 3,
-    like: true,
-  },
-    {
-    id: 2,
-    isUserJoined: false,
-    isGuestAllowedByOwner: true,
-    isCompleted: false,
-    title: "하위",
-    date: "2025-07-29",
-    location: "인천",
-    time: "오전",
-    femaleLevel: "전국",
-    maleLevel: "초딩",
-    currentCount: 1,
-    totalCount: 3,
-    like: true,
-  },
-    {
-    id: 3,
-    isUserJoined: true,
-    isGuestAllowedByOwner: true,
-    isCompleted: true,
-    title: "하위",
-    date: "2025-07-25",
-    location: "인천",
-    time: "오전",
-    femaleLevel: "전국",
-    maleLevel: "초딩",
-    currentCount: 1,
-    totalCount: 3,
-    like: true,
-  },
-];
-//메달 더미
- const dummyMedals: MedalItem[] = [
-    {
-      id: 1,
-      title: "2024년 동네 마라톤 대회",
-      date: "2024.05.10",
-      medalImageSrc: "/images/medal_gold.png",
-      isAwarded: true,
-      type: "gold",
-    },
-    {
-      id: 2,
-      title: "주말 배드민턴 친선전",
-      date: "2024.06.15",
-      medalImageSrc: "/images/medal_silver.png",
-      isAwarded: false,
-      type: "silver",
-    },
-    {
-      id: 3,
-      title: "새벽 조깅 챌린지",
-      date: "2024.07.08",
-      medalImageSrc: "/images/medal_none.png",
-      isAwarded: false,
-      type: "none",
-    },
-    {
-      id: 4,
-      title: "수영장 자유형 기록 측정",
-      date: "2024.07.12",
-      medalImageSrc: "/images/medal_none.png",
-      isAwarded: false,
-      type: "none",
-    },
-  ];
-
-const [groups, setGroups] = useState<GroupMProps[]>(dummyGroups);
-const [exercises, setExercises] = useState<ContentCardLProps[]>(dummyEx);
-const totalMedals = dummyMedals.filter((m) => m.isAwarded).length;
-  const gold = dummyMedals.filter((m) => m.type === "gold").length;
-  const silver = dummyMedals.filter((m) => m.type === "silver").length;
-  const bronze = dummyMedals.filter((m) => m.type === "bronze").length;
-
-  console.log(goldCount);
-  return (
-    <div className="flex flex-col pt-15 overflow-auto">
-      <div className="flex flex-col gap-[1.25rem]">
-        <div className="max-w-full w-full">
-          <MainHeader hasNotification={true} />
+  //로딩 화면
+  if (isLoading || !profile) {
+    return (
+      <div className="flex flex-col h-screen w-full bg-white">
+        <div className="w-full">
+          <MainHeader />
         </div>
-        <Profile
-          name={name}
-          gender={gender}
-          level={level}
-          birth={birth}
-          profileImage={profileImage}
-        />
+        <div className="flex-1 flex flex-col items-center justify-center pb-20">
+          <LoadingSpinner />
+        </div>
       </div>
+    );
+  }
 
-      <div className="mt-4">
-        <White_L_Thin 
-          label="정보 수정하기"
-          initialStatus="clicked" 
-          onClick={() => navigate("/myPage/edit")}/>
+  const totalMedals = profile.myMedalTotal || 0;
+  const gold = profile.goldCount || 0;
+  const silver = profile.silverCount || 0;
+  const bronze = profile.bronzeCount || 0;
 
-      </div>
+  return (
+    <div className="flex flex-col overflow-hidden w-full">
+      <div className="flex flex-col gap-[1.25rem] w-full">
+        <div className="w-full">
+          <MainHeader />
+        </div>
+        <div className="w-full flex flex-col items-center overflow-y-auto overflow-x-hidden px-4">
+          {profile.name && profile.gender && profile.level && (
+            <Profile
+              name={profile.name}
+              gender={profile.gender}
+              level={profile.level}
+              birth={profile.birth}
+              profileImage={profile.profileImage}
+            />
+          )}
+          <div className="mt-4">
+            <White_L_Thin
+              label="정보 수정하기"
+              initialStatus="clicked"
+              onClick={() => navigate("/myPage/edit")}
+            />
+          </div>
 
-      <div className="my-8 flex flex-col gap-4">
-      <MyPage_Text
-        textLabel="내 모임"
-        numberValue={groups.length}
-        onClick={() => navigate("/mypage/mygroup", { state: { groups } })}
-      />
-      <MyPage_Text
-        textLabel="내 운동"
-        numberValue={exercises.length}
-        onClick={() => navigate("/myPage/myexercise", { state: { myActivityCount: exercises } })}
-      />
+          <div className="my-8 flex flex-col gap-4">
+            <MyPage_Text
+              textLabel="내 모임"
+              numberValue={profile.myGroupCount}
+              onClick={() => navigate("/mypage/mygroup")}
+            />
+            <MyPage_Text
+              textLabel="내 운동"
+              numberValue={profile.myExerciseCount}
+              onClick={() => navigate("/myPage/myexercise")}
+            />
+            <MyPageContentcard
+              myMedalTotal={totalMedals}
+              goldCount={gold}
+              silverCount={silver}
+              bronzeCount={bronze}
+              disabled={disabled}
+              onClick={() => {
+                navigate("/myPage/mymedal", {
+                  state: {
+                    goldCount: gold,
+                    silverCount: silver,
+                    bronzeCount: bronze,
+                    myMedalTotal: totalMedals,
+                    disabled,
+                  },
+                });
+              }}
+            />
+          </div>
 
-        {/* <MyPage_Text textLabel="내 모임" numberValue={myGroupCount} onClick={() => navigate("/myPage/mygroup")} /> */}
-        {/* <MyPage_Text textLabel="내 운동" numberValue={myExerciseCount} onClick={() => navigate("/myPage/myexercise")}/> */}
-        {/* <MyPageContentcard
-          myMedalTotal={myMedalTotal}
-          goldCount={goldCount}
-          silverCount={silverCount}
-          bronzeCount={bronzeCount}
-          disabled={disabled}
-          onClick={() => navigate("/myPage/mymedal")}  
-        /> */}
-<MyPageContentcard
-  myMedalTotal={totalMedals}
-  goldCount={gold}
-  silverCount={silver}
-  bronzeCount={bronze}
-  disabled={disabled}
-  onClick={() => {
-  console.log("navigate with state:", {
-    medals: dummyMedals,
-    goldCount: gold,
-    silverCount: silver,
-    bronzeCount: bronze,
-    myMedalTotal: totalMedals,
-    disabled,
-  });
-  navigate("/myPage/mymedal", {
-    state: {
-      medals: dummyMedals,
-      goldCount: gold,
-      silverCount: silver,
-      bronzeCount: bronze,
-      myMedalTotal: totalMedals,
-      disabled,
-    },
-  });
-}}
-/>
+          <div className="gap-[0.25rem]">
+            <White_L
+              initialStatus="clicked"
+              label="공지사항"
+              onClick={() =>
+                window.open(
+                  "https://www.notion.so/25634aa25d2880fd8572f0454c209030",
+                )
+              }
+            />
+            <White_L
+              initialStatus="clicked"
+              label="이용약관"
+              onClick={() =>
+                window.open(
+                  "https://www.notion.so/25634aa25d28807fa768df5deb1afc6f",
+                )
+              }
+            />
+            <White_L
+              initialStatus="clicked"
+              label=" 설정"
+              onClick={() => alert("설정 클릭")}
+            />
+            <White_L
+              initialStatus="clicked"
+              label="회원탈퇴"
+              onClick={() => setModal(true)}
+            />
 
-
-
-      </div>
-
-      <div className="gap-[0.25rem]">
-        <White_L initialStatus="Clicked" label="공지사항" onClick={() => alert("공지사항 클릭")} />
-        <White_L initialStatus="Clicked" label="이용약관" onClick={() => alert("이용약관 클릭")} />
-        <White_L initialStatus="Clicked" label=" 설정" onClick={() => alert("설정 클릭")} />
+            {modal && <ModalContainer onClose={() => setModal(false)} />}
+          </div>
+        </div>
       </div>
     </div>
   );

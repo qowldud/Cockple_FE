@@ -1,85 +1,113 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { PageHeader } from "../../components/common/system/header/PageHeader";
-import { MyExerciseSort } from "../../components/MyPage/MyExerciseSort";
+import { SortBottomSheet } from "../../components/common/SortBottomSheet";
+import Sort from "../../components/common/Sort";
 import { ContentCardL } from "../../components/common/contentcard/ContentCardL";
 import { MyExercise_None } from "../../components/MyPage/MyExercise_None";
-import { useLocation } from "react-router-dom"; 
-import type { ContentCardLProps } from "../../components/common/contentcard/ContentCardL";
+import TabSelector from "../../components/common/TabSelector";
+import { LoadingSpinner } from "../../components/common/LoadingSpinner";
+import { useLikedExerciseIds } from "../../hooks/useLikedItems";
+import { useExercisePagination } from "../../hooks/useExercisePagination"; 
+import { TAB_OPTIONS } from "../../utils/MyPageMyExerciseUtils"; 
 
-interface MyPageMyExercisePageProps {
-  myActivityCount: ContentCardLProps[];
-}
-
-// export const MyPageMyExercisePage = ({ myActivityCount }: MyPageMyExercisePageProps) => {
 export const MyPageMyExercisePage = () => {
-  const location = useLocation();
-  const myActivityCount = location.state?.myActivityCount ?? [];
-
-  const [sortOption, setSortOption] = useState("최신순");
+  const navigate = useNavigate();
+  
+  const [isSortOpen, setIsSortOpen] = useState(false);
+  const [sortOption, setSortOption] = useState<"최신순" | "오래된 순">("최신순");
   const [selectedTab, setSelectedTab] = useState<"전체" | "참여 예정" | "참여 완료">("전체");
 
-  const sortActivities = (list: ContentCardLProps[], option: string) => {
-    return [...list].sort((a, b) => {
-      const dateA = new Date(a.date).getTime();
-      const dateB = new Date(b.date).getTime();
-      return option === "최신순" ? dateB - dateA : dateA - dateB;
-    });
-  };
+  //데이터 hook
+  const { exerciseList, isLoading, hasMore, observerRef } = useExercisePagination(selectedTab, sortOption);
+  
+  // 좋아요 데이터
+  const { data: likedExerciseIds = [], isLoading: isLikeLoading } = useLikedExerciseIds();
 
-  const filteredList = sortActivities(
-    (myActivityCount ?? []).filter((item) => {
-      if (selectedTab === "전체") return true;
-      if (selectedTab === "참여 예정") return !item.isCompleted;
-      if (selectedTab === "참여 완료") return item.isCompleted;
-      return true;
-    }),
-    sortOption
-  );
+  // 렌더링 헬퍼 변수
+  const isEmpty = !isLoading && exerciseList.length === 0;
+  const showList = exerciseList.length > 0;
+
+  if (isLikeLoading) return <LoadingSpinner />;
 
   return (
-    <div className="flex flex-col h-screen w-full max-w-[23.4375rem] bg-white mx-auto"> 
- 
-      <div className="sticky top-0 z-20 bg-white"> 
-        <PageHeader title="내 운동" />
-
-        <div className="mb-5 px-4">
-          <div className="flex gap-4 relative h-10">
-            <div className="absolute bottom-0 left-0 right-0 h-[0.125rem] bg-[#F4F5F6]" />
-            {["전체", "참여 예정", "참여 완료"].map((tab) => (
-              <button
-                key={tab}
-                onClick={() => setSelectedTab(tab as "전체" | "참여 예정" | "참여 완료")}
-                className="flex flex-col items-center w-max relative"
-              >
-                <span className="header-h5 inline-block">{tab}</span>
-                {selectedTab === tab && (
-                  <span
-                    className="absolute bottom-0 h-[0.125rem] bg-[#1ABB65] rounded-full transition-all duration-150"
-                    style={{ width: `${tab.length + 2}ch` }}
-                  />
-                )}
-              </button>
-            ))}
-          </div>
-        </div>
+    <div className="flex flex-col h-screen w-full max-w-[23.4375rem] bg-white mx-auto pt-14">
+      <div className="sticky top-0 z-20 bg-white">
+        <PageHeader title="내 운동" onBackClick={() => navigate("/myPage")} />
+        <TabSelector
+          options={TAB_OPTIONS}
+          selected={selectedTab}
+          onChange={(val) => setSelectedTab(val as any)}
+        />
       </div>
 
-      <div className="flex-1 overflow-y-auto pb-6">
-        {filteredList.length > 0 ? (
+      <div className="flex-1 overflow-y-auto pb-6 scrollbar-hide">
+        
+        {showList && (
           <>
-            <div className="flex justify-end mb-3">
-              <MyExerciseSort selected={sortOption} onChange={setSortOption} />
+            <div className="flex justify-end mb-3 px-4">
+              <Sort
+                label={sortOption}
+                isOpen={isSortOpen}
+                onClick={() => setIsSortOpen(!isSortOpen)}
+              />
             </div>
-            {filteredList.map((group, idx) => (
-              <ContentCardL key={idx} {...group} />
-            ))}
+            <div className="px-1">
+              <div className="flex flex-col items-center justify-center">
+                {exerciseList.map((item) => (
+                  <ContentCardL
+                    key={item.exerciseId}
+                    id={item.exerciseId}
+                    isParticipating={item.isParticipating ?? true}
+                    isUserJoined={item.access?.ispartyMember ?? false}
+                    isGuestAllowedByOwner={item.access?.allowGuestInvitation ?? false}
+                    isCompleted={item.isCompleted}
+                    title={item.partyName}
+                    date={item.date}
+                    location={item.buildingName}
+                    time={`${item.startTime} ~ ${item.endTime}`}
+                    femaleLevel={item.levelRequirement?.female ?? 0}
+                    maleLevel={item.levelRequirement?.male ?? 0}
+                    currentCount={item.participation?.current ?? 0}
+                    totalCount={item.participation?.max ?? 0}
+                    like={likedExerciseIds.includes(item.exerciseId)}
+                  />
+                ))}
+                
+                {/* 무한 스크롤 감지용 */}
+                <div ref={observerRef} className="h-10" />
+                
+                {/* 추가 로딩 스피너 */}
+                {isLoading && hasMore && (
+                  <div className="py-4"><LoadingSpinner /></div>
+                )}
+              </div>
+            </div>
           </>
-        ) : (
-          <div className="flex flex-col items-center justify-center">
+        )}
+
+        {/* 로딩 중이고 데이터가 없는 경우 (초기 로딩) */}
+        {isLoading && !showList && (
+          <div className="flex flex-col items-center justify-center h-[60vh]">
+            <LoadingSpinner />
+          </div>
+        )}
+
+        {/* 데이터가 없는 경우 */}
+        {isEmpty && (
+          <div className="flex flex-col items-center justify-center mt-16">
             <MyExercise_None />
           </div>
         )}
       </div>
+
+      <SortBottomSheet
+        isOpen={isSortOpen}
+        onClose={() => setIsSortOpen(false)}
+        selected={sortOption}
+        onSelect={(opt) => setSortOption(opt as any)}
+        options={["최신순", "오래된 순"]}
+      />
     </div>
   );
 };

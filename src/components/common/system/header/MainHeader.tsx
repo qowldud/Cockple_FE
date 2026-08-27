@@ -1,21 +1,49 @@
-import LogoIcon from "@/assets/icons/Logo.svg";
-import Alert from "@/assets/icons/alert.svg";
-import AlertNoti from "@/assets/icons/alert_noti.svg";
+import LogoIcon from "@/assets/icons/Logo.svg?url";
+import Alert from "@/assets/icons/alert.svg?url";
+import AlertNoti from "@/assets/icons/alert_noti.svg?url";
 import clsx from "clsx";
-import DropDownBtn from "../../DynamicBtn/DropDownBtn";
+import DropDownBtn from "@/components/common/DynamicBtn/DropDownBtn";
+import { useNavigate } from "react-router-dom";
+import { getMyLocation, type MyLocationType } from "@/api/member/getMyLocation";
+import { useEffect, useState } from "react";
+import api from "@/api/api";
 
 interface MainHeaderProps {
-  hasNotification?: boolean;
   background?: "white" | "clear";
   className?: string;
 }
 
 export const MainHeader = ({
-  hasNotification,
   background = "white",
   className,
 }: MainHeaderProps) => {
+  const navigate = useNavigate();
+  const [hasNotification, setHasNotification] = useState(false);
   const alertIcon = hasNotification ? AlertNoti : Alert;
+  const [location, setLocation] = useState("");
+
+  useEffect(() => {
+    const fetchMyLocation = async () => {
+      const data: MyLocationType = await getMyLocation();
+      setLocation(data.addr3 ?? data.buildingName);
+    };
+
+    fetchMyLocation();
+  }, []);
+
+  const getNotificationsCount = async () => {
+    try {
+      const { data } = await api.get("/api/notifications/count");
+
+      setHasNotification(data.data.existNewNotification);
+    } catch (err) {
+      console.log("알람 존재여부 api 오류: ", err);
+    }
+  };
+
+  useEffect(() => {
+    getNotificationsCount();
+  }, []);
 
   return (
     <div
@@ -28,14 +56,19 @@ export const MainHeader = ({
       <img src={LogoIcon} className="w-15" alt="Cockple Logo" />
 
       <div className="flex gap-3">
-        <DropDownBtn>
-          <span className="header-h4">사1동</span>
+        <DropDownBtn onClick={() => navigate("/edit/location")}>
+          <span className="header-h4">{location}</span>
         </DropDownBtn>
 
-        <button type="button" className="p-1">
+        <button
+          type="button"
+          aria-label="알림"
+          className="h-8 w-8 p-1 leading-none active:bg-gy-100 border-hard"
+          onClick={() => navigate("/alert")}
+        >
           <img
             src={alertIcon}
-            className="w-6 cursor-pointer"
+            className="w-6 h-6 cursor-pointer"
             alt="alert icon"
           />
         </button>

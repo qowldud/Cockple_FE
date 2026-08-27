@@ -3,59 +3,133 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import svgr from "vite-plugin-svgr";
 import tailwindcss from "@tailwindcss/vite";
-
-// https://vite.dev/config/
-import path from "node:path";
-import { fileURLToPath } from "node:url";
+import { fileURLToPath, URL } from "node:url";
 import { storybookTest } from "@storybook/addon-vitest/vitest-plugin";
-const dirname =
-  typeof __dirname !== "undefined"
-    ? __dirname
-    : path.dirname(fileURLToPath(import.meta.url));
+import { VitePWA } from "vite-plugin-pwa";
 
-// More info at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon
-export default defineConfig({
-  plugins: [react(), svgr(), tailwindcss()],
-  //@ 경로 오류가 나서 추가했습니다 - 연두
-  resolve: {
-    alias: {
-      "@": "/src",
+export default defineConfig(({ mode }) => {
+  const isProduction = mode === "production";
+
+  return {
+    plugins: [
+      react(),
+      svgr(),
+      tailwindcss(),
+      VitePWA({
+        registerType: "autoUpdate",
+        injectRegister: false,
+        devOptions: {
+          enabled: true,
+        },
+        manifest: {
+          name: "콕플:Cockple",
+          short_name: "Cockple",
+          description: "배드민턴을 위한 가장 스마트한 모임 플랫폼",
+          start_url: "/",
+          display: "standalone",
+          background_color: "#ffffff",
+          theme_color: "#ffffff",
+          lang: "ko",
+          icons: [
+            {
+              src: "icons/app_icon.png",
+              sizes: "192x192",
+              type: "image/png",
+              purpose: "any maskable",
+            },
+            {
+              src: "icons/app_icon.png",
+              sizes: "512x512",
+              type: "image/png",
+            },
+          ],
+        },
+        // 필요하면 캐싱 전략 등을 여기서 workbox로 커스터마이즈 가능
+        // workbox: { /* runtimeCaching 등 */ },
+      }),
+    ],
+
+    assetsInclude: ["**/*.svg"],
+
+    resolve: {
+      alias: {
+        "@": fileURLToPath(new URL("./src", import.meta.url)),
+      },
+      extensions: [".js", ".ts", ".jsx", ".tsx"],
     },
-    extensions: [".js", ".ts", ".jsx", ".tsx"],
-  },
-  optimizeDeps: {
-    include: ["swiper", "swiper/react"],
-  },
-  server: {
-    host: true,
-  },
-  test: {
-    projects: [
-      {
-        extends: true,
-        plugins: [
-          // The plugin will run tests for the stories defined in your Storybook config
-          // See options at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon#storybooktest
-          storybookTest({
-            configDir: path.join(dirname, ".storybook"),
-          }),
-        ],
 
-        test: {
-          name: "storybook",
-          browser: {
-            enabled: true,
-            headless: true,
-            provider: "playwright",
-            instances: [
-              {
-                browser: "chromium",
-              },
-            ],
+    optimizeDeps: {
+      include: ["swiper", "swiper/react"],
+    },
+
+    build: {
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            // React 코어
+            "vendor-react": ["react", "react-dom", "react-router-dom"],
+            // 상태관리 & 데이터 패칭
+            "vendor-query": ["@tanstack/react-query", "zustand", "axios"],
+            // Firebase (가장 무거움)
+            "vendor-firebase": ["firebase/app", "firebase/messaging"],
+            // 애니메이션
+            "vendor-motion": ["framer-motion"],
+            // 폼
+            "vendor-form": ["react-hook-form", "react-datepicker"],
+            // UI 유틸
+            "vendor-ui": ["swiper", "react-select", "react-easy-crop", "react-range", "@headlessui/react"],
+            // 날짜
+            "vendor-date": ["date-fns", "dayjs"],
           },
-          setupFiles: [".storybook/vitest.setup.ts"],
         },
       },
-    ],
-  },
+    },
+
+    server: {
+      host: true,
+      proxy: {
+        "/api": {
+          target: "https://api.cockple.site",
+          changeOrigin: true,
+        },
+        "/ws": {
+          target: "https://api.cockple.site",
+          changeOrigin: true,
+          ws: true,
+        },
+      },
+    },
+
+    define: {
+      global: "globalThis",
+    },
+
+    // vitest / storybook 테스트 설정은 prod가 아닐 때만 포함
+    ...(!isProduction && {
+      test: {
+        projects: [
+          {
+            extends: true,
+            plugins: [
+              storybookTest({
+                configDir: fileURLToPath(
+                  new URL("./.storybook", import.meta.url),
+                ),
+              }),
+            ],
+            test: {
+              name: "storybook",
+              browser: {
+                enabled: true,
+                headless: true,
+                provider: "playwright",
+                instances: [{ browser: "chromium" }],
+              },
+              setupFiles: [".storybook/vitest.setup.ts"],
+            },
+          },
+        ],
+      },
+    }),
+  };
 });

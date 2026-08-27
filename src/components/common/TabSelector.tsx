@@ -1,8 +1,7 @@
 // TabBtn을 사용하는 컴포넌트
 // 채팅 페이지에서는 "모임채팅" "개인채팅"
 // 찜 페이지에서는 "모임" "운동"
-
-import React from "react";
+import clsx from "clsx";
 import TabBtn from "./DynamicBtn/TabBtn";
 
 interface TabOption {
@@ -14,24 +13,39 @@ interface TabSelectorProps<T extends string> {
   options: TabOption[];
   selected: T;
   onChange: (value: T) => void;
+  type?: string;
+  dots?: Partial<Record<T, boolean>>;
 }
 
 const TabSelector = <T extends string>({
   options,
   selected,
   onChange,
+  type,
+  dots,
 }: TabSelectorProps<T>) => {
   return (
-    <div className="flex flex-col mb-4">
-      <div className="flex text-black items-center gap-x-3">
+    <div className="w-full -ml-4 px-4 max-w-[444px] flex flex-col mb-4 fixed top-14 z-20 bg-white">
+      <div
+        className={clsx(
+          "flex text-black items-center gap-3",
+          type === "group" && "justify-between",
+        )}
+      >
         {options.map(option => (
           <TabBtn
             key={option.value}
-            children={option.label}
             onClick={() => onChange(option.value as T)}
             disabled={false}
             isSelected={selected === option.value}
-          />
+          >
+            <span className="relative inline-flex">
+              {option.label}
+              {dots?.[option.value as T] && (
+                <span className="absolute -top-0.5 -right-2 w-1.5 h-1.5 rounded-full bg-[#F62D2D]" />
+              )}
+            </span>
+          </TabBtn>
         ))}
       </div>
       <div className="h-[2px] bg-gray-100 relative -mt-[2px] z-0" />

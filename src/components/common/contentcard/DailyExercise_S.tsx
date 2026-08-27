@@ -9,6 +9,7 @@ interface DailyExerciseSProps {
   location: string;
   time: string;
   imageSrc: string;
+  onClick?: () => void;
 }
 
 export const DailyExercise_S = ({
@@ -16,6 +17,7 @@ export const DailyExercise_S = ({
   location,
   time,
   imageSrc,
+  onClick,
 }: DailyExerciseSProps) => {
   const [isPressing, setIsPressing] = useState(false);
 
@@ -26,9 +28,10 @@ export const DailyExercise_S = ({
       onMouseLeave={() => setIsPressing(false)}
       onTouchStart={() => setIsPressing(true)}
       onTouchEnd={() => setIsPressing(false)}
-      className={`p-[0.5rem] w-[21.4375rem] h-[5rem] rounded-[0.75rem]
+      className={`p-[0.5rem] w-full h-[5rem] rounded-[0.75rem]
         ${isPressing ? "bg-[#F4F5F6]" : "bg-white"}
         shadow-ds50 flex items-center gap-3 transition-colors duration-150`}
+      onClick={onClick}
     >
       {/* 이미지 영역 */}
       <div className="relative">

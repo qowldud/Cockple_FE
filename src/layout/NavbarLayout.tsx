@@ -4,11 +4,10 @@ import { MainHeader } from "../components/common/system/header/MainHeader";
 
 export const NavbarLayout = () => {
   const { pathname } = useLocation();
-  console.log(pathname);
   return (
     <div className="h-full">
       {pathname !== "/" && <MainHeader />}
-      <div className="h-full pb-26 pt-14">
+      <div className="h-full pb-20 pt-14">
         <Outlet />
       </div>
       <Navbar />

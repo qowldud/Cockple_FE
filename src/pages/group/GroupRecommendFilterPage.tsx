@@ -67,8 +67,17 @@ const keywords = [
 ];
 
 export const GroupRecommendFilterPage = () => {
-  const { region, level, style, day, time, keyword, setFilter, resetFilter } =
-    useGroupRecommendFilterState();
+  const {
+    recommend,
+    region,
+    level,
+    style,
+    day,
+    time,
+    keyword,
+    setFilter,
+    resetFilter,
+  } = useGroupRecommendFilterState();
   const initialFilterRef = useRef({
     region,
     level,
@@ -76,6 +85,7 @@ export const GroupRecommendFilterPage = () => {
     day,
     time,
     keyword,
+    recommend,
   });
   const [showModal, setShowModal] = useState(false);
   const [selectedCity, setSelectedCity] = useState("");
@@ -107,8 +117,29 @@ export const GroupRecommendFilterPage = () => {
     }
   };
 
+  const isAllSelected = (selected: string[]) =>
+    ALL_LEVELS.every(level => selected.includes(level));
+
+  const ALL_LEVELS = [
+    "왕초심",
+    "초심",
+    "D조",
+    "C조",
+    "B조",
+    "A조",
+    "준자강",
+    "자강",
+  ];
+  const ALL_STYLES = ["여복", "남복", "혼복"];
+  const isAllStyleSelected = style === "전체";
+
+  const ALL_DAYS = ["월", "화", "수", "목", "금", "토", "일"];
+  const isAllDaySelected = ALL_DAYS.every(dayItem => day.includes(dayItem));
+
+  const ALL_TIMES = ["상시", "오전", "오후"];
+
   return (
-    <div className="min-h-screen -mb-8 flex flex-col justify-between">
+    <div className="pb-24 flex flex-col justify-between">
       <div className="flex flex-col gap-5">
         <PageHeader title="필터" onBackClick={handleBack} />
 
@@ -122,7 +153,12 @@ export const GroupRecommendFilterPage = () => {
                 onChange={city => {
                   setSelectedCity(city);
                   setSelectedDistrict("전체");
-                  setFilter("region", [city, "전체"]);
+
+                  if (city === "전국구" || city === "전체") {
+                    setFilter("region", []);
+                  } else {
+                    setFilter("region", [city, "전체"]);
+                  }
                 }}
               />
 
@@ -133,7 +169,11 @@ export const GroupRecommendFilterPage = () => {
                 value={selectedDistrict}
                 onChange={gu => {
                   setSelectedDistrict(gu);
-                  setFilter("region", [selectedCity, gu]);
+                  if (gu === "전체") {
+                    setFilter("region", [selectedCity, "전체"]);
+                  } else {
+                    setFilter("region", [selectedCity, gu]);
+                  }
                 }}
                 disabled={!selectedCity}
                 placeholder="전체"
@@ -142,42 +182,54 @@ export const GroupRecommendFilterPage = () => {
           </Toggle>
           <Toggle title="전국 급수">
             <MultiSelectButtonGroup
-              options={[
-                "전체",
-                "왕초심",
-                "초심",
-                "D조",
-                "C조",
-                "B조",
-                "A조",
-                "준자강",
-                "자강",
-              ]}
-              selected={level}
-              onChange={newVal => setFilter("level", newVal)}
+              options={["전체", ...ALL_LEVELS]}
+              selected={isAllSelected(level) ? ["전체"] : level}
+              onChange={newVal => {
+                if (Array.isArray(newVal) && newVal.includes("전체")) {
+                  setFilter("level", ALL_LEVELS);
+                } else {
+                  setFilter("level", newVal);
+                }
+              }}
             />
           </Toggle>
           <Toggle title="운동 스타일">
             <MultiSelectButtonGroup
-              options={["전체", "여복", "남복", "혼복"]}
-              selected={style}
+              options={["전체", ...ALL_STYLES]}
+              selected={isAllStyleSelected ? "전체" : style}
               singleSelect={true}
-              onChange={newVal => setFilter("style", newVal)}
+              onChange={newVal => {
+                if (newVal === "전체") {
+                  setFilter("style", "전체");
+                } else {
+                  setFilter("style", newVal);
+                }
+              }}
             />
           </Toggle>
           <Toggle title="운동 요일">
             <MultiSelectButtonGroup
-              options={["전체", "월", "화", "수", "목", "금", "토", "일"]}
-              selected={day}
-              onChange={newVal => setFilter("day", newVal)}
+              options={["전체", ...ALL_DAYS]}
+              selected={isAllDaySelected ? ["전체"] : day}
+              onChange={newVal => {
+                if (Array.isArray(newVal) && newVal.includes("전체")) {
+                  setFilter("day", ALL_DAYS);
+                } else {
+                  setFilter("day", newVal);
+                }
+              }}
             />
           </Toggle>
           <Toggle title="활동 시간">
             <MultiSelectButtonGroup
-              options={["상시", "오전", "오후"]}
+              options={ALL_TIMES}
               selected={time}
               singleSelect={true}
-              onChange={newVal => setFilter("time", newVal)}
+              onChange={newVal => {
+                if (typeof newVal === "string") {
+                  setFilter("time", newVal);
+                }
+              }}
             />
           </Toggle>
           <Toggle title="키워드">
@@ -197,12 +249,14 @@ export const GroupRecommendFilterPage = () => {
         </div>
       </div>
 
-      <Grad_Mix_L
-        type="refresh"
-        label="필터 적용"
-        onImageClick={resetFilter}
-        onClick={() => navigate(-1)}
-      />
+      <div className="fixed bottom-0 left-1/2 -translate-x-1/2">
+        <Grad_Mix_L
+          type="refresh"
+          label="필터 적용"
+          onImageClick={resetFilter}
+          onClick={() => navigate(-1)}
+        />
+      </div>
 
       {showModal && (
         <CautionModal

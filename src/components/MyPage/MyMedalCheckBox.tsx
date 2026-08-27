@@ -1,114 +1,109 @@
-import React, { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import CheckCircled from "../../assets/icons/check_circled.svg?react";
 import CheckCircledFilled from "../../assets/icons/check_circled_filled.svg?react";
 import White_L_Thin_Add from "./White_L_Thin_Add";
-import VectorRed from "../../assets/icons/Vector_red.svg?react";
 import Dismiss from "../../assets/icons/dismiss.svg?react";
-import { useForm, Controller } from "react-hook-form";
 
-interface CheckBoxDismissTruncateProps {
+interface MyMedalCheckBoxProps {
   title: string;
+  Label: string;
+  value: string[];
+  onChange: (newLinks: string[]) => void;
 }
 
-export const MyMedalCheckBox: React.FC<CheckBoxDismissTruncateProps> = ({ title }) => {
-  const { control, setValue } = useForm();
-
-  const [recordTexts, setRecordTexts] = useState<string[]>([""]);
+export const MyMedalCheckBox: React.FC<MyMedalCheckBoxProps> = ({
+  title,
+  Label,
+  value,
+  onChange,
+}) => {
+  const [recordTexts, setRecordTexts] = useState<string[]>(
+    value && value.length > 0 ? [...value] : [""]
+  );
+  
   const [isPrivate, setIsPrivate] = useState(false);
-
   const textAreaRefs = useRef<(HTMLInputElement | null)[]>([]);
 
-  const adjustHeight = (idx: number) => {
-    const textarea = textAreaRefs.current[idx];
-    if (textarea) {
-      textarea.style.height = "auto";
-      textarea.style.height = textarea.scrollHeight + "px";
-    }
-  };
-
   useEffect(() => {
-    recordTexts.forEach((_, idx) => {
-      adjustHeight(idx);
-    });
-  }, [recordTexts]);
+    setRecordTexts(value && value.length > 0 ? [...value] : [""]);
+  }, [value]);
 
-  const onChangeText = (idx: number, value: string) => {
-    const newTexts = [...recordTexts];
-    newTexts[idx] = value;
-    setRecordTexts(newTexts);
-    setValue(`name_${idx}`, value, { shouldDirty: true });
+  const onChangeText = (idx: number, text: string) => {
+    const newLinks = [...recordTexts];
+    newLinks[idx] = text;
+    setRecordTexts(newLinks);
+    onChange(newLinks); 
   };
 
   const handleRemove = (idx: number) => {
     const updated = [...recordTexts];
-    if (updated.length === 1) {
-      updated[0] = "";
-      setValue(`name_0`, "", { shouldDirty: true });
-    } else {
-      updated.splice(idx, 1);
-      setRecordTexts(updated);
+    updated.splice(idx, 1);
+    
+    const newList = updated.length ? updated : [""];
+  
+    setRecordTexts(newList);
+    onChange(newList.filter(v => v.trim() !== ""));
+  };
+
+  const handleAdd = () => {
+    const updated = [...recordTexts, ""];
+    setRecordTexts(updated);
+    onChange(updated);
+  };
+
+  const handleTogglePrivate = () => {
+    const newIsPrivate = !isPrivate;
+    setIsPrivate(newIsPrivate);
+
+    // 비공개 상태로 전환될 때 모든 입력 내용을 비웁니다.
+    if (newIsPrivate) {
+      const emptyList = [""];
+      setRecordTexts(emptyList);
+      onChange(emptyList);
     }
   };
 
   return (
     <div className="w-full flex flex-col gap-2">
-      <div className="flex flex-col gap-1">
-        <div className="flex justify-between items-start">
-          <div className="flex items-center">
-            <label className={`header-h5 ${isPrivate ? "text-[#9195A1]" : "text-black"}`}>
-              {title}
-            </label>
-          </div>
-          <div className="flex items-center gap-2">
-            <button
-              onClick={() => setIsPrivate((prev) => !prev)}
-              type="button"
-              className="focus:outline-none"
-            >
-              {isPrivate ? (
-                <CheckCircledFilled className="w-4 h-4" />
-              ) : (
-                <CheckCircled className="w-4 h-4" />
-              )}
-            </button>
-            <label className="body-rg-500">비공개</label>
-          </div>
+       <div className="flex justify-between items-start">
+        <div className="flex items-center">
+          <label className={`header-h5 ${isPrivate ? "text-[#9195A1]" : "text-black"}`}>
+                  {title}
+          </label>
+        </div>
+        <div className="flex items-center gap-2">
+          <button onClick={handleTogglePrivate} type="button">
+          {isPrivate ? (
+            <CheckCircledFilled className="w-4 h-4" />
+          ) : (
+            <CheckCircled className="w-4 h-4" />
+          )}
+        </button>
+        <label className="body-rg-500 px-1">{Label}</label>
         </div>
       </div>
 
       {recordTexts.map((text, idx) => {
         const showDismiss = text.trim() !== "";
-
         return (
           <div key={idx} className="relative">
-            <Controller
-              name={`name_${idx}`}
-              control={control}
-              defaultValue={text}
-              render={({ field }) => (
-                <input
-                  {...field}
-                  type="text"
-                  disabled={isPrivate}
-                  style={{ paddingRight: "3rem" }}
-                  className="w-full rounded-xl border border-gy-200 py-[0.625rem] px-3 focus:outline-none overflow-hidden whitespace-nowrap text-ellipsis focus:border-active"
-                  ref={(el) => {
-                    field.ref(el);
-                    textAreaRefs.current[idx] = el;
-                    if (el) adjustHeight(idx);
-                  }}
-                  onChange={(e) => {
-                    field.onChange(e);
-                    onChangeText(idx, e.target.value);
-                  }}
-                />
-              )}
+           <input
+              type="text"
+              disabled={isPrivate} 
+              style={{ paddingRight: "3rem" }}
+              className="w-full rounded-xl border border-gy-200 py-[0.625rem] px-3 focus:outline-none overflow-hidden whitespace-nowrap text-ellipsis focus:border-active"
+              value={text} 
+              onChange={(e) => onChangeText(idx, e.target.value)}
+              ref={(el) => {
+                textAreaRefs.current[idx] = el;
+              }}
+              placeholder={isPrivate ? "" : "영상 링크를 입력해주세요"}
             />
-            {showDismiss && (
+            {showDismiss && !isPrivate && (
               <button
                 type="button"
                 onClick={() => handleRemove(idx)}
-                className="absolute top-1/2 -translate-y-1/2 right-2 w-5 h-5"
+                className="absolute top-1/2 -translate-y-1/2 right-2 w-5 h-5 flex items-center justify-center"
               >
                 <Dismiss className="w-full h-full" />
               </button>
@@ -117,12 +112,13 @@ export const MyMedalCheckBox: React.FC<CheckBoxDismissTruncateProps> = ({ title 
         );
       })}
 
-      {!isPrivate && recordTexts[recordTexts.length - 1].trim() !== "" && (
-        <White_L_Thin_Add
-          label="추가하기"
-          onClick={() => setRecordTexts([...recordTexts, ""])}
-        />
-      )}
+      <div style={{ display: "flex", justifyContent: "center" }}>
+        {!isPrivate &&
+          recordTexts.length > 0 &&
+          recordTexts[recordTexts.length - 1].trim() !== "" && (
+            <White_L_Thin_Add label="추가하기" onClick={handleAdd} />
+          )}
+      </div>
     </div>
   );
 };

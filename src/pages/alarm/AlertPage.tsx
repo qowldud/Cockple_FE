@@ -1,158 +1,261 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-import Clear_M from "../../components/common/Btn_Static/Icon_Btn/Clear_M";
 import AlertInvite from "../../components/common/contentcard/alertTest/AlertInvite";
-import AlertInviteApproved from "../../components/common/contentcard/alertTest/AlertInviteApproved";
 import ApproveModal from "../../components/common/contentcard/alertTest/modal/ApproveModal";
 import RejectModal from "../../components/common/contentcard/alertTest/modal/RejectModal";
-import AlertChange from "../../components/common/contentcard/alertTest/AlertChange";
-import AlertShadow from "../../components/common/contentcard/alertTest/AlertShadow";
-import { alertList } from "../../components/alert/alertList";
+//import { alertList } from "../../components/alert/alertList";
+
+//api 연결
+import api from "../../api/api";
+
 // 아이콘
-import ArrowLeft from "../../assets/icons/arrow_left.svg";
-import { MainHeader } from "../../components/common/system/header/MainHeader";
 import { PageHeader } from "../../components/common/system/header/PageHeader";
-import { NoAlertMessage } from "../../components/alert/NoAlertMessage";
+import { EmptyState } from "../../components/alert/EmptyState";
+import AlertTest1 from "../../components/common/contentcard/alertTest/AlertTest1";
+import type { AlertListResponse, ResponseAlertDto, AlertListPage } from "../../types/alert";
+import { useMutation, useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
+import { AlertSkeleton } from "../../components/alert/AlertSkeleton";
+import DefaultGroupImg from "@/assets/icons/defaultGroupImg.svg?url";
+
+const fetchNotifications = async ({ pageParam = null }: { pageParam?: number | null }): Promise<AlertListPage> => {
+  const cursorParam = pageParam ? `&cursor=${pageParam}` : "";
+  const response = await api.get<AlertListResponse>(
+    `/api/v2/notifications?destination=APP${cursorParam}`
+  );
+  return response.data.data;
+};
 
 export const AlertPage = () => {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
-  const [showApproveModal, setShowApproveModal] = useState(false);
-  const [showRejectModal, setShowRejectModal] = useState(false);
-  const [approvedList, setApprovedList] = useState<
-    { id: number; date: string }[]
-  >([]);
   const [targetId, setTargetId] = useState<number | null>(null);
+  const [modalType, setModalType] = useState<"approve" | "reject" | null>(null);
 
-  const getTodayDate = (): string => {
-    const today = new Date();
-    const year = today.getFullYear();
-    const month = String(today.getMonth() + 1).padStart(2, "0");
-    const date = String(today.getDate()).padStart(2, "0");
-    return `${year}.${month}.${date} 승인 완료`;
-  };
+  const {
+    data,
+    fetchNextPage,
+    hasNextPage,
+    isLoading,
+    isError,
+  } = useInfiniteQuery({
+    queryKey: ["notifications"],
+    queryFn: fetchNotifications,
+    initialPageParam: null as number | null,
+    getNextPageParam: (lastPage) => (lastPage.hasNext ? lastPage.nextCursor : undefined),
+    staleTime: 1000 * 60,
+  });
+
+  const notifications = data?.pages.flatMap(page => page.notifications) || [];
+
+  // INVITE/CHANGE/SIMPLE 만 노출
+  const visibleNotifications = notifications.filter(alert =>
+    ["INVITE", "CHANGE", "SIMPLE"].includes(alert.type),
+  );
+
+  const observerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      entries => {
+        if (entries[0].isIntersecting && hasNextPage && !isLoading) {
+          fetchNextPage();
+        }
+      },
+      { threshold: 0.1 },
+    );
+    if (observerRef.current) {
+      observer.observe(observerRef.current);
+    }
+    return () => observer.disconnect();
+  }, [hasNextPage, fetchNextPage, isLoading]);
 
   const handleAccept = (id: number) => {
     setTargetId(id);
-    setShowApproveModal(true);
+    setModalType("approve");
   };
 
   const handleReject = (id: number) => {
     setTargetId(id);
-    setShowRejectModal(true);
+    setModalType("reject");
   };
 
-  const handleDetail = (id: number) => {
-    console.log("상세보기 이동", id);
-  };
+  const handleDetail = (partyId: number, data?: ResponseAlertDto["data"]) => {
+    console.log("모임 페이지로 이동", partyId);
 
-  const confirmApprove = () => {
-    if (targetId !== null) {
-      const formattedDate = getTodayDate();
-      setApprovedList(prev => [...prev, { id: targetId, date: formattedDate }]);
+    if (data?.exerciseDate && data?.exerciseId) {
+      navigate(`/group/${partyId}`, {
+        state: {
+          exerciseDate: data.exerciseDate,
+          exerciseId: data.exerciseId,
+        },
+      });
+    } else {
+      navigate(`/group/${partyId}`);
     }
-    setShowApproveModal(false);
   };
 
-  const confirmReject = () => {
-    if (targetId !== null) {
-      console.log("거절 처리", targetId); // 실제 로직 대체 가능
+  // 안전 파서
+  function extractInvitationId(data: ResponseAlertDto["data"]): number | null {
+    if (!data) return null;
+
+    // data가 문자열(JSON)로 오는 케이스 대응
+    if (typeof data === "string") {
+      try {
+        const parsed = JSON.parse(data);
+        const id = parsed?.invitationId;
+        return typeof id === "number" ? id : Number(id ?? NaN);
+      } catch {
+        return null;
+      }
     }
-    setShowRejectModal(false);
+
+    const id = data?.invitationId;
+    return typeof id === "number" ? id : Number(id ?? NaN);
+  }
+
+  // 🌟CHANGE/SIMPLE 읽음 처리 공통 뮤테이션
+  const markReadMutation = useMutation({
+    mutationFn: async (notification: ResponseAlertDto) => {
+      const { notificationId } = notification;
+      await api.patch(`/api/v2/notifications/${notificationId}/read`);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["notifications"] });
+    },
+    onError: err => {
+      console.error("읽음 처리 실패:", err);
+    },
+  });
+
+  const approveMutation = useMutation({
+    mutationFn: async (notification: ResponseAlertDto) => {
+      const { notificationId, partyId } = notification;
+      const invitationId = extractInvitationId(notification.data);
+
+      // V2: 알림 읽음 처리만 하고, 수락은 초대 API로 별도 호출
+      await api.patch(`/api/v2/notifications/${notificationId}/read`);
+
+      if (partyId && invitationId) {
+        await api.patch(`/api/parties/invitations/${invitationId}`, {
+          action: "APPROVE",
+        });
+      } else if (partyId && !invitationId) {
+        console.log("모임 있지만 invitationId 없음");
+      } else {
+        console.log("모임도 없고 invitationId도 없음");
+      }
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["notifications"] });
+      setModalType(null);
+    },
+    onError: err => {
+      console.error("승인 처리 실패:", err);
+    },
+  });
+
+  const rejectMutation = useMutation({
+    mutationFn: async (notification: ResponseAlertDto) => {
+      const { notificationId, data } = notification;
+
+      // V2: 알림 읽음 처리만 하고, 거절은 초대 API로 별도 호출
+      await api.patch(`/api/v2/notifications/${notificationId}/read`);
+
+      if (data?.invitationId) {
+        await api.patch(`/api/parties/invitations/${data.invitationId}`, {
+          action: "REJECT",
+        });
+      }
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["notifications"] });
+      setModalType(null);
+    },
+    onError: err => {
+      console.error("거절 처리 실패:", err);
+    },
+  });
+
+  const shouldMoveToDetail = (type: string): boolean => {
+    // SIMPLE(운동/모임 삭제 알림 등)은 상세 이동 X
+    return !(type === "SIMPLE");
   };
+
+  const getDescriptionText = (type: string) => {
+    if (shouldMoveToDetail(type)) {
+      return "클릭하시면 모임 페이지로 이동해요.";
+    }
+    return undefined;
+  };
+
+  const selectedAlert = notifications.find(
+    alert => alert.notificationId === targetId,
+  );
 
   return (
-    <div className="flex flex-col h-screen overflow-y-scroll [&::-webkit-scrollbar]:hidden relative">
+    <div className="flex flex-col min-h-[86dvh] -mb-8 overflow-hidden relative">
       {/* 헤더 */}
-      {/* <div className="h-[3.5rem] flex items-center gap-3 shrink-0 bg-white">
-        <Clear_M
-          iconMap={{
-            disabled: ArrowLeft,
-            default: ArrowLeft,
-            pressing: ArrowLeft,
-            clicked: ArrowLeft,
-          }}
-          onClick={() => navigate("/")}
-        />
-        <div className="header-h4">알림</div>
-      </div> */}
-      <PageHeader title="알림" onBackClick={() => navigate("/")} />
+      <PageHeader title="알림" />
 
       {/* 알림 카드들 */}
-      <div className="flex flex-col items-center gap-4">
-        {alertList.length === 0 ? (
-          <NoAlertMessage />
+      <div className="flex-1 flex flex-col items-center gap-4">
+        {isLoading ? (
+          <AlertSkeleton />
+        ) : isError ? (
+          <div className="text-center mt-10">에러 발생</div>
+        ) : visibleNotifications.length === 0 ? (
+          <div className="flex flex-1 justify-center items-center">
+            <EmptyState />
+          </div>
         ) : (
-          alertList.map(alert => {
-            // 이미 승인된 경우 → AlertInviteApproved 렌더링
-            const approved = approvedList.find(a => a.id === alert.id);
-            if (alert.type === "invite" && approved) {
-              return (
-                <AlertInviteApproved
-                  key={alert.id}
-                  groupName={alert.groupName}
-                  alertText={alert.alertText}
-                  imageSrc={alert.imageSrc}
-                  approvedDate={approved.date}
-                />
-              );
-            }
-
-            switch (alert.type) {
-              case "invite":
-                return (
-                  <AlertInvite
-                    key={alert.id}
-                    groupName={alert.groupName}
-                    alertText={alert.alertText}
-                    imageSrc={alert.imageSrc}
-                    onAccept={() => handleAccept(alert.id)}
-                    onReject={() => handleReject(alert.id)}
-                  />
-                );
-              case "change":
-                return (
-                  <AlertChange
-                    key={alert.id}
-                    groupName={alert.groupName}
-                    alertText={alert.alertText}
-                    imageSrc={alert.imageSrc}
-                    onClick={() => handleDetail(alert.id)}
-                  />
-                );
-              case "simple":
-                return (
-                  <AlertShadow
-                    key={alert.id}
-                    groupName={alert.groupName}
-                    alertText={alert.alertText}
-                    imageSrc={alert.imageSrc}
-                  />
-                );
-              default:
-                return null;
-            }
-          })
+          visibleNotifications.map(alert =>
+            alert.type === "INVITE" ? (
+              <AlertInvite
+                key={alert.notificationId}
+                groupName={alert.title}
+                alertText={alert.content}
+                imageSrc={alert.imgUrl?.endsWith("/null") ? DefaultGroupImg : (alert.imgUrl ?? DefaultGroupImg)}
+                onAccept={() => handleAccept(alert.notificationId)}
+                onReject={() => handleReject(alert.notificationId)}
+              />
+            ) : (
+              <AlertTest1
+                key={alert.notificationId}
+                groupName={alert.title}
+                alertText={alert.content}
+                imageSrc={alert.imgUrl?.endsWith("/null") ? DefaultGroupImg : (alert.imgUrl ?? DefaultGroupImg)}
+                alertType={alert.type}
+                isRead={alert.isRead}
+                descriptionText={getDescriptionText(alert.type)}
+                onClick={() => {
+                  markReadMutation.mutate(alert);
+                  if (shouldMoveToDetail(alert.type)) {
+                    handleDetail(alert.partyId, alert.data);
+                  }
+                }}
+              />
+            ),
+          )
         )}
+        {hasNextPage && <div ref={observerRef} className="h-10 w-full" />}
       </div>
 
-      {/* 승인 모달 */}
-      {showApproveModal && (
-        <div className="fixed inset-0 flex justify-center items-center bg-black-60 z-10">
+      {modalType === "approve" && selectedAlert && (
+        <div className="fixed inset-0 flex justify-center items-center bg-black-60 z-50">
           <ApproveModal
-            onClose={() => setShowApproveModal(false)}
-            onApprove={confirmApprove}
+            onClose={() => setModalType(null)}
+            onApprove={() => approveMutation.mutate(selectedAlert)}
           />
         </div>
       )}
 
-      {/* 거절 모달 */}
-      {showRejectModal && (
-        <div className="fixed inset-0 flex justify-center items-center bg-black-60 z-10">
+      {modalType === "reject" && selectedAlert && (
+        <div className="fixed inset-0 flex justify-center items-center bg-black-60 z-50">
           <RejectModal
-            onClose={() => setShowRejectModal(false)}
-            onReject={confirmReject}
+            onClose={() => setModalType(null)}
+            onReject={() => rejectMutation.mutate(selectedAlert)}
           />
         </div>
       )}

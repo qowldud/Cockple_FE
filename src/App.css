@@ -7,12 +7,13 @@
 }
 
 textarea.auto-resizing-css {
-  resize: none; 
-  overflow-y: hidden; 
+  resize: none;
+  overflow-y: hidden;
   max-height: 11.75rem;
-  min-height: 1.5rem;   
-  field-sizing: content; 
+  min-height: 1.5rem;
+  field-sizing: content;
 }
+
 /* .logo {
   height: 6em;
   padding: 1.5em;

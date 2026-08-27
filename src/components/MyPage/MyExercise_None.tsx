@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import Logo from "../../assets/icons/Logo_Typo.svg?react";
+import NoneImg from "../../assets/images/None_Error.webp";
 import GR400_M from "../common/Btn_Static/Text/GR400_M";
 
 export const MyExercise_None = () => {
@@ -15,11 +15,11 @@ export const MyExercise_None = () => {
         </div>
 
         {/* 로고 */}
-        <Logo className="w-44 h-44" />
+        <img src={NoneImg} className="w-[11.25rem] h-[11.25rem] object-contain" />
 
         {/* 버튼 */}
         <GR400_M
-          label="모임 둘러보기"
+          label="운동 둘러보기"
           onClick={() => navigate("/")}
         />
       </div>

@@ -1,4 +1,11 @@
-@import url("https://cdn.jsdelivr.net/gh/sun-typeface/SUIT@2/fonts/variable/woff2/SUIT-Variable.css");
+@font-face {
+  font-family: "SUIT Variable";
+  src: url("https://cdn.jsdelivr.net/gh/sun-typeface/SUIT@2/fonts/variable/woff2/SUIT-Variable.woff2")
+    format("woff2-variations");
+  font-weight: 100 900;
+  font-display: swap;
+}
+
 @import "tailwindcss";
 @import "swiper/css";
 @import "swiper/css/pagination";
@@ -388,14 +395,15 @@ html {
   background-color: lightgray;
   -ms-overflow-style: none; /* IE, Edge */
   scrollbar-width: none; /* Firefox */
+  overscroll-behavior: none;
 }
 html::-webkit-scrollbar {
   display: none; /* Chrome, Safari, Opera */
 }
-/* 전체 앱에 기본 폰트 적용 (선택사항) */
+/* 전체 앱에 기본 폰트 적용 */
 body {
   height: 100%;
-  overscroll-behavior-y: none;
+  color: #121212;
   font-family:
     "SUIT Variable",
     -apple-system,
@@ -413,7 +421,7 @@ body::-webkit-scrollbar {
   margin: 0 8px !important;
 }
 .swiper-pagination-bullet-active {
-  @apply bg-gr-500 mx-2;
+  @apply !bg-gr-500 mx-2;
 }
 .scrollbar-hide::-webkit-scrollbar {
   display: none;

@@ -1,44 +1,69 @@
-import { useNavigate } from "react-router-dom";
-import TagBtn from "../../components/common/DynamicBtn/TagBtn";
-import Btn_Static from "../../components/common/Btn_Static/Btn_Static";
-import IntroText from "./components/IntroText";
+import { useLocation, useParams } from "react-router-dom";
+import TagBtn from "@/components/common/DynamicBtn/TagBtn";
+import Btn_Static from "@/components/common/Btn_Static/Btn_Static";
+import IntroText from "@/components/onboarding/IntroText";
+import Onboarding4 from "@/assets/images/onboarding4.webp?url";
+import { TAGMAP } from "@/constants/options";
+import { keywordMap } from "@/constants/onboarding";
+import { useKeywordSelect } from "@/hooks/useKeywordSelect";
+import useHandleSubmitOnboarding from "@/hooks/useConfirmOnboarding";
 
-export const OnboardingConfirmPage = () => {
-  const navigate = useNavigate();
-  const tagMap = [
-    "브랜드 스폰",
-    "가입비 무료",
-    "친목",
-    "운영진이 게임을 짜드려요",
-  ];
+export const ConfirmPage = () => {
+  const location = useLocation();
+  const onboarding = location.state?.onboarding ?? true;
+  const params = useParams();
+  const apiPartyId = Number(params.partyId);
+  const { selectedTag, toggleTag } = useKeywordSelect();
+
+  const mappedKeywords =
+    selectedTag.length > 0
+      ? selectedTag.map(tag => keywordMap[tag]).filter(Boolean)
+      : ["NONE"];
+
+  const { submitOnboarding } = useHandleSubmitOnboarding({
+    apiPartyId,
+    mappedKeywords,
+    onboarding,
+  });
+
   return (
-    <div className="w-full  flex flex-col -mb-8">
-      <section className="flex items-center flex-col gap-10 ">
+    <div className="w-full flex flex-col -mb-8 min-h-dvh ">
+      <section className="flex items-center flex-col gap-10 flex-1">
         <IntroText
-          title="가입이 완료되었어요!"
+          title={
+            onboarding ? "가입이 완료되었어요!" : "멋진 모임이 만들어졌어요!"
+          }
           text1="키워드를 선택하고"
           text2="더 많은 모임과 연결되어 볼까요?"
           isBar={false}
         />
 
         <div>
-          <img
-            src="/src/assets/images/kitty.png"
-            alt="프로필 이미지"
-            className="size-40"
-          />
+          <img src={Onboarding4} alt="가입완료 이미지" className="size-40" />
         </div>
-        <div className="flex flex-wrap gap-[0.625rem] items-center justify-center">
-          {tagMap.map(item => {
-            return <TagBtn children={item} disabled />;
+        <div className="flex flex-wrap gap-3 items-center justify-center">
+          {TAGMAP.map(item => {
+            return (
+              <TagBtn
+                key={item}
+                isSelected={selectedTag.includes(item)}
+                onClick={() => toggleTag(item)}
+              >
+                {item}
+              </TagBtn>
+            );
           })}
         </div>
       </section>
       <div
-        className="flex items-center justify-center header-h4 pt-12 mt-[2px] "
-        onClick={() => navigate("start")}
+        className="flex items-center justify-center header-h4 mb-6 "
+        onClick={submitOnboarding}
       >
-        <Btn_Static label="다음" kind="GR400" size="L" />
+        <Btn_Static
+          label={onboarding ? "다음" : "신규 멤버 추천 받기"}
+          kind="GR400"
+          size="L"
+        />
       </div>
     </div>
   );
